@@ -5,10 +5,11 @@ import { BubbleType } from "./model/LayoutInterface";
 import { TileData, TileStatus, Tile } from "./model/TileGrid";
 import TileGridDataModel from "./model/TileGridDataModel";
 import TileGridModel from "./model/TileGridModel";
+import { getScaleFactor } from "../../utils";
 
 export const bubbleColorsInLayout = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'];
 
-export function getDummyLayout():any[][] {
+export function getDummyLayout(): any[][] {
     const bubbleLayoutData = [];
     for (let i = 0; i < 12; i++) {
         bubbleLayoutData.push([]);
@@ -23,10 +24,10 @@ export function getDummyLayout():any[][] {
             //         type: BubbleType.Rock,
             //     });
             // } else {
-                bubbleLayoutData[i].push({
-                    type: BubbleType.ColorBubble,
-                    color: array[randomIndex],
-                });
+            bubbleLayoutData[i].push({
+                type: BubbleType.ColorBubble,
+                color: array[randomIndex],
+            });
             // }
         }
     }
@@ -36,7 +37,7 @@ export function getDummyLayout():any[][] {
 
 export class StaticBubbleLayout {
     private app: Application;
-    private container: Container;
+    container: Container;
 
     constructor(app: Application) {
         this.app = app;
@@ -65,9 +66,9 @@ export class StaticBubbleLayout {
 
         this.tileGridModel.widthOfEachTile = this.layerSize.width / (this.tileGridModel.totalNumberOfColumnsInGrid + 0.5);     //Dynamically specify tile width based on screen width and number of columns
 
-        this._bubbleScaleFactor = 0.95 ;
+        this._bubbleScaleFactor = 0.95 * getScaleFactor();
         this._radiusOfBubble = this.tileGridModel.widthOfEachTile / 2;     //Radius of the bubble (Used to detect collision)
-  
+
         console.error('init ', this.tileGridModel.widthOfEachTile)
 
         this.renderInitialLayout(10);
@@ -123,7 +124,7 @@ export class StaticBubbleLayout {
             throw new Error('Tile is set empty');
         };
         const bubbleNode = tile.content.data.ui;
-        bubbleNode.setScale(this.bubbleScaleFactor) ;
+        bubbleNode.setScale(this.bubbleScaleFactor);
         bubbleNode.setWorldPosition(tile.position);
         this.container.addChild(bubbleNode.node);
         tile.isRenderedOnGrid = true;

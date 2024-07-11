@@ -28,7 +28,19 @@ async function preload() {
     const app = new Application();
 
     // Intialize the application.
-    await app.init({ background: '#1099bb', resizeTo: window });
+    // await app.init({ background: '#1099bb', resizeTo: window });
+
+    await app.init({
+        width: 1080,
+        height: 1920,
+        background: '#1099bb',
+        resolution: window.devicePixelRatio,
+        autoDensity: true,
+        backgroundColor: 0x1099bb,
+        resizeTo: window,
+    });
+
+ 
 
     // Then adding the application's canvas to the DOM body.
     document.body.appendChild(app.canvas);
@@ -37,4 +49,24 @@ async function preload() {
 
     const gamePlayContainer = new GamePlayContainer(app);
     gamePlayContainer.init();
+
+    window.addEventListener('resize', resizeApp);
+    resizeApp();  // Call immediately to set initial sizes
+    
+    function resizeApp() {
+        const ratio = 1080 / 1920;
+        const currentRatio = window.innerWidth / window.innerHeight;
+        
+        if (currentRatio > ratio) {
+            // If the window ratio is wider than the game ratio (landscape mode)
+            app.view.style.width = `${window.innerHeight * ratio}px`;
+            app.view.style.height = `${window.innerHeight}px`;
+        } else {
+            // Portrait or square
+            app.view.style.width = `${window.innerWidth}px`;
+            app.view.style.height = `${window.innerWidth / ratio}px`;
+        }
+    }
+    
+    
 })();

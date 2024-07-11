@@ -66,10 +66,16 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(),
-        new HtmlWebPackPlugin(),
+        new HtmlWebPackPlugin(
+            {
+                template: "./src/index.html",
+                filename: "./index.html",
+            }
+        ),
         new CopyPlugin({
             patterns: [
-                { from: 'src/assets', to: 'assets' }
+                { from: 'src/assets', to: 'assets' },
+                {from: 'src/styles.css', to: 'styles.css'}
             ]
         }),
     ],

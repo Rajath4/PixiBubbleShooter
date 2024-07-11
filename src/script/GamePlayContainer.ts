@@ -1,4 +1,5 @@
 import { Application, Container, Sprite } from "pixi.js";
+import { CannonContainer } from "./components/Cannon";
 
 export class GamePlayContainer {
     private app: Application;
@@ -12,6 +13,9 @@ export class GamePlayContainer {
 
     init() {
         this.initBG();
+
+        const cannonContainer = new CannonContainer(this.app, this.container);
+        
     }
 
     private initBG() {

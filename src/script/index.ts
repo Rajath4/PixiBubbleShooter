@@ -6,7 +6,7 @@ async function preload() {
     // Create an array of asset data to load.
     const assets = [
         { alias: 'background', src: 'assets/img/textures/bg/bottom.png' },
-        { alias: 'fish1', src: 'https://pixijs.com/assets/tutorials/fish-pond/fish1.png' },
+        { alias: 'cannon', src: 'assets/img/textures/Cannon.png' },
         { alias: 'fish2', src: 'https://pixijs.com/assets/tutorials/fish-pond/fish2.png' },
         { alias: 'fish3', src: 'https://pixijs.com/assets/tutorials/fish-pond/fish3.png' },
         { alias: 'fish4', src: 'https://pixijs.com/assets/tutorials/fish-pond/fish4.png' },

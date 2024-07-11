@@ -46,15 +46,15 @@ async function preload() {
     document.body.appendChild(app.canvas);
 
     //@ts-ignore
-    const stats = new Stats();
-    document.body.appendChild(stats.dom);
+    // const stats = new Stats();
+    // document.body.appendChild(stats.dom);
 
-    // Setup the PIXI ticker to update Stats.js
-    app.ticker.add(() => {
-        stats.begin();
-        // Any rendering or updating code goes here
-        stats.end();
-    });
+    // // Setup the PIXI ticker to update Stats.js
+    // app.ticker.add(() => {
+    //     stats.begin();
+    //     // Any rendering or updating code goes here
+    //     stats.end();
+    // });
 
 
 

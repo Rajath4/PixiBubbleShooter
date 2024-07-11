@@ -1,5 +1,9 @@
 import { Application, Container, Sprite } from "pixi.js";
 import { CannonContainer } from "./components/Cannon";
+import { getDummyLayout, StaticBubbleLayout } from "./components/bubbleLayout/StaticBubbleLayout";
+import { BubbleFactoryController } from "./components/bubbleLayout/model/BubbleFactoryController";
+import { BubbleUIFactory } from "./components/bubbleLayout/model/BubbleUIFactory";
+import TileGridModel from "./components/bubbleLayout/model/TileGridModel";
 
 export class GamePlayContainer {
     private app: Application;
@@ -16,6 +20,16 @@ export class GamePlayContainer {
 
         const cannonContainer = new CannonContainer(this.app, this.container);
         
+        const bubbleLayout = new StaticBubbleLayout(this.app);
+
+        const bubbleUIFactory = new BubbleUIFactory();
+        const bubbleFactoryController = new BubbleFactoryController(bubbleUIFactory);
+
+        const tileGridModel = new TileGridModel();
+
+        bubbleLayout.init(getDummyLayout(), false, { width: this.app.screen.width, height: this.app.screen.height }, tileGridModel, bubbleFactoryController);
+   
+        console.error('init ', bubbleLayout)
     }
 
     private initBG() {

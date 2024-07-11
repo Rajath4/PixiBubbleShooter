@@ -1,5 +1,6 @@
 
 import { Application, Assets, Container, Sprite } from 'pixi.js';
+
 import { GamePlayContainer } from './GamePlayContainer';
 
 async function preload() {
@@ -7,7 +8,7 @@ async function preload() {
     const assets = [
         { alias: 'background', src: 'assets/img/textures/bg/bottom.png' },
         { alias: 'cannon', src: 'assets/img/textures/Cannon.png' },
-        { alias: 'fish2', src: 'https://pixijs.com/assets/tutorials/fish-pond/fish2.png' },
+        { alias: 'bubble', src: 'assets/img/textures/bobble_base.png' },
         { alias: 'fish3', src: 'https://pixijs.com/assets/tutorials/fish-pond/fish3.png' },
         { alias: 'fish4', src: 'https://pixijs.com/assets/tutorials/fish-pond/fish4.png' },
         { alias: 'fish5', src: 'https://pixijs.com/assets/tutorials/fish-pond/fish5.png' },

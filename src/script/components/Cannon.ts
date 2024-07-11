@@ -19,7 +19,7 @@ export class CannonContainer {
     private initCannon() {
         const cannon = Sprite.from('cannon');
         cannon.anchor.set(0.5);
-        cannon.scale.set(0.25);
+        cannon.scale.set(1);
         cannon.position = new Point(this.app.screen.width / 2, this.app.screen.height - cannon.height / 2);
         this.container.addChild(cannon);
     }

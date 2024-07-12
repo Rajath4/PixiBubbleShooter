@@ -55,16 +55,16 @@ export default class TileGridModel {
      * @param {Number} column row of the tile in layout matrix
      * @param {Number} row column of the tile in layout matrix
      */
-    getTileCoordinate(tileIndex: TileIndex): Point {
+    getTileCoordinate(tileIndex: TileIndex) {
         let columnPos = tileIndex.column * this.widthOfEachTile;
         columnPos += this.getColumnOffset(tileIndex.row);
 
-        //TODO: CHECK ME
-        // const tileY = this.layerSize.height - (this.heightOfEachTile / 2 + row * this.heightOfBubbleRow);
+        // Since the anchor point is top-left, we calculate the y position directly without inversion.
         const rowPos = (this.heightOfEachTile / 2) + (tileIndex.row * this.heightOfBubbleRow);
 
         return new Point(columnPos, rowPos);
     }
+
 
 
     /**
@@ -74,8 +74,10 @@ export default class TileGridModel {
    * @returns
    */
     getTileIndexFromPosition(pos: Point): TileIndex {
+        // Adjust the y position to find the corresponding row, assuming y starts from the top going downwards
         const row = Math.round((pos.y - (this.heightOfEachTile / 2)) / this.heightOfBubbleRow);
 
+        // Calculate the column, considering any offset that might apply to staggered rows
         const columnOffset = this.getColumnOffset(row);
         const column = Math.floor((pos.x - columnOffset) / this.widthOfEachTile);
 
@@ -122,10 +124,13 @@ export default class TileGridModel {
     */
     getAndUpdateTileContent(tileIndex: TileIndex, content: TileContent) {
         const tile = this.getTile(tileIndex);
-        // if (tile.tileStatus === TileStatus.EMPTY) { //TODO: HANDLE ME
-        tile.tileStatus = TileStatus.OCCUPIED;
-        tile.content = content;
-        // }
+        console.error('tile', tile);
+        if (tile.tileStatus === TileStatus.EMPTY) { //TODO: HANDLE ME
+            tile.tileStatus = TileStatus.OCCUPIED;
+            tile.content = content;
+        } else {
+            console.error('Tile not found', tileIndex);
+        }
 
         return tile;
     }

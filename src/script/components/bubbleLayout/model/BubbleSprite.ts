@@ -15,14 +15,16 @@ export class BubbleSprite implements IBubbleSprite {
 
     setScale(scale: number) {
         this.sprite.scale = scale;
+        this.node.scale = 1;
     }
 
     setWorldPosition(position: Point) {
-        this.sprite.position = position;
+        this.node.position = position;
+        this.sprite.position = new Point(0, 0);
     }
 
     getWorldPosition() {
-        return this.sprite.position;
+        return this.node.toGlobal(new Point(0, 0));
     }
 
     setColor(color: Color) {

@@ -35,27 +35,14 @@ export function getDummyLayout(): any[][] {
     return bubbleLayoutData;
 }
 
-export class StaticBubbleLayout {
+export class StaticBubbleLayout extends Container{
     private app: Application;
-    container: Container;
 
-    constructor(app: Application) {
-        this.app = app;
-        this.container = new Container();
-        this.app.stage.addChild(this.container);
-
-        const testSprite = Sprite.from('background');
-        this.container.addChild(testSprite);
-        testSprite.tint = new Color('red');
-
-
-    }
-
-
-    init(layoutPrefilledContentData: TileData[][], isStartWithShifted: boolean, layerSize: Size, tileGridModel: TileGridModel, bubbleFactoryController: BubbleFactoryController) {
+    init(app: Application,layoutPrefilledContentData: TileData[][], isStartWithShifted: boolean, layerSize: Size, tileGridModel: TileGridModel, bubbleFactoryController: BubbleFactoryController) {
         this._layerSize = layerSize;
+        this.app = app;
 
-        this.container.removeChildren();
+        this.removeChildren();
 
         this.tileGridModel = tileGridModel;
         this._dataModel = new TileGridDataModel();
@@ -69,7 +56,8 @@ export class StaticBubbleLayout {
         this._bubbleScaleFactor = 0.95 * getScaleFactor();
         this._radiusOfBubble = this.tileGridModel.widthOfEachTile / 2;     //Radius of the bubble (Used to detect collision)
 
-        console.error('init ', this.tileGridModel.widthOfEachTile)
+
+        console.error('init gdgfdfggfd', this.tileGridModel.tiles)
 
         this.renderInitialLayout(10);
     }
@@ -125,10 +113,10 @@ export class StaticBubbleLayout {
         };
         const bubbleNode = tile.content.data.ui;
         bubbleNode.setScale(this.bubbleScaleFactor);
+        this.addChild(bubbleNode.node);
         bubbleNode.setWorldPosition(tile.position);
-        this.container.addChild(bubbleNode.node);
         tile.isRenderedOnGrid = true;
-        console.log('addTileContentToGridUI ', tile.position.x)
+        console.log('addTileContentToGridUI ', tile.position)
         console.log('addTileContentToGridUI ', bubbleNode.node.getSize())
     }
 

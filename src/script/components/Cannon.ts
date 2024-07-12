@@ -1,56 +1,222 @@
-import { Application, Container, Sprite, Point } from 'pixi.js';
+import { Application, Container, Sprite, Point, Size } from 'pixi.js';
 import { getAngleBetweenTwoPoints, radToDeg } from './utils';
 import { getScaleFactor } from '../utils';
+import WeaponBubbleModel from './WeaponBubbleModel';
+import { TileGrid, TileData } from './bubbleLayout/model/TileGrid';
+import BubbleShooterGamePlayModel from './BubbleShooterGamePlayModel';
+import { TrajectoryLayer } from './Trajectory';
+import { BubbleSprite } from './bubbleLayout/model/BubbleSprite';
 
-export class CannonContainer {
+export class CannonContainer extends Container {
     private app: Application;
-     container: Container;
     private cannon: Sprite;
 
-    constructor(app: Application, parent: Container) {
+    private cannon_bg: Node = null;
+
+    private cannonBubbleHolder: Node = null;
+
+    private cannonBubbleHolder1: Node = null;
+
+    private cannonBubbleHolder2: Node = null;
+
+    private trajectory: TrajectoryLayer = null;
+
+
+    init(app: Application, dependency: ICannonUIIDependencies) {
         this.app = app;
-        this.container = new Container();
-        parent.addChild(this.container);
 
-        this.init();
+        this.dependency = dependency;
+
+        this.weaponBubbleModel = dependency.gameModel.weaponBubbleModel;
+
+        this.weaponBubbleModel.weaponBubbleChangeObserver.addObserver(this.onWeaponBubbleChange);
+
+
+        // this.trajectory.init(
+        //     dependency.isFullTrajectory,
+        //     dependency.radiusOfBubble,
+        //     dependency.layerSize,
+        //     dependency.tilesInGrid,
+        //     dependency.convertGameLayerToBubbleLayer,
+        //     dependency.showVisualRepOfWeaponBubble,
+        //     dependency.disableVisualRepOfWeaponBubble,
+        //     dependency.gameModel
+        // );
     }
 
-    private init() {
-        this.initCannon();
+  
+
+    private onWeaponBubbleChange = (isSpecialBubble: boolean) => {
+        if (isSpecialBubble) {
+            // this.cannonBubbleHolder.removeAllChildren();
+            // this.cannonBubbleHolder1.removeAllChildren();
+            // this.cannonBubbleHolder2.removeAllChildren();
+
+            // this.cannonBubbleHolder.addChild(this.weaponBubbleModel.getWeaponBubble().sprite.node);
+
+        } else {
+            // this.setupCanonWeapon();
+        }
     }
 
-    private initCannon() {
+     initCannon() {
         this.cannon = Sprite.from('cannon');
         this.cannon.anchor.set(0.5);
         this.cannon.scale.set(1 * getScaleFactor());
         this.cannon.position = new Point(this.app.screen.width / 2, this.app.screen.height - this.cannon.height / 2);
-        this.container.addChild(this.cannon);
+        this.addChild(this.cannon);
+
+        this.setupCanonWeapon();
+    }
+
+
+    private setupCanonWeapon() {
+        // this.cannonBubbleHolder.removeAllChildren();
+        // this.cannonBubbleHolder1.removeAllChildren();
+        // this.cannonBubbleHolder2.removeAllChildren();
+
+        // this.cannonBubbleHolder.addChild(this.weaponBubbleModel.getWeaponBubble().sprite.node);
+
+        // this.weaponBubbleModel.remainingWeaponBubbleIndex.forEach((index, i) => {
+        //     if (index === 1 && this.weaponBubbleModel.activeWeaponBubbleIndex !== index) {
+        //         this.cannonBubbleHolder1.addChild(this.weaponBubbleModel.weaponBubbles[index].content.ui.node);
+        //     } else if (index === 2 && this.weaponBubbleModel.activeWeaponBubbleIndex !== index) {
+        //         this.cannonBubbleHolder2.addChild(this.weaponBubbleModel.weaponBubbles[index].content.ui.node);
+        //     }
+        // });
+
+        this.cannon.addChild(this.weaponBubbleModel.getWeaponBubble().sprite.node);
     }
 
     onTouchStart(touchPoint: Point) {
-        // this.stopCannonRotationAnim();
+        this.stopCannonRotationAnim();
 
-        // if (this.isCanonHavingValidRotation(touchPoint)) {
-        //     this.trajectory.show(touchPoint, this.weaponBubble.getPosition(), (this.weaponBubble.content.model as ColorBubbleModel).data);
+        if (this.isCanonHavingValidRotation(touchPoint)) {
+            //     this.trajectory.show(touchPoint, this.weaponBubble.getPosition(), (this.weaponBubble.content.model as ColorBubbleModel).data);
             this.rotateCannon(this.getCannonRotationAngle(touchPoint));
 
-        // } else {
-        //     this.trajectory.remove();
-        // }
+        } else {
+            //     this.trajectory.remove();
+        }
     }
 
+    onTouchMove(touchPoint: Point) {
+        this.stopCannonRotationAnim();
+
+
+        if (this.isCanonHavingValidRotation(touchPoint)) {
+
+            // this.trajectory.show(touchPoint, this.weaponBubble.getPosition(),
+            // (this.weaponBubble.content.model as ColorBubbleModel).data);
+            this.rotateCannon(this.getCannonRotationAngle(touchPoint));
+
+        } else {
+            // this.trajectory.remove();
+
+        }
+    }
+
+    onTouchEnd(touchPoint: Point): boolean {
+        this.stopCannonRotationAnim();
+
+        const isCanonHavingValidRotation = this.isCanonHavingValidRotation(touchPoint);
+        if (isCanonHavingValidRotation) {
+            // this.trajectory.remove();
+            this.rotateCannon(this.getCannonRotationAngle(touchPoint));
+        } else {
+            // this.trajectory.remove();
+        }
+
+        return isCanonHavingValidRotation;
+    }
+
+    onWeaponBubblePopFromCannon(stageLayerNode: Container) {
+
+        const weaponBubblePos = this.weaponBubble.getPosition();
+        this.weaponBubble.sprite.node.removeFromParent();
+        this.weaponBubble.sprite.node.scale = this.dependency.bubbleScaleFactor;
+        this.dependency.layoutNode.addChild(this.weaponBubble.sprite.node);
+        // this.weaponBubble.sprite.setWorldPosition(this.dependency.layoutNode.toLocal(weaponBubblePos));
+        this.weaponBubble.sprite.setWorldPosition(weaponBubblePos);
+
+console.error("AAA pos",weaponBubblePos)
+        // this.scheduleOnce(() => {
+        //     this.cannonToOriginalPosition();
+        // }, 0.25); //TODO: remove this hard coded value
+    }
+
+
+    /**
+   * Check for valid canon rotation
+   * @param {*} touchPoint User touch input
+   * @returns
+   */
+    private isCanonHavingValidRotation(touchPoint: Point) {
+        const angle = radToDeg(
+            getAngleBetweenTwoPoints(
+                touchPoint,
+                this.getWorldPosition())
+        );
+        console.error("Angle", angle);
+
+        return true;
+        if (angle >= -180 && angle <= 0) {
+            if (touchPoint.y > this.getWorldPosition().y) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private rotateCannon(angle: number) {
         console.log('rotateCannon', angle);
         this.cannon.angle = angle;
     }
 
+    getActiveWeaponBubble() {
+        return this.weaponBubbleModel.getWeaponBubble();
+    }
+
+    private getWorldPosition() {
+        return this.cannon.toGlobal(new Point(0, 0));
+    }
+
+    private stopCannonRotationAnim() {
+
+    }
+
+    onWeaponBubbleActionComplete() {
+        // this.weaponBubbleModel.onWeaponBubbleActionComplete();
+    }
+
+    get weaponBubble() {
+        return this.weaponBubbleModel.getWeaponBubble();
+    }
+
     private getCannonRotationAngle(touchPoint: Point) {
-        let cannonCenter = this.cannon.toGlobal(new Point(0, 0));  // Assuming anchor is at 0.5, 0.5
-        console.log('cannonCenter', cannonCenter,touchPoint);
-        let angle = getAngleBetweenTwoPoints( cannonCenter,touchPoint);
+        let cannonCenter = this.getWorldPosition();  // Assuming anchor is at 0.5, 0.5
+        console.log('cannonCenter', cannonCenter, touchPoint);
+        let angle = getAngleBetweenTwoPoints(cannonCenter, touchPoint);
         angle = radToDeg(angle);
         angle = -90 + angle;
         return angle;
     }
+
+    private weaponBubbleModel: WeaponBubbleModel;
+    private dependency: ICannonUIIDependencies = null;
+
+    private _deactivateBubbleSwap = false;
+}
+
+export interface ICannonUIIDependencies {
+    isFullTrajectory: boolean,
+    radiusOfBubble: number,
+    layerSize: Size,
+    tilesInGrid: TileGrid,
+    convertGameLayerToBubbleLayer: (pos: Point) => Point,
+    showVisualRepOfWeaponBubble: (pos: Point, data: TileData) => void,
+    disableVisualRepOfWeaponBubble: () => void,
+    layoutNode: Container,
+    gameModel: BubbleShooterGamePlayModel,
+    bubbleScaleFactor: number,
 }

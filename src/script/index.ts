@@ -1,5 +1,9 @@
 
-import { Application,Renderer, Assets, Container, Sprite } from 'pixi.js';
+import { Application, Renderer, Assets, Container, Sprite } from 'pixi.js';
+
+import * as PIXI from "pixi.js";
+import { gsap } from "gsap";
+import { PixiPlugin } from "gsap/PixiPlugin";
 
 import { GamePlayContainer } from './GamePlayContainer';
 
@@ -24,6 +28,13 @@ async function preload() {
 
 // Asynchronous IIFE
 (async () => {
+
+    // register the plugin
+    gsap.registerPlugin(PixiPlugin);
+
+    // give the plugin a reference to the PIXI object
+    PixiPlugin.registerPIXI(PIXI);
+
     // Create a PixiJS application.
     const app = new Application();
 
@@ -59,14 +70,14 @@ async function preload() {
 
 
     // let drawCount = 0;
-    
+
     // const renderer = app.renderer as any;
     // const drawElements = renderer.gl.drawElements;
     // renderer.gl.drawElements = (...args: any[]) => {
     //   drawElements.call(renderer.gl, ...args);
     //   drawCount++;
     // }; // rewrite drawElements to count draws
-    
+
     // app.ticker.add((deltaTime) => {
     //   console.log(`drawCount: ${drawCount}`);
     //   drawCount = 0; // clear count per frame
@@ -74,8 +85,9 @@ async function preload() {
 
     await preload();
 
-    const gamePlayContainer = new GamePlayContainer(app);
-    gamePlayContainer.init();
+    const gamePlayContainer = new GamePlayContainer();
+    gamePlayContainer.init(app);
+    app.stage.addChild(gamePlayContainer);
 
     window.addEventListener('resize', resizeApp);
     resizeApp();  // Call immediately to set initial sizes

@@ -55,11 +55,6 @@ export class StaticBubbleLayout extends Container{
 
         this._bubbleScaleFactor = 0.95 * getScaleFactor();
         this._radiusOfBubble = this.tileGridModel.widthOfEachTile / 2;     //Radius of the bubble (Used to detect collision)
-
-
-        console.error('init gdgfdfggfd', this.tileGridModel.tiles)
-
-        this.renderInitialLayout(10);
     }
 
     renderInitialLayout(totalNumberOfRowsToRender: number) {
@@ -68,6 +63,7 @@ export class StaticBubbleLayout extends Container{
     }
 
     protected renderBubbleLayoutContent(fromRow: number, toRow: number) {
+        console.error("TILE CONTENT RENDERED",this.tileGridModel.tiles);
         for (let i = fromRow; i <= toRow; i++) {
             for (let j = 0; j < this.tileGridModel.totalNumberOfColumnsInGrid; j++) {
                 const tile = this.tiles.get(i)[j];
@@ -116,8 +112,6 @@ export class StaticBubbleLayout extends Container{
         this.addChild(bubbleNode.node);
         bubbleNode.setWorldPosition(tile.position);
         tile.isRenderedOnGrid = true;
-        console.log('addTileContentToGridUI ', tile.position)
-        console.log('addTileContentToGridUI ', bubbleNode.node.getSize())
     }
 
     get tiles() {

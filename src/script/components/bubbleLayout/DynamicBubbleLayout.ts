@@ -8,18 +8,19 @@ import DynamicBubbleLayoutMovementController from './controllers/layoutMovement/
 import WeaponBubbleFinalPosVisualController from './controllers/trajectory/WeaponBubbleFinalPosVisualController';
 import WeaponBubbleUIImpactController from './controllers/weaponBubbleImpact/WeaponBubbleUIImpactController';
 import { BubbleFactoryController } from './model/BubbleFactoryController';
-import { TileData, TileIndex, TileContent, TileGrid, TileGridContents, TileStatus } from './model/TileGrid';
+import { TileData, TileIndex, TileContent, TileGrid, TileGridContents, TileStatus, IBubbleSprite } from './model/TileGrid';
 import TileGridModel from './model/TileGridModel';
 import { StageAnimationLayer } from './animation/StageAnimationLayer';
 import { IWeaponBubbleImpactInfo } from './GamePlayEngineModelInterfaces';
 import { BubbleParticleFactory } from './controllers/BubbleParticleFactory';
 import { ObserverHandler } from './ObserverHandler';
 import { BubbleType } from './model/LayoutInterface';
+import { BubbleSprite } from './model/BubbleSprite';
 
 export class DynamicBubbleLayout extends StaticBubbleLayout {
     animationLayer: StageAnimationLayer = new StageAnimationLayer();
 
-    particleEffectLayer:Container = new Container();
+    particleEffectLayer: Container = new Container();
 
     bubbleParticleFactory: BubbleParticleFactory = new BubbleParticleFactory();
 
@@ -27,13 +28,13 @@ export class DynamicBubbleLayout extends StaticBubbleLayout {
 
     topPadding = 100;
 
-    initLayout(app: Application,layoutPrefilledContentData: TileData[][], isStartWithShifted: boolean, layerSize: Size, tileGridModel: TileGridModel, bubbleFactoryController: BubbleFactoryController, runtimeTempScoreUpdateObserver: ObserverHandler) {
-        super.init(app,layoutPrefilledContentData, isStartWithShifted, layerSize, tileGridModel, bubbleFactoryController);
+    initLayout(app: Application, layoutPrefilledContentData: TileData[][], isStartWithShifted: boolean, layerSize: Size, tileGridModel: TileGridModel, bubbleFactoryController: BubbleFactoryController, runtimeTempScoreUpdateObserver: ObserverHandler) {
+        super.init(app, layoutPrefilledContentData, isStartWithShifted, layerSize, tileGridModel, bubbleFactoryController);
 
         this.runtimeTempScoreUpdateObserver = runtimeTempScoreUpdateObserver;
 
         this.depController.init(this.addBubbleToGrid.bind(this), this.removeBubbleFromTileIndex.bind(this),
-            this.getTiles.bind(this), this.getAllVisibleTiles.bind(this), this.bubbleParticleFactory, this.particleEffectLayer,
+            this.getTiles.bind(this), this.getTiles.bind(this), this.bubbleParticleFactory, this.particleEffectLayer,
             this, this.renderBubbleLayoutContent.bind(this), this.getTileGridModel.bind(this),
             this.percentageOfBubbleVisibleInTopRow, this.radiusOfBubble, this.topPadding,
             this.layerSize, this.animationLayer, this.bubbleFactoryController, this.bubbleScaleFactor, this.runtimeTempScoreUpdateObserver);
@@ -80,7 +81,7 @@ export class DynamicBubbleLayout extends StaticBubbleLayout {
         console.warn("addBubbleToGrid");
         const tile = this.tileGridModel.getAndUpdateTileContent(tileIndex, bubbleContent);
         console.error(this.tileGridModel.tiles);
-        this.addTileContentToGridUI(tile);   
+        this.addTileContentToGridUI(tile);
         // if (!tile.content.data.ui) { //TODO: HANDLE ME
         //     tile.tileStatus = TileStatus.OCCUPIED;
         //     tile.content = bubbleContent;

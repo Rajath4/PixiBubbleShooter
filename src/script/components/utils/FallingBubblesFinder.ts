@@ -17,7 +17,7 @@ export default class FallingBubblesFinder {
         const unreachableTiles: TileIndex[] = [];
         const reachableTiles: TileIndex[] = [];
 
-        const rowsToCheck = Array.from(grid.keys()).sort((a, b) => b - a).filter((row) => row <= topRowIndex);
+        const rowsToCheck = Array.from(grid.keys()).sort((a, b) => b - a).filter((row) => row >= topRowIndex);
 
         for (const row of rowsToCheck) {
             const rowContents = grid.get(row);

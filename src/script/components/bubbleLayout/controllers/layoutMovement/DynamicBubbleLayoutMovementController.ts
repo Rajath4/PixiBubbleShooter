@@ -93,7 +93,7 @@ export default class DynamicBubbleLayoutMovementController {
         }
 
         this.firstVisibleRow = getFirstVisibleRow();
-        this.lastVisibleRow = this.firstVisibleRow + this.totalBubbleRowsToDisplay;
+        this.lastVisibleRow = 0;
     }
 
     get bubbleLayerBoundaryRect() {
@@ -104,7 +104,7 @@ export default class DynamicBubbleLayoutMovementController {
         return this._totalBubbleRowsToDisplay;
     }
 
-    private _totalBubbleRowsToDisplay = 6;
+    private _totalBubbleRowsToDisplay = 10;
 
     private firstVisibleRow: number;
     private lastVisibleRow: number;

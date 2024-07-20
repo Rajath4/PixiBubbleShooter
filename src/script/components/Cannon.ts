@@ -4,8 +4,9 @@ import { getScaleFactor } from '../utils';
 import WeaponBubbleModel from './WeaponBubbleModel';
 import { TileGrid, TileData } from './bubbleLayout/model/TileGrid';
 import BubbleShooterGamePlayModel from './BubbleShooterGamePlayModel';
-import { TrajectoryLayer } from './Trajectory';
+import { TrajectoryLayer } from './TrajectoryLayer';
 import { BubbleSprite } from './bubbleLayout/model/BubbleSprite';
+import { ColorBubbleModel } from './bubbleLayout/model/ColorBubbleModel';
 
 export class CannonContainer extends Container {
     private app: Application;
@@ -19,7 +20,7 @@ export class CannonContainer extends Container {
 
     private cannonBubbleHolder2: Node = null;
 
-    private trajectory: TrajectoryLayer = null;
+    trajectory: TrajectoryLayer;
 
 
     init(app: Application, dependency: ICannonUIIDependencies) {
@@ -29,62 +30,33 @@ export class CannonContainer extends Container {
 
         this.weaponBubbleModel = dependency.gameModel.weaponBubbleModel;
 
-        this.weaponBubbleModel.weaponBubbleChangeObserver.addObserver(this.onWeaponBubbleChange);
+        this.trajectory = new TrajectoryLayer();
 
+        this.trajectory.init(
+            dependency.isFullTrajectory,
+            dependency.radiusOfBubble,
+            { x: dependency.layerSize.width, y: dependency.layerSize.height, width: dependency.layerSize.width, height: dependency.layerSize.height },
+            dependency.tilesInGrid,
+            dependency.convertGameLayerToBubbleLayer,
+            dependency.showVisualRepOfWeaponBubble,
+            dependency.disableVisualRepOfWeaponBubble,
+            dependency.gameModel
+        );
 
-        // this.trajectory.init(
-        //     dependency.isFullTrajectory,
-        //     dependency.radiusOfBubble,
-        //     dependency.layerSize,
-        //     dependency.tilesInGrid,
-        //     dependency.convertGameLayerToBubbleLayer,
-        //     dependency.showVisualRepOfWeaponBubble,
-        //     dependency.disableVisualRepOfWeaponBubble,
-        //     dependency.gameModel
-        // );
     }
 
-  
-
-    private onWeaponBubbleChange = (isSpecialBubble: boolean) => {
-        if (isSpecialBubble) {
-            // this.cannonBubbleHolder.removeAllChildren();
-            // this.cannonBubbleHolder1.removeAllChildren();
-            // this.cannonBubbleHolder2.removeAllChildren();
-
-            // this.cannonBubbleHolder.addChild(this.weaponBubbleModel.getWeaponBubble().sprite.node);
-
-        } else {
-            // this.setupCanonWeapon();
-        }
-    }
-
-     initCannon() {
+    initCannon() {
         this.cannon = Sprite.from('cannon');
         this.cannon.anchor.set(0.5);
         this.cannon.scale.set(1 * getScaleFactor());
         this.cannon.position = new Point(this.app.screen.width / 2, this.app.screen.height - this.cannon.height / 2);
         this.addChild(this.cannon);
 
-        this.setupCanonWeapon();
+        this.renderCanonWeapon();
     }
 
 
-    private setupCanonWeapon() {
-        // this.cannonBubbleHolder.removeAllChildren();
-        // this.cannonBubbleHolder1.removeAllChildren();
-        // this.cannonBubbleHolder2.removeAllChildren();
-
-        // this.cannonBubbleHolder.addChild(this.weaponBubbleModel.getWeaponBubble().sprite.node);
-
-        // this.weaponBubbleModel.remainingWeaponBubbleIndex.forEach((index, i) => {
-        //     if (index === 1 && this.weaponBubbleModel.activeWeaponBubbleIndex !== index) {
-        //         this.cannonBubbleHolder1.addChild(this.weaponBubbleModel.weaponBubbles[index].content.ui.node);
-        //     } else if (index === 2 && this.weaponBubbleModel.activeWeaponBubbleIndex !== index) {
-        //         this.cannonBubbleHolder2.addChild(this.weaponBubbleModel.weaponBubbles[index].content.ui.node);
-        //     }
-        // });
-
+    private renderCanonWeapon() {
         this.cannon.addChild(this.weaponBubbleModel.getWeaponBubble().sprite.node);
     }
 
@@ -92,11 +64,11 @@ export class CannonContainer extends Container {
         this.stopCannonRotationAnim();
 
         if (this.isCanonHavingValidRotation(touchPoint)) {
-            //     this.trajectory.show(touchPoint, this.weaponBubble.getPosition(), (this.weaponBubble.content.model as ColorBubbleModel).data);
+            this.trajectory.show(touchPoint, this.weaponBubble.getPosition(), (this.weaponBubble.content.model as ColorBubbleModel).data);
             this.rotateCannon(this.getCannonRotationAngle(touchPoint));
 
         } else {
-            //     this.trajectory.remove();
+            this.trajectory.remove();
         }
     }
 
@@ -106,12 +78,12 @@ export class CannonContainer extends Container {
 
         if (this.isCanonHavingValidRotation(touchPoint)) {
 
-            // this.trajectory.show(touchPoint, this.weaponBubble.getPosition(),
-            // (this.weaponBubble.content.model as ColorBubbleModel).data);
+            this.trajectory.show(touchPoint, this.weaponBubble.getPosition(),
+                (this.weaponBubble.content.model as ColorBubbleModel).data);
             this.rotateCannon(this.getCannonRotationAngle(touchPoint));
 
         } else {
-            // this.trajectory.remove();
+            this.trajectory.remove();
 
         }
     }
@@ -121,10 +93,10 @@ export class CannonContainer extends Container {
 
         const isCanonHavingValidRotation = this.isCanonHavingValidRotation(touchPoint);
         if (isCanonHavingValidRotation) {
-            // this.trajectory.remove();
+            this.trajectory.remove();
             this.rotateCannon(this.getCannonRotationAngle(touchPoint));
         } else {
-            // this.trajectory.remove();
+            this.trajectory.remove();
         }
 
         return isCanonHavingValidRotation;
@@ -136,10 +108,9 @@ export class CannonContainer extends Container {
         this.weaponBubble.sprite.node.removeFromParent();
         this.weaponBubble.sprite.node.scale = this.dependency.bubbleScaleFactor;
         this.dependency.layoutNode.addChild(this.weaponBubble.sprite.node);
-        // this.weaponBubble.sprite.setWorldPosition(this.dependency.layoutNode.toLocal(weaponBubblePos));
         this.weaponBubble.sprite.setWorldPosition(weaponBubblePos);
 
-console.error("AAA pos",weaponBubblePos)
+        console.error("AAA pos", weaponBubblePos)
         // this.scheduleOnce(() => {
         //     this.cannonToOriginalPosition();
         // }, 0.25); //TODO: remove this hard coded value
@@ -186,7 +157,8 @@ console.error("AAA pos",weaponBubblePos)
     }
 
     onWeaponBubbleActionComplete() {
-        // this.weaponBubbleModel.onWeaponBubbleActionComplete();
+        this.weaponBubbleModel.onWeaponBubbleActionComplete();
+        this.renderCanonWeapon();
     }
 
     get weaponBubble() {

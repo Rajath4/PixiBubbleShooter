@@ -1,10 +1,9 @@
-import { Point } from "pixi.js";
+import { gsap } from "gsap";
 import { IWeaponBubbleImpactInfo } from "./bubbleLayout/GamePlayEngineModelInterfaces";
 import { ColorBubbleData } from "./bubbleLayout/model/Bubble";
 import { BubbleType } from "./bubbleLayout/model/LayoutInterface";
 import { BubbleContent, IBubbleSprite } from "./bubbleLayout/model/TileGrid";
-import { getTimeRequiredToTravelSpecifiedDistance, getDistanceBetweenTwoPoints } from "./utils";
-import { gsap } from "gsap";
+import { getDistanceBetweenTwoPoints, getTimeRequiredToTravelSpecifiedDistance } from "./utils";
 
 
 export default class WeaponBubble {
@@ -14,9 +13,7 @@ export default class WeaponBubble {
 
     moveWeaponBubble(velocityOfWeaponBubble: number, weaponBubbleImpactInfo: IWeaponBubbleImpactInfo): Promise<void> {
         return new Promise((resolve, reject) => {
-            let actionsToPerform = [];
             let bubbleCurrentPosition = this.getPosition();
-
 
             // Create a GSAP timeline
             let timeline = gsap.timeline({
@@ -27,8 +24,6 @@ export default class WeaponBubble {
 
             // Loop through each point in the array
             weaponBubbleImpactInfo.trajectoryInfo.predictedBubbleMovement.forEach(point => {
-                //@ts-ignore
-                const localPos = this.sprite.sprite.toLocal(point);
                 let timeRequiredForMovement = getTimeRequiredToTravelSpecifiedDistance(
                     velocityOfWeaponBubble,
                     getDistanceBetweenTwoPoints(
@@ -36,64 +31,12 @@ export default class WeaponBubble {
                         point
                     )
                 );
-                //@ts-ignore
-                timeline.to(this.sprite.sprite, {
+
+                timeline.to(this.sprite, {
                     duration: timeRequiredForMovement,  // Duration of each movement, adjust as necessary
-                    pixi: { x: localPos.x, y: localPos.y }
+                    pixi: { x: point.x, y: point.y }
                 });
             });
-
-            // for (const element of weaponBubbleImpactInfo.trajectoryInfo.predictedBubbleMovement) {
-            //     let timeRequiredForMovement = getTimeRequiredToTravelSpecifiedDistance(
-            //         velocityOfWeaponBubble,
-            //         getDistanceBetweenTwoPoints(
-            //             bubbleCurrentPosition,
-            //             element
-            //         )
-            //     );
-            //     timeRequiredForMovement = 2;
-            //     //@ts-ignore
-            //     const localPos = this.sprite.sprite.toLocal(element);
-            //     actionsToPerform.push(
-            //         //@ts-ignore
-            //         gsap.to(this.sprite.sprite, {
-            //             duration: timeRequiredForMovement,
-            //             pixi: { x: localPos.x, y: localPos.y }
-            //         })
-            //     );
-
-            //     bubbleCurrentPosition = new Point(element.x, element.y);
-            // }
-
-            // console.log("this.sprite", this.sprite)
-            // // let worldPos = new Point(357.14, 453.45);
-
-            // // Convert world coordinates to the local coordinates of the sprite's parent
-            // //@ts-ignore
-            // // let localPos = this.sprite.sprite.toLocal(worldPos);
-            // //@ts-ignore
-            // // actionsToPerform.push(gsap.to(this.sprite.sprite, {
-            // //     duration: 2,
-            // //     pixi: { x: localPos.x, y: localPos.y }
-            // // }));
-
-            // // //@ts-ignore
-            // // actionsToPerform.push(gsap.to(this.sprite.sprite, {
-            // //     duration: 2,
-            // //     pixi: { x: 18.86, y: 141.97 }
-            // // }));
-
-            // actionsToPerform.push(
-            //     //@ts-ignore
-            //     gsap.to(this.sprite.sprite, {
-            //         onComplete: () => {
-            //             // this.sprite.parent.removeChild(this.sprite);
-            //             resolve();
-            //         }
-            //     })
-            // );
-
-            // gsap.timeline().add(actionsToPerform);
         });
     }
 

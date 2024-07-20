@@ -40,6 +40,8 @@ export class DynamicBubbleLayout extends StaticBubbleLayout {
 
 
         this.animationLayer.init(this.layerSize);
+        this.addChild(this.animationLayer);
+
         this._neighborsBubbleShakingController = new NeighborsBubbleShakingController(this.tileGridModel.getTile, this.tiles, this.isStartWithShifted);
         this.bubbleParticleFactory.init(this.bubbleFactoryController.getBubbleColor.bind(this.bubbleFactoryController));
         this.weaponBubbleUIImpactController.init(this.depController.getWeaponBubbleUIImpactControllerDeps());

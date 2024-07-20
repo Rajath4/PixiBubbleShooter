@@ -2,40 +2,42 @@ import { Color, Container, Point, Sprite } from "pixi.js";
 import { IBubbleSprite, IBubbleExecutionData } from "./TileGrid";
 
 
-export class BubbleSprite implements IBubbleSprite {
-    node: Container;
+export class BubbleSprite extends Container implements IBubbleSprite {
     sprite: Sprite;
+    private spriteShine: Sprite;
 
     constructor() {
-        this.node = new Container();
+        super();
         this.sprite = Sprite.from('bubble');
-        this.node.addChild(this.sprite);
+        this.addChild(this.sprite);
         this.sprite.setSize(100, 100);
+
+        this.spriteShine = Sprite.from('bubble_shine');
+        this.addChild(this.spriteShine);
     }
 
     setScale(scale: number) {
         this.sprite.scale = scale;
-        this.node.scale = 1;
+        this.spriteShine.scale = scale;
+        this.scale = 1;
     }
 
     setWorldPosition(position: Point) {
-        this.node.position = position;
+        this.position = position;
         this.sprite.position = new Point(0, 0);
+        this.spriteShine.position = new Point(0, 0);
     }
 
     getWorldPosition() {
-        return this.node.toGlobal(new Point(0, 0));
+        return this.toGlobal(new Point(0, 0));
     }
 
     setColor(color: Color) {
         this.sprite.tint = color;
     }
 
-    setMaterial(material: any) {
-        // this.bubbleSprite.material = material;
-        // if (this.bubbleSpriteShine) {
-        //     this.bubbleSpriteShine.material = material;
-        // }
+    get node(): Container {
+        return this;
     }
 
     execute(data: IBubbleExecutionData): Promise<boolean> {

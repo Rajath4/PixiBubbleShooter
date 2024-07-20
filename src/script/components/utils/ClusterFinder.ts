@@ -45,7 +45,7 @@ export default class ClusterFinder {
 
   // Checks if a tile position is valid
   private isValidPosition(tileIndex: TileIndex, tileGrid: TileGrid, lowRange: number, highRange: number): boolean {
-    const validRow = tileIndex.row >= (lowRange - 1) && tileIndex.row < highRange && tileGrid.has(tileIndex.row);
+    const validRow = tileGrid.has(tileIndex.row);
     const validColumn = tileIndex.column >= 0 && tileGrid.has(tileIndex.row) && tileIndex.column < tileGrid.get(tileIndex.row).length;
     return validRow && validColumn;
   }

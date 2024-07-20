@@ -41,7 +41,7 @@ export class BubblesWithinRangeFinder {
         }
         for (let k = 1; k <= 6; k++) {
             const newpos = getNearByPosFromDirection(tileIndex, k);
-            if (newpos.row >= lowRange && newpos.row < highRange) {
+            // if (newpos.row >= lowRange && newpos.row < highRange) {
                 const row = tiles.get(newpos.row);
                 if (row && row[newpos.column] && row[newpos.column].tileStatus != TileStatus.EMPTY) {
                     if (!this.ArrayContains(nearbyBubbles, newpos)) {
@@ -49,7 +49,7 @@ export class BubblesWithinRangeFinder {
                     }
                 }
                 this.getNearbyRecursively(newpos, nearbyBubbles, lowRange, highRange, tiles, range - 1, startShifted);
-            }
+            // }
         }
     }
 

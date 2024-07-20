@@ -12,6 +12,7 @@ import StageGamePlayLayerDependencyProvider from "./StageGamePlayLayerDependency
 import BubbleShooterGamePlayModel from "./components/BubbleShooterGamePlayModel";
 import { ObserverHandler } from "./components/bubbleLayout/ObserverHandler";
 import { getDiagonalLengthOfRectangle } from "./components/utils";
+import { BubbleSprite } from "./components/bubbleLayout/model/BubbleSprite";
 
 export class GamePlayContainer extends Container {
     private app: Application;
@@ -44,7 +45,6 @@ export class GamePlayContainer extends Container {
         this.dependencyProvider.init(this, this.bubbleLayoutLayer, this.cannon, this.model, layerSize,
             this.convertBubbleLayerToGameLayer.bind(this), this.convertGameLayerToBubbleLayer.bind(this), bubbleFactoryController);
 
-
         this.bubbleLayoutLayer.initLayout(this.app, getDummyLayout(), false, { width: this.app.screen.width, height: this.app.screen.height }, 
         tileGridModel, bubbleFactoryController, this._runtimeTempScoreUpdateObserver);
         this.cannon.init(this.app, this.dependencyProvider.getCannonDependency());
@@ -56,9 +56,7 @@ export class GamePlayContainer extends Container {
 
         this.addChild(this.cannon);
         this.addChild(this.bubbleLayoutLayer);
-
-
-        console.error('init ', this.bubbleLayoutLayer)
+        this.addChild(this.cannon.trajectory);
 
         this.app.canvas.addEventListener('touchstart', (event: TouchEvent) => {
             console.log('Touch start event detected:', event.touches[0].clientX, event.touches[0].clientY);
@@ -82,13 +80,7 @@ export class GamePlayContainer extends Container {
         const background = Sprite.from('background');
         // Center background sprite anchor.
         background.anchor.set(0.5);
-        background.addEventListener('touchstart', (event) => {
-            console.log('Touch start event detected:', event);
-
-            // Process event here
-        });
-
-
+ 
         /**
          * If the preview is landscape, fill the width of the screen
          * and apply horizontal scale to the vertical scale for a uniform fit.
@@ -111,8 +103,6 @@ export class GamePlayContainer extends Container {
         background.y = this.app.screen.height / 2;
 
         this.addChild(background);
-
-        console.error('initBG ', background.position)
     }
 
     onTouchStartReceived(tp: Point) {

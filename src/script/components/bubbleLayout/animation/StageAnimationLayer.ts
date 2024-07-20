@@ -31,15 +31,17 @@ export class StageAnimationLayer extends Container {
      */
     showBubbleDroppingAndBouncing(bubbleSprite: IBubbleSprite, radiusOfBubble: number): Promise<void> {
         const initialPos = bubbleSprite.getWorldPosition();
-
         const bubbleNode = bubbleSprite.node;
-        bubbleNode.removeFromParent();
 
+        // Remove from its current parent and add to this container
+        bubbleNode.parent.removeChild(bubbleNode);
         this.addChild(bubbleNode);
-        // bubbleNode.setWorldPosition(initialPos);
+
+        // Position adjustment if needed
+        bubbleNode.position.set(initialPos.x, initialPos.y);
 
         const heightOfBubbleFromGround = initialPos.y - radiusOfBubble;
-        const timeRequiredToFall = velocityOfFallingBubble / (heightOfBubbleFromGround / 0.5);
+        const timeRequiredToFall = 2; // Adjust this based on your game's physics or desired speed
 
         const extraDisPlacementOfBubble = Math.random() * (this.layerSize.width * 0.25);
         let groundHitPosOfFallingBubbleInX = initialPos.x + extraDisPlacementOfBubble;
@@ -47,19 +49,18 @@ export class StageAnimationLayer extends Container {
             groundHitPosOfFallingBubbleInX = initialPos.x - extraDisPlacementOfBubble;
         }
 
-        // const fallingAction = new Tween(bubbleNode)
-        //     .call(async () => {
-        //         await delay(Math.random() * 0.5, bubbleSprite);
-        //         // GamePlaySFXController.instance.onBubbleFall();
-        //     })
-        //     .to(timeRequiredToFall, { worldPosition: new Vec3(groundHitPosOfFallingBubbleInX, -radiusOfBubble) }, { easing: 'bounceOut' });
-
-        // const selfRemoveAction = new Tween(bubbleNode)
-        //     .call(() => bubbleNode.destroy());
-
         return new Promise<void>((resolve) => {
-            const onComplete = () => resolve();
-            // fallingAction.then(selfRemoveAction).call(onComplete).start();
+            gsap.timeline()
+                .delay(Math.random() * 0.5)
+                .to(bubbleNode, {
+                    duration: timeRequiredToFall,
+                    pixi: { x: groundHitPosOfFallingBubbleInX, y: -radiusOfBubble },
+                    ease: "bounce.out",
+                    onComplete: () => {
+                        bubbleNode.destroy();
+                        resolve();
+                    }
+                });
         });
     }
 }

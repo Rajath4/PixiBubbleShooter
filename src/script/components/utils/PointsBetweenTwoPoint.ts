@@ -12,7 +12,7 @@ function getPointsBetweenTwoPoint(initialPoint: Point, destinationPoint: Point):
 
     const points: Point[] = [];
 
-    const distanceBTWPoints = 25;
+    const distanceBTWPoints = 10;
 
     const xDist = destinationPoint.x - initialPoint.x;
     const yDist = destinationPoint.y - initialPoint.y;

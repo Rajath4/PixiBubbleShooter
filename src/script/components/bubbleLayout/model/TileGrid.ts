@@ -62,7 +62,6 @@ export interface IBubbleSprite {
     setScale(scale: number): void;
     setWorldPosition(position: Point): void;
     getWorldPosition(): Point;
-    setMaterial(material: any): void;
     execute(data: IBubbleExecutionData): Promise<boolean>;
     setColor(color: Color): void;
     node: Container;

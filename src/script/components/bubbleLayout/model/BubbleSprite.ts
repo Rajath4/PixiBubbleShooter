@@ -36,6 +36,11 @@ export class BubbleSprite extends Container implements IBubbleSprite {
         this.sprite.tint = color;
     }
 
+    setOpacity(opacity: number) {
+        this.sprite.alpha = opacity;
+        this.spriteShine.alpha = opacity;
+    }
+
     get node(): Container {
         return this;
     }

@@ -10,8 +10,8 @@ import { BubbleSprite } from "../../model/BubbleSprite";
 export default class WeaponBubbleFinalPosVisualController {
     init(dependency: IWeaponBubbleFinalPosVisualControllerDependency) {
         this.bubbleFactory = dependency.bubbleFactory;
-        // this.colorBubble = this.bubbleFactory.getColorBubbleUI({ color: "C1" }) as ColorBubble;
-        // this.colorBubble.getComponent(UIOpacity).opacity = 150;
+        this.colorBubble = this.bubbleFactory.getColorBubbleUI({ color: "C1" }) as BubbleSprite;
+        this.colorBubble.setOpacity(0.62);
 
         this.visualRepOfWeaponBubbleFinalPosHolder = new Container();
 
@@ -31,20 +31,20 @@ export default class WeaponBubbleFinalPosVisualController {
     }
 
     showVisualRepOfWeaponBubble = (weaponBubbleDestinationPosition: Point, data: TileData) => {
-        // const weaponBubbleGridIndex = this.tileGridModel.getTileIndexFromPosition(new Vec3(weaponBubbleDestinationPosition.x, weaponBubbleDestinationPosition.y));
-        // if (data.type == BubbleType.ColorBubble) {
-        //     this.visualRepOfWeaponBubbleFinalPosHolder.addChild(this.colorBubble.node);
-        //     this.colorBubble.setColor(this.bubbleFactory.getBubbleColor(data.color));
-        // } else {
-        //     this.visualRepOfWeaponBubbleFinalPosHolder.addChild(this.bubbleFactory.getColorBubbleUI({ color: data.color }).node);
-        // }
-        // const pos = this.tileGridModel.getTileCoordinate(weaponBubbleGridIndex);
-        // this.visualRepOfWeaponBubbleFinalPosHolder.setPosition(pos.x, pos.y);
+        const weaponBubbleGridIndex = this.tileGridModel.getTileIndexFromPosition(weaponBubbleDestinationPosition);
+        if (data.type == BubbleType.ColorBubble) {
+            this.visualRepOfWeaponBubbleFinalPosHolder.addChild(this.colorBubble.node);
+            this.colorBubble.setColor(this.bubbleFactory.getBubbleColor(data.color));
+        } else {
+            this.visualRepOfWeaponBubbleFinalPosHolder.addChild(this.bubbleFactory.getColorBubbleUI({ color: data.color }).node);
+        }
+        const pos = this.tileGridModel.getTileCoordinate(weaponBubbleGridIndex);
+        this.visualRepOfWeaponBubbleFinalPosHolder.position =pos;
     }
 
     disableVisualRepOfWeaponBubble = () => {
-        // this.visualRepOfWeaponBubbleFinalPosHolder.removeAllChildren();
-        // this.visualRepOfWeaponBubbleFinalPosHolder.setPosition(-this.layerSize.width, -this.layerSize.height);
+        this.visualRepOfWeaponBubbleFinalPosHolder.removeChildren();
+        this.visualRepOfWeaponBubbleFinalPosHolder.position = new Point(-this.layerSize.width, -this.layerSize.height);
     }
 
     private visualRepOfWeaponBubbleFinalPosHolder: Container = null;

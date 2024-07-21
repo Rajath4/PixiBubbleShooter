@@ -1,13 +1,12 @@
-import { Container, ContainerChild, Point, Size } from "pixi.js";
+import { Container, ContainerChild, Point } from "pixi.js";
 import { ColorBubbleData } from "./bubbleLayout/model/Bubble";
 import { BubbleType } from "./bubbleLayout/model/LayoutInterface";
 import { TileData, TileGrid } from "./bubbleLayout/model/TileGrid";
 import BubbleShooterGamePlayModel from "./BubbleShooterGamePlayModel";
 import { getPointsBetweenTwoPoint } from "./utils/PointsBetweenTwoPoint";
 
-import { TrajectoryBubbleSprite } from "./bubbleLayout/model/TrajectoryBubbleSprite";
 import { Rect } from "./bubbleLayout/controllers/layoutMovement/DynamicBubbleLayoutMovementController";
-import { BubbleSprite } from "./bubbleLayout/model/BubbleSprite";
+import { TrajectoryBubbleSprite } from "./bubbleLayout/model/TrajectoryBubbleSprite";
 
 class TrajectoryBubbleSpritePool {
     private pool: TrajectoryBubbleSprite[] = [];
@@ -17,7 +16,6 @@ class TrajectoryBubbleSpritePool {
      */
     get(): TrajectoryBubbleSprite {
         if (this.pool.length > 0) {
-            console.log("TrajectoryBubbleSpritePool: Reusing existing sprite", this.pool.length);
             return this.pool.pop();
         } else {
             return new TrajectoryBubbleSprite();
@@ -163,7 +161,7 @@ export class TrajectoryLayer extends Container {
         this.disableVisualRepOfWeaponBubble();
     }
 
-    removeAllTrajecBubbles() {
+   private removeAllTrajecBubbles() {
         const allExistingBubbles = this.children.slice();
 
         allExistingBubbles.forEach((child: ContainerChild) => {

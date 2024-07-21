@@ -52,7 +52,7 @@ export default class BubbleShooterGamePlayModel {
         const weaponBubbleTileIndex = tileGridModel.getTileIndexFromPosition(trajectoryInfo.weaponBubbleDestinationPosition);
 
         if (weaponBubble.type === BubbleType.ColorBubble) {
-            tileGridModel.getAndUpdateTileContent(weaponBubbleTileIndex, { type: BubbleType.ColorBubble, data: weaponBubble.content });
+            tileGridModel.updateTileContent(weaponBubbleTileIndex, { type: BubbleType.ColorBubble, data: weaponBubble.content });
         }
 
         const weaponBubbleActedTiles = this.weaponBubbleImpactComputationModel.getWeaponBubbleActedTiles(weaponBubble.type, tileGridModel, weaponBubbleTileIndex);

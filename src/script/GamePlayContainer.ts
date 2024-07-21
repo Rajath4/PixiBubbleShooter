@@ -35,7 +35,7 @@ export class GamePlayContainer extends Container {
 
         this.model = new BubbleShooterGamePlayModel();
         const bubbleUIFactory = new BubbleUIFactory();
-        const bubbleFactoryController = new BubbleFactoryController(bubbleUIFactory);
+        const bubbleFactoryController = new BubbleFactoryController();
 
         const tileGridModel = new TileGridModel();
 

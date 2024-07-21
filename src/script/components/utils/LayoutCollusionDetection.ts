@@ -8,28 +8,28 @@ import { getDistanceBetweenTwoPoints } from '../utils';
  * @param {Point} p2 
  * @param {TileGrid} tiles 
  * @param {number} radius 
- * @param {(position: Point) => Point} nodeSpaceConveter 
+ * @param {(position: Point) => Point} nodeSpaceConverter 
  * @returns {Point} collusion point
  */
-function getCollusionPoint(p1: Point, p2: Point, tiles: TileGrid, radius: number, nodeSpaceConveter: (position: Point) => Point): Point {
-    let shortestDistence: number = null;
+function getCollusionPoint(p1: Point, p2: Point, tiles: TileGrid, radius: number, nodeSpaceConverter: (position: Point) => Point): Point {
+    let shortestDistance: number = null;
     let collusionPoint = new Point(-1, -1);
 
     tiles.forEach((rowElements, row) => {
         rowElements.forEach((tile, colIndex) => {
             if (tile && tile.tileStatus != TileStatus.EMPTY) {
-                let bubblePosition = nodeSpaceConveter(tile.position);
+                let bubblePosition = nodeSpaceConverter(tile.position);
                 if (distenceToline(bubblePosition, p1, p2) <= 1.5 * radius) {
                     let m = getSlope(p1, p2);
                     let yint = getYIntercept(m, p1);
                     let points = findCircleLineIntersections(1.5 * radius, bubblePosition, m, yint);
                     let mindistence;
                     let PointOnLine;
-                    let distence1 = getDistanceBetweenTwoPoints(points.p1, p1);
+                    let distance1 = getDistanceBetweenTwoPoints(points.p1, p1);
                     let distence2 = getDistanceBetweenTwoPoints(points.p2, p1);
-                    if (distence1 < distence2) {
+                    if (distance1 < distence2) {
                         if (isInSegment(points.p1, p1, p2)) {
-                            mindistence = distence1;
+                            mindistence = distance1;
                             PointOnLine = points.p1;
                         }
                         else if (isInSegment(points.p2, p1, p2)) {
@@ -46,15 +46,15 @@ function getCollusionPoint(p1: Point, p2: Point, tiles: TileGrid, radius: number
                             PointOnLine = points.p2;
                         }
                         else if (isInSegment(points.p1, p1, p2)) {
-                            mindistence = distence1;
+                            mindistence = distance1;
                             PointOnLine = points.p1;
                         }
                         else {
                             // continue;
                         }
                     }
-                    if (mindistence < shortestDistence || shortestDistence == null) {
-                        shortestDistence = mindistence;
+                    if (mindistence < shortestDistance || shortestDistance == null) {
+                        shortestDistance = mindistence;
                         collusionPoint = PointOnLine;
                     }
                 }

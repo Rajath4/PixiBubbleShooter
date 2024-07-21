@@ -1,5 +1,6 @@
 import { Color, Container, Point, Sprite } from "pixi.js";
 import { IBubbleSprite, IBubbleExecutionData } from "./TileGrid";
+import { gsap } from "gsap";
 
 
 export class BubbleSprite extends Container implements IBubbleSprite {
@@ -43,6 +44,18 @@ export class BubbleSprite extends Container implements IBubbleSprite {
 
     get node(): Container {
         return this;
+    }
+
+    reset() {
+        gsap.killTweensOf(this);
+        //Stop all animations
+        // this.sprite.alpha = 1;
+        // this.spriteShine.alpha = 1;
+        // this.sprite.scale = 1;
+        // this.spriteShine.scale = 1;
+        // this.sprite.position = new Point(0, 0);
+        // this.spriteShine.position = new Point(0, 0);
+        // this.position = new Point(0, 0);
     }
 
     execute(data: IBubbleExecutionData): Promise<boolean> {

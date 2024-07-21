@@ -48,10 +48,9 @@ export enum GamePlayResult {
 
 
 export class BubbleFactoryController {
-    constructor(uiFactory: BubbleUIFactory) {
-        this._uiFactory = uiFactory;
+    constructor() {
+        this._uiFactory = new BubbleUIFactory();
         this._modelFactory = new BubbleModelFactory();
-
         this.bubbleColors = getAllBubbleColors();
     }
 

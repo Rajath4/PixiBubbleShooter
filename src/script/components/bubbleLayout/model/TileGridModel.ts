@@ -11,7 +11,7 @@ export default class TileGridModel {
 
         this.isStartWithShifted = isStartWithShifted;
 
-        this.totalNumberOfColumnsInGrid = data[0].length; //TODO: HANDLE ME
+        this.totalNumberOfColumnsInGrid = 10; //TODO: HANDLE ME
     }
 
     /**
@@ -60,7 +60,7 @@ export default class TileGridModel {
         columnPos += this.getColumnOffset(tileIndex.row);
 
         // Since the anchor point is top-left, we calculate the y position directly without inversion.
-        const rowPos = (this.heightOfEachTile / 2) + (tileIndex.row * this.heightOfBubbleRow);
+        const rowPos = tileIndex.row * this.heightOfBubbleRow;
 
         return new Point(columnPos, rowPos);
     }
@@ -75,7 +75,7 @@ export default class TileGridModel {
    */
     getTileIndexFromPosition(pos: Point): TileIndex {
         // Adjust the y position to find the corresponding row, assuming y starts from the top going downwards
-        const row = Math.round((pos.y - (this.heightOfEachTile / 2)) / this.heightOfBubbleRow);
+        const row = Math.round(pos.y / this.heightOfBubbleRow);
 
         // Calculate the column, considering any offset that might apply to staggered rows
         const columnOffset = this.getColumnOffset(row);
@@ -88,9 +88,9 @@ export default class TileGridModel {
     private getColumnOffset(row: number) {
         let rowBasedOffset = 0;
         if (this.isStartWithShifted) {
-            rowBasedOffset = (row % 2) == 0 ? this.widthOfEachTile / 2 : 0;
+            rowBasedOffset = (row % 2) == 0 ? this.widthOfEachTile * 0.5 : 0;
         } else {
-            rowBasedOffset = (row % 2) == 0 ? 0 : this.widthOfEachTile / 2;
+            rowBasedOffset = (row % 2) == 0 ? 0 : this.widthOfEachTile * 0.5;
         }
         return rowBasedOffset;
     }
@@ -122,14 +122,13 @@ export default class TileGridModel {
     * @param {Number} column Column of the bubble in grid
     * @param {String} bubbleColor Bubble Color of the bubble
     */
-    getAndUpdateTileContent(tileIndex: TileIndex, content: TileContent) {
+    updateTileContent(tileIndex: TileIndex, content: TileContent) {
         const tile = this.getTile(tileIndex);
-        console.error('tile', tile);
         if (tile.tileStatus === TileStatus.EMPTY) { //TODO: HANDLE ME
             tile.tileStatus = TileStatus.OCCUPIED;
             tile.content = content;
         } else {
-            console.error('Tile not found', tileIndex);
+            throw new Error('Tile is already has bubble: ' + JSON.stringify(tileIndex));
         }
 
         return tile;

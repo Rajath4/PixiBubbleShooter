@@ -15,8 +15,6 @@ export default class TrajectoryInfoModel {
     }
 
     getTrajectoryInfo(touchPoint: Point, tileGrid: TileGrid): ITrajectoryInfo {
-        console.error("bubbleLayerBoundaryRect ",this.dependency.bubbleLayerBoundaryRect);
-
         const predictedBubbleMovement = this.trajectoryGenerator.getTrajectory(
             this.dependency.getActiveWeaponBubble().getPosition(),
             touchPoint,
@@ -33,7 +31,7 @@ export default class TrajectoryInfoModel {
         if (predictedBubbleMovement[predictedBubbleMovement.length - 1].y === this.dependency.radiusOfBubble) {
             weaponBubbleDestinationPosition = new Point(-1, -1);
         } else {
-            weaponBubbleDestinationPosition = new Point(finalDestinationPoint.x, finalDestinationPoint.y);
+            weaponBubbleDestinationPosition = finalDestinationPoint;
         }
 
         return {

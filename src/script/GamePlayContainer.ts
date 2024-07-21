@@ -13,6 +13,7 @@ import BubbleShooterGamePlayModel from "./components/BubbleShooterGamePlayModel"
 import { ObserverHandler } from "./components/bubbleLayout/ObserverHandler";
 import { getDiagonalLengthOfRectangle } from "./components/utils";
 import { BubbleSprite } from "./components/bubbleLayout/model/BubbleSprite";
+import { designResolution } from "./config";
 
 export class GamePlayContainer extends Container {
     private app: Application;
@@ -29,9 +30,8 @@ export class GamePlayContainer extends Container {
         this.app = app;
 
         const layerSize = { width: this.app.screen.width, height: this.app.screen.height };
-        //  this.velocityOfWeaponBubble = 2000 * (getDiagonalLengthOfRectangle(layerSize.width, layerSize.height) / designResolution.diagonal); //1000 is the velocity in design resolution.
+        this.velocityOfWeaponBubble = 2000 * (getDiagonalLengthOfRectangle(layerSize.width, layerSize.height) / designResolution.diagonal); //1000 is the velocity in design resolution.
 
-        this.velocityOfWeaponBubble = 500;
 
         this.model = new BubbleShooterGamePlayModel();
         const bubbleUIFactory = new BubbleUIFactory();
@@ -45,8 +45,8 @@ export class GamePlayContainer extends Container {
         this.dependencyProvider.init(this, this.bubbleLayoutLayer, this.cannon, this.model, layerSize,
             this.convertBubbleLayerToGameLayer.bind(this), this.convertGameLayerToBubbleLayer.bind(this), bubbleFactoryController);
 
-        this.bubbleLayoutLayer.initLayout(this.app, getDummyLayout(), false, { width: this.app.screen.width, height: this.app.screen.height }, 
-        tileGridModel, bubbleFactoryController, this._runtimeTempScoreUpdateObserver);
+        this.bubbleLayoutLayer.initLayout(this.app, getDummyLayout(), false, { width: this.app.screen.width, height: this.app.screen.height },
+            tileGridModel, bubbleFactoryController, this._runtimeTempScoreUpdateObserver);
         this.cannon.init(this.app, this.dependencyProvider.getCannonDependency());
         this.model.init(this.dependencyProvider.getGameModelDependency());
 
@@ -80,7 +80,7 @@ export class GamePlayContainer extends Container {
         const background = Sprite.from('background');
         // Center background sprite anchor.
         background.anchor.set(0.5);
- 
+
         /**
          * If the preview is landscape, fill the width of the screen
          * and apply horizontal scale to the vertical scale for a uniform fit.

@@ -4,17 +4,22 @@ import { gsap } from "gsap";
 
 
 export class BubbleSprite extends Container implements IBubbleSprite {
-    sprite: Sprite;
+    private sprite: Sprite;
     private spriteShine: Sprite;
 
     constructor() {
         super();
         this.sprite = Sprite.from('bubble');
         this.addChild(this.sprite);
-        this.sprite.setSize(100, 100);
+        this.sprite.setSize(102, 102);
 
         this.spriteShine = Sprite.from('bubble_shine');
         this.addChild(this.spriteShine);
+    }
+
+    setAnchor(anchor: Point) {
+        this.sprite.anchor = anchor;
+        this.spriteShine.anchor = anchor;
     }
 
     setScale(scale: number) {

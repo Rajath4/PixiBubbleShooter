@@ -7,6 +7,7 @@ import BubbleShooterGamePlayModel from './BubbleShooterGamePlayModel';
 import { TrajectoryLayer } from './TrajectoryLayer';
 import { BubbleSprite } from './bubbleLayout/model/BubbleSprite';
 import { ColorBubbleModel } from './bubbleLayout/model/ColorBubbleModel';
+import { TrajectoryBubbleSprite } from './bubbleLayout/model/TrajectoryBubbleSprite';
 
 export class CannonContainer extends Container {
     private app: Application;
@@ -42,22 +43,25 @@ export class CannonContainer extends Container {
             dependency.disableVisualRepOfWeaponBubble,
             dependency.gameModel
         );
-
     }
 
     initCannon() {
         this.cannon = Sprite.from('cannon');
-        this.cannon.anchor.set(0.5);
+        this.cannon.anchor.set(0.5, 0.5);
         this.cannon.scale.set(1 * getScaleFactor());
-        this.cannon.position = new Point(this.app.screen.width / 2, this.app.screen.height - this.cannon.height / 2);
-        this.addChild(this.cannon);
+        this.cannon.position = new Point(this.app.screen.width * 0.5, this.app.screen.height - this.cannon.height * 0.5);
+        // this.addChild(this.cannon);
 
         this.renderCanonWeapon();
     }
 
 
     private renderCanonWeapon() {
-        this.cannon.addChild(this.weaponBubbleModel.getWeaponBubble().sprite.node);
+        const bubble = this.weaponBubble.sprite as BubbleSprite;
+        bubble.position = new Point(this.app.screen.width * 0.5, this.app.screen.height - this.cannon.height * 0.5);
+        bubble.setScale(1 * getScaleFactor());
+        // bubble.setAnchor(new Point(0.5, 0.5));
+        this.addChild(bubble);
     }
 
     onTouchStart(touchPoint: Point) {
@@ -103,12 +107,13 @@ export class CannonContainer extends Container {
     }
 
     onWeaponBubblePopFromCannon(stageLayerNode: Container) {
-
         const weaponBubblePos = this.weaponBubble.getPosition();
-        this.weaponBubble.sprite.node.removeFromParent();
-        this.weaponBubble.sprite.node.scale = this.dependency.bubbleScaleFactor;
-        this.dependency.layoutNode.addChild(this.weaponBubble.sprite.node);
-        this.weaponBubble.sprite.setWorldPosition(weaponBubblePos);
+
+        const bubble = this.weaponBubble.sprite as BubbleSprite;
+        bubble.removeFromParent();
+        bubble.setScale(this.dependency.bubbleScaleFactor);
+        this.dependency.layoutNode.addChild(bubble);
+        bubble.setWorldPosition(weaponBubblePos);
 
         console.error("AAA pos", weaponBubblePos)
         // this.scheduleOnce(() => {
@@ -145,11 +150,11 @@ export class CannonContainer extends Container {
     }
 
     getActiveWeaponBubble() {
-        return this.weaponBubbleModel.getWeaponBubble();
+        return this.weaponBubble;
     }
 
     private getWorldPosition() {
-        return this.cannon.toGlobal(new Point(0, 0));
+        return this.cannon.toGlobal(this.weaponBubble.sprite.getWorldPosition());
     }
 
     private stopCannonRotationAnim() {

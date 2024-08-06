@@ -78,18 +78,9 @@ export class DynamicBubbleLayout extends StaticBubbleLayout {
      * @param {String} bubbleColor Bubble Color of the bubble
      */
     addBubbleToGrid(tileIndex: TileIndex, bubbleContent: TileContent) {
-        console.warn("addBubbleToGrid");
-        const tile = this.tileGridModel.getAndUpdateTileContent(tileIndex, bubbleContent);
-        console.error(this.tileGridModel.tiles);
+        const tile = this.tileGridModel.getTile(tileIndex);
+        this.tileGridModel.updateTileContent(tileIndex, bubbleContent);
         this.addTileContentToGridUI(tile);
-        // if (!tile.content.data.ui) { //TODO: HANDLE ME
-        //     tile.tileStatus = TileStatus.OCCUPIED;
-        //     tile.content = bubbleContent;
-        //     tile.content.type = BubbleType.ColorBubble;
-        //      // setup the bubble of specified bubbleColor at specified location
-        // } else {
-        //     throw "Bubble already present at tileIndex";
-        // }
     }
 
     getTileByIndex = (tileIndex: TileIndex) => {
@@ -128,7 +119,7 @@ export class DynamicBubbleLayout extends StaticBubbleLayout {
 
     private isInvalidBubblePlacement(weaponBubbleImpactInfo: IWeaponBubbleImpactInfo) {
         const finalDestinationPoint = weaponBubbleImpactInfo.trajectoryInfo.predictedBubbleMovement[weaponBubbleImpactInfo.trajectoryInfo.predictedBubbleMovement.length - 1];
-        if (this.tileGridModel.heightOfEachTile >= finalDestinationPoint.y) {
+        if (this.tileGridModel.heightOfEachTile +this.layerSize.height <= finalDestinationPoint.y) {
             console.log("Bubble wasted");
             return true;
         } else {

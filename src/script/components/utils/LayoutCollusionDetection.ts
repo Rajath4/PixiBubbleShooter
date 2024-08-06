@@ -18,7 +18,12 @@ function getCollusionPoint(p1: Point, p2: Point, tiles: TileGrid, radius: number
     tiles.forEach((rowElements, row) => {
         rowElements.forEach((tile, colIndex) => {
             if (tile && tile.tileStatus != TileStatus.EMPTY) {
-                let bubblePosition = nodeSpaceConverter(tile.position);
+                // Adjust the position calculation for the new anchor point
+                let bubbleCenterPosition = new Point(
+                    tile.position.x + radius,
+                    tile.position.y + radius
+                );
+                let bubblePosition = nodeSpaceConverter(bubbleCenterPosition);
                 if (distenceToline(bubblePosition, p1, p2) <= 1.5 * radius) {
                     let m = getSlope(p1, p2);
                     let yint = getYIntercept(m, p1);

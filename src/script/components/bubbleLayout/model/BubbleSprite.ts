@@ -1,4 +1,4 @@
-import { Color, Container, Point, Sprite } from "pixi.js";
+import { Color, Container, Point, Sprite, spritesheetAsset, Texture } from "pixi.js";
 import { IBubbleSprite, IBubbleExecutionData } from "./TileGrid";
 import { gsap } from "gsap";
 
@@ -14,7 +14,7 @@ export class BubbleSprite extends Container implements IBubbleSprite {
         this.sprite.setSize(102, 102);
 
         this.spriteShine = Sprite.from('bubble_shine');
-        this.addChild(this.spriteShine);
+        this.addChild(this.spriteShine);    
     }
 
     setAnchor(anchor: Point) {
@@ -51,16 +51,46 @@ export class BubbleSprite extends Container implements IBubbleSprite {
         return this;
     }
 
+    blast() {
+        return new Promise((resolve, reject) => {
+            // Get current scale for both sprites
+            const currentScaleX = this.sprite.scale.x;
+            const currentScaleY = this.sprite.scale.y;
+    
+            // Initial quick scale up based on current scale
+            gsap.to([this.sprite.scale, this.spriteShine.scale], { 
+                x: currentScaleX * 1.2, 
+                y: currentScaleY * 1.2, 
+                duration: 0.1 
+            });
+    
+            // Final scale down to zero and fade out
+            const scaleTween = gsap.to([this.sprite.scale, this.spriteShine.scale], { 
+                x: 0, 
+                y: 0, 
+                duration: 0.4, 
+                delay: 0.1 
+            });
+    
+            const fadeTween = gsap.to([this.sprite, this.spriteShine], { 
+                alpha: 0, 
+                duration: 0.4, 
+                delay: 0.1,
+                onComplete: () => {
+                    resolve(true);  // Resolve the promise when the fade out completes
+                }
+            });
+        });
+    }
+    
+
     reset() {
-        gsap.killTweensOf(this);
-        //Stop all animations
-        // this.sprite.alpha = 1;
-        // this.spriteShine.alpha = 1;
-        // this.sprite.scale = 1;
-        // this.spriteShine.scale = 1;
-        // this.sprite.position = new Point(0, 0);
-        // this.spriteShine.position = new Point(0, 0);
-        // this.position = new Point(0, 0);
+        // Reset all properties to initial state
+        gsap.killTweensOf([this.sprite, this.spriteShine, this.sprite.scale, this.spriteShine.scale]);
+        this.sprite.alpha = 1;
+        this.spriteShine.alpha = 1;
+        this.sprite.scale.set(1, 1);
+        this.spriteShine.scale.set(1, 1);
     }
 
     execute(data: IBubbleExecutionData): Promise<boolean> {

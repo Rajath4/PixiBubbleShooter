@@ -65,11 +65,6 @@ export class DynamicBubbleLayout extends StaticBubbleLayout {
         this.tileGridModel.emptyTile(tileIndex);
     }
 
-    async burstBubbleAtTileIndex(tileIndex: TileIndex) {
-        await this.weaponBubbleUIImpactController.colorBubbleController.performBubbleBurstAnim(tileIndex);
-        this.removeBubbleFromTileIndex(tileIndex);
-    }
-
     /**
      * It will add a bubble of specified type in specified row and column
      *

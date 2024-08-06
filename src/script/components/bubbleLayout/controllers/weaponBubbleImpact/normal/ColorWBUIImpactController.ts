@@ -23,7 +23,7 @@ export default class ColorWBUIImpactController extends WeaponBubbleUIImpactContr
     */
 
     async removeCluster(bubbleCluster: TileIndex[]) {
-        const actions:Promise<unknown>[] = [];
+        const actions: Promise<unknown>[] = [];
 
         console.error("removeCluster");
 
@@ -45,33 +45,9 @@ export default class ColorWBUIImpactController extends WeaponBubbleUIImpactContr
                 scoreStripeColor: null,
                 bubbleRadius: 60, //TODO: HANDLE ME
             } as IRuntimeScoreUpdateInfo);
-
-            // await this.performBubbleBurstAnim(bubble);
+            await (tile.content.data.ui as BubbleSprite).blast();
             this.removeBubbleFromTileIndex(bubble);
             resolve(true);
-        });
-    }
-
-    performBubbleBurstAnim(tileIndex: TileIndex) {
-        return new Promise(async (resolve) => {
-            // const tile = this.getTiles().get(tileIndex.row)[tileIndex.column];
-            resolve(true);
-
-            // if (tile.content.type === BubbleType.ColorBubble) {
-            //     await tile.content.data.ui.execute({});
-
-            //     // const burstEffect = this.bubbleParticleFactory.getBubbleBurstEffect();
-            //     // this.particleEffectLayer.addChild(burstEffect);
-            //     // burstEffect.setWorldPosition(tile.content.data.ui.node.worldPosition);
-            //     // burstEffect.getComponent(BubbleBurstEffect).init((tile.content.data.ui as ColorBubble).getColor());
-            //     // await delay(1, this.bubbleParticleFactory);
-            //     // burstEffect.destroy();
-            // } else {
-            //     //TODO: HANDLE ME
-            //     // this.actOnRockBubble(bubble)
-            // }
-
-            // resolve(true);
         });
     }
 }

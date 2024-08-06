@@ -57,6 +57,9 @@ export class GamePlayContainer extends Container {
         this.addChild(this.cannon);
         this.addChild(this.bubbleLayoutLayer);
         this.addChild(this.cannon.trajectory);
+        this.cannon.trajectory.zIndex = 0;
+        this.cannon.zIndex = 1;
+        this.bubbleLayoutLayer.zIndex = 200;
 
         this.app.canvas.addEventListener('touchstart', (event: TouchEvent) => {
             console.log('Touch start event detected:', event.touches[0].clientX, event.touches[0].clientY);

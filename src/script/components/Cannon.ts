@@ -60,7 +60,7 @@ export class CannonContainer extends Container {
         const bubble = this.weaponBubble.sprite as BubbleSprite;
         bubble.position = new Point(this.app.screen.width * 0.5, this.app.screen.height - this.cannon.height * 0.5);
         bubble.setScale(1 * getScaleFactor());
-        // bubble.setAnchor(new Point(0.5, 0.5));
+        bubble.setAnchor(new Point(0.5, 0.5));
         this.addChild(bubble);
     }
 
@@ -114,6 +114,7 @@ export class CannonContainer extends Container {
         bubble.setScale(this.dependency.bubbleScaleFactor);
         this.dependency.layoutNode.addChild(bubble);
         bubble.setWorldPosition(weaponBubblePos);
+        bubble.setAnchor(new Point(0.5, 0.5));
 
         console.error("AAA pos", weaponBubblePos)
         // this.scheduleOnce(() => {

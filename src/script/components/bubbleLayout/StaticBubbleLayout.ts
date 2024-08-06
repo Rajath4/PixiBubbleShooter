@@ -6,6 +6,7 @@ import { TileData, TileStatus, Tile } from "./model/TileGrid";
 import TileGridDataModel from "./model/TileGridDataModel";
 import TileGridModel from "./model/TileGridModel";
 import { getScaleFactor } from "../../utils";
+import { BubbleSprite } from "./model/BubbleSprite";
 
 export const bubbleColorsInLayout = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'];
 
@@ -107,10 +108,11 @@ export class StaticBubbleLayout extends Container{
         if (tile.tileStatus === TileStatus.EMPTY) {
             throw new Error('Tile is set empty');
         };
-        const bubbleNode = tile.content.data.ui;
+        const bubbleNode = tile.content.data.ui as BubbleSprite;
         bubbleNode.setScale(this.bubbleScaleFactor);
-        this.addChild(bubbleNode.node);
+        this.addChild(bubbleNode);
         bubbleNode.setWorldPosition(tile.position);
+        bubbleNode.setAnchor(new Point(0.5, 0.5));
         tile.isRenderedOnGrid = true;
     }
 

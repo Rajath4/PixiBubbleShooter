@@ -56,11 +56,11 @@ export default class TileGridModel {
      * @param {Number} row column of the tile in layout matrix
      */
     getTileCoordinate(tileIndex: TileIndex) {
-        let columnPos = tileIndex.column * this.widthOfEachTile;
+        let columnPos = (this.widthOfEachTile * 0.5) + tileIndex.column * this.widthOfEachTile;
         columnPos += this.getColumnOffset(tileIndex.row);
 
         // Since the anchor point is top-left, we calculate the y position directly without inversion.
-        const rowPos = tileIndex.row * this.heightOfBubbleRow;
+        const rowPos = (this.heightOfEachTile * 0.5 )+ tileIndex.row * this.heightOfBubbleRow;
 
         return new Point(columnPos, rowPos);
     }
@@ -75,7 +75,7 @@ export default class TileGridModel {
    */
     getTileIndexFromPosition(pos: Point): TileIndex {
         // Adjust the y position to find the corresponding row, assuming y starts from the top going downwards
-        const row = Math.round(pos.y / this.heightOfBubbleRow);
+        const row = Math.round((pos.y- (this.heightOfEachTile / 2)) / this.heightOfBubbleRow);
 
         // Calculate the column, considering any offset that might apply to staggered rows
         const columnOffset = this.getColumnOffset(row);

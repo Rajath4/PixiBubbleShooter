@@ -12,6 +12,7 @@ export default class WeaponBubbleFinalPosVisualController {
         this.bubbleFactory = dependency.bubbleFactory;
         this.colorBubble = this.bubbleFactory.getColorBubbleUI({ color: "C1" }) as BubbleSprite;
         this.colorBubble.setOpacity(0.62);
+        this.colorBubble.setAnchor(new Point(0.5, 0.5));
 
         this.visualRepOfWeaponBubbleFinalPosHolder = new Container();
 

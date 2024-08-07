@@ -9,15 +9,12 @@ import { IWeaponBubbleFinalPosVisualControllerDependency } from "./trajectory/We
 import { IWeaponBubbleUIImpactControllerDependency } from "./weaponBubbleImpact/WeaponBubbleUIImpactControllerBase";
 import { StageAnimationLayer } from "../animation/StageAnimationLayer";
 import { ObserverHandler } from "../ObserverHandler";
-import { BubbleParticleFactory } from "./BubbleParticleFactory";
 
 export default class DynamicBubbleLayoutDependencyController {
     init(addBubbleToGrid: (tileIndex: TileIndex, bubbleContent: TileContent) => void,
         removeBubbleFromTileIndex: (tileIndex: TileIndex) => void,
         getTiles: () => TileGrid,
         getVisibleTiles: () => TileGrid,
-        bubbleParticleFactory: BubbleParticleFactory,
-        particleEffectLayer: Container,
         layoutNode: Container,
         renderBubbleLayoutContent: (fromRow: number, toRow: number) => void,
         getTileGridModel: () => TileGridModel,
@@ -31,8 +28,6 @@ export default class DynamicBubbleLayoutDependencyController {
         this.removeBubbleFromTileIndex = removeBubbleFromTileIndex;
         this.getTiles = getTiles;
         this.getVisibleTiles = getVisibleTiles;
-        this.bubbleParticleFactory = bubbleParticleFactory;
-        this.particleEffectLayer = particleEffectLayer;
         this.layoutNode = layoutNode;
         this.renderBubbleLayoutContent = renderBubbleLayoutContent;
         this.getTileGridModel = getTileGridModel;
@@ -51,8 +46,6 @@ export default class DynamicBubbleLayoutDependencyController {
             addBubbleToGrid: this.addBubbleToGrid,
             removeBubbleFromTileIndex: this.removeBubbleFromTileIndex,
             getTiles: this.getTiles,
-            bubbleParticleFactory: this.bubbleParticleFactory,
-            particleEffectLayer: this.particleEffectLayer,
             layoutNode: this.layoutNode,
             runtimeTempScoreUpdateObserver: this.runtimeTempScoreUpdateObserver,
         }
@@ -79,9 +72,7 @@ export default class DynamicBubbleLayoutDependencyController {
             radiusOfBubble: this.radiusOfBubble,
             node: this.layoutNode,
             removeBubbleFromTileIndex: this.removeBubbleFromTileIndex,
-            getVisibleTiles: this.getVisibleTiles,
-            bubbleParticleFactory: this.bubbleParticleFactory,
-            particleEffectLayer: this.particleEffectLayer,
+            getVisibleTiles: this.getVisibleTiles
         }
     }
 
@@ -100,9 +91,7 @@ export default class DynamicBubbleLayoutDependencyController {
     private removeBubbleFromTileIndex: (tileIndex: TileIndex) => void;
     private getTiles: () => TileGrid;
     private getVisibleTiles: () => TileGrid;
-    private bubbleParticleFactory: BubbleParticleFactory;
     private bubbleFactory: BubbleFactoryController;
-    private particleEffectLayer: Container;
     private layerSize: Size;
     private layoutNode: Container;
     private renderBubbleLayoutContent: (fromRow: number, toRow: number) => void;

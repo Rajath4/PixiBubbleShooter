@@ -167,6 +167,12 @@ export default class TileGridModel {
         return this.getTileCoordinate({ row: this.getFirstFilledRow(), column: 0 }).y;
     }
 
+    isGridEmpty() {
+        return !Array.from(this.tiles.values()).some(row => 
+            row.some(tile => tile.tileStatus === TileStatus.OCCUPIED)
+        );
+    }
+
     get tiles(): TileGrid {
         return this._tiles;
     }

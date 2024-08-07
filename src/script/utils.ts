@@ -5,3 +5,7 @@ export function getScaleFactor() {
     const scaleY = window.innerHeight / designHeight;
     return Math.min(scaleX, scaleY); // Choose the smaller scale to fit the design within the screen
 }
+
+export async function delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}

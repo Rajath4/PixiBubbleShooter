@@ -1,6 +1,9 @@
 
-import { Application, Container, Size } from 'pixi.js';
+import { Application, Size } from 'pixi.js';
+import { IWeaponBubbleImpactInfo } from './GamePlayEngineModelInterfaces';
+import { ObserverHandler } from './ObserverHandler';
 import { StaticBubbleLayout } from './StaticBubbleLayout';
+import { StageAnimationLayer } from './animation/StageAnimationLayer';
 import DynamicBubbleLayoutDependencyController from './controllers/DynamicBubbleLayoutDependencyController';
 import NeighborsBubbleShakingController from './controllers/NeighborsBubbleShakingController';
 import BubbleDropController from './controllers/drop/BubbleDropController';
@@ -8,21 +11,11 @@ import DynamicBubbleLayoutMovementController from './controllers/layoutMovement/
 import WeaponBubbleFinalPosVisualController from './controllers/trajectory/WeaponBubbleFinalPosVisualController';
 import WeaponBubbleUIImpactController from './controllers/weaponBubbleImpact/WeaponBubbleUIImpactController';
 import { BubbleFactoryController } from './model/BubbleFactoryController';
-import { TileData, TileIndex, TileContent, TileGrid, TileGridContents, TileStatus, IBubbleSprite } from './model/TileGrid';
+import { TileContent, TileData, TileGrid, TileGridContents, TileIndex } from './model/TileGrid';
 import TileGridModel from './model/TileGridModel';
-import { StageAnimationLayer } from './animation/StageAnimationLayer';
-import { IWeaponBubbleImpactInfo } from './GamePlayEngineModelInterfaces';
-import { BubbleParticleFactory } from './controllers/BubbleParticleFactory';
-import { ObserverHandler } from './ObserverHandler';
-import { BubbleType } from './model/LayoutInterface';
-import { BubbleSprite } from './model/BubbleSprite';
 
 export class DynamicBubbleLayout extends StaticBubbleLayout {
     animationLayer: StageAnimationLayer = new StageAnimationLayer();
-
-    particleEffectLayer: Container = new Container();
-
-    bubbleParticleFactory: BubbleParticleFactory = new BubbleParticleFactory();
 
     percentageOfBubbleVisibleInTopRow = 0.01;
 
@@ -34,7 +27,7 @@ export class DynamicBubbleLayout extends StaticBubbleLayout {
         this.runtimeTempScoreUpdateObserver = runtimeTempScoreUpdateObserver;
 
         this.depController.init(this.addBubbleToGrid.bind(this), this.removeBubbleFromTileIndex.bind(this),
-            this.getTiles.bind(this), this.getTiles.bind(this), this.bubbleParticleFactory, this.particleEffectLayer,
+            this.getTiles.bind(this), this.getTiles.bind(this),  
             this, this.renderBubbleLayoutContent.bind(this), this.getTileGridModel.bind(this),
             this.percentageOfBubbleVisibleInTopRow, this.radiusOfBubble, this.topPadding,
             this.layerSize, this.animationLayer, this.bubbleFactoryController, this.bubbleScaleFactor, this.runtimeTempScoreUpdateObserver);
@@ -44,7 +37,6 @@ export class DynamicBubbleLayout extends StaticBubbleLayout {
         this.addChild(this.animationLayer);
 
         this._neighborsBubbleShakingController = new NeighborsBubbleShakingController(this.tileGridModel.getTile, this.tiles, this.isStartWithShifted);
-        this.bubbleParticleFactory.init(this.bubbleFactoryController.getBubbleColor.bind(this.bubbleFactoryController));
         this.weaponBubbleUIImpactController.init(this.depController.getWeaponBubbleUIImpactControllerDeps());
         this.layoutVisibilityController.init(this.depController.getLayoutMovementControllerDeps());
         this.bubbleDropController.init(this.depController.getBubbleDropControllerDeps());

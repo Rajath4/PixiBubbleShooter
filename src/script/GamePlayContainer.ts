@@ -157,6 +157,10 @@ export class GamePlayContainer extends Container {
 
         this.cannon.onWeaponBubbleActionComplete();
 
+        if(this.bubbleLayoutLayer.getTileGridModel().isGridEmpty()){
+            console.log("Game Won");
+        }
+
         if (this.isGameOver()) {
             throw ('Game Over');
         }
@@ -179,6 +183,8 @@ export class GamePlayContainer extends Container {
     private isGameOver() {
         return this.deadLine.isCrossed(this.bubbleLayoutLayer.getTileGridModel().getFirstFilledRowYPosition());
     }
+
+    
 
     private velocityOfWeaponBubble = 1000;
     private model: BubbleShooterGamePlayModel = null;

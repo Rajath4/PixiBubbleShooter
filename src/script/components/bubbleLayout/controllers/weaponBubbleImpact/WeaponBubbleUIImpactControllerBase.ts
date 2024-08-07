@@ -1,15 +1,12 @@
 import { Container } from "pixi.js";
 import { TileIndex, TileContent, TileGrid } from "../../model/TileGrid";
 import { ObserverHandler } from "../../ObserverHandler";
-import { BubbleParticleFactory } from "../BubbleParticleFactory";
 
 export default abstract class WeaponBubbleUIImpactControllerBase {
     init(dependency: IWeaponBubbleUIImpactControllerDependency) {
         this.dependency = dependency;
         this.addBubbleToGrid = dependency.addBubbleToGrid;
         this.removeBubbleFromTileIndex = dependency.removeBubbleFromTileIndex;
-        this.bubbleParticleFactory = dependency.bubbleParticleFactory;
-        this.particleEffectLayer = dependency.particleEffectLayer;
         this.getTiles = dependency.getTiles;
         this.layoutNode = dependency.layoutNode;
     }
@@ -50,8 +47,6 @@ export default abstract class WeaponBubbleUIImpactControllerBase {
     protected addBubbleToGrid: (tileIndex: TileIndex, bubbleContent: TileContent) => void;
     protected removeBubbleFromTileIndex: (tileIndex: TileIndex) => void;
     protected getTiles: () => TileGrid;
-    protected bubbleParticleFactory: BubbleParticleFactory;
-    protected particleEffectLayer: Container;
     protected layoutNode: Container;
 
     protected dependency: IWeaponBubbleUIImpactControllerDependency;
@@ -61,8 +56,6 @@ export interface IWeaponBubbleUIImpactControllerDependency {
     addBubbleToGrid: (tileIndex: TileIndex, bubbleContent: TileContent) => void,
     removeBubbleFromTileIndex: (tileIndex: TileIndex) => void,
     getTiles: () => TileGrid
-    bubbleParticleFactory: BubbleParticleFactory,
-    particleEffectLayer: Container,
     layoutNode: Container,
     runtimeTempScoreUpdateObserver: ObserverHandler;
 }

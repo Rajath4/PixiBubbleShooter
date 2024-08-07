@@ -3,7 +3,7 @@ import { StageAnimationLayer } from "../../animation/StageAnimationLayer";
 import { BubbleSprite } from "../../model/BubbleSprite";
 import { TileGridContents, TileIndex, TileStatus, TileGrid, IBubbleSprite } from "../../model/TileGrid";
 import TileGridModel from "../../model/TileGridModel";
-import { BubbleParticleFactory } from "../BubbleParticleFactory";
+import { delay } from "../../../../utils";
 
 
 export default class BubbleDropController {
@@ -14,8 +14,6 @@ export default class BubbleDropController {
         this.node = dependency.node;
         this.removeBubbleFromTileIndex = dependency.removeBubbleFromTileIndex;
         this.getVisibleTiles = dependency.getVisibleTiles;
-        this.bubbleParticleFactory = dependency.bubbleParticleFactory;
-        this.particleEffectLayer = dependency.particleEffectLayer;
     }
 
     /**
@@ -61,14 +59,13 @@ export default class BubbleDropController {
 
         let bubblesToDrop: TileIndex[] = filteredTiles.map(tile => tile.tileIndex);
 
-        // const bubblesSpritesToDrop: BubbleSprite[] = this.getBubbleSprites(bubblesToDrop);
-        const bubblesSpritesToDrop:BubbleSprite[] = [];
+        const bubblesSpritesToDrop: BubbleSprite[] = this.getBubbleSprites(bubblesToDrop);
         for (const bubbleSprite of bubblesSpritesToDrop) {
-            await delay(Math.random() * 0.01, bubbleSprite);
+            await delay(Math.random() * 0.01);
             this.animationLayer.showBubbleDroppingAndBouncing(bubbleSprite, this.radiusOfBubble);
         }
 
-        await delay(2, this.animationLayer); //Wait until all bubbles are dropped
+        await delay(2); //Wait until all bubbles are dropped
     }
 
     private animationLayer: StageAnimationLayer;
@@ -77,8 +74,6 @@ export default class BubbleDropController {
     private node: Container;
     private removeBubbleFromTileIndex: (tileIndex: TileIndex) => void;
     private getVisibleTiles: () => TileGrid;
-    private bubbleParticleFactory: BubbleParticleFactory;
-    private particleEffectLayer: Container;
 }
 
 export interface IBubbleDropControllerDependency {
@@ -88,10 +83,5 @@ export interface IBubbleDropControllerDependency {
     node: Container;
     removeBubbleFromTileIndex: (tileIndex: TileIndex) => void;
     getVisibleTiles: () => TileGrid;
-    bubbleParticleFactory: BubbleParticleFactory;
-    particleEffectLayer: Container;
 }
 
-function delay(arg0: number, bubbleSprite: any) {
-    throw new Error("Function not implemented.");
-}

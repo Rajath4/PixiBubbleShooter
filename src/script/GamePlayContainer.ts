@@ -1,24 +1,26 @@
 import { Application, Color, Container, Point, Sprite } from "pixi.js";
+import StageGamePlayLayerDependencyProvider from "./StageGamePlayLayerDependencyProvider";
+import { UIContainer } from "./UIContainer";
+import BubbleShooterGamePlayModel from "./components/BubbleShooterGamePlayModel";
 import { CannonContainer } from "./components/Cannon";
-import { getDummyLayout, StaticBubbleLayout } from "./components/bubbleLayout/StaticBubbleLayout";
-import { BubbleFactoryController } from "./components/bubbleLayout/model/BubbleFactoryController";
-import { BubbleUIFactory } from "./components/bubbleLayout/model/BubbleUIFactory";
-import TileGridModel from "./components/bubbleLayout/model/TileGridModel";
 import { DynamicBubbleLayout } from "./components/bubbleLayout/DynamicBubbleLayout";
 import { IWeaponBubbleImpactInfo } from "./components/bubbleLayout/GamePlayEngineModelInterfaces";
-import { BubbleType } from "./components/bubbleLayout/model/LayoutInterface";
-import FallingBubblesFinder from "./components/utils/FallingBubblesFinder";
-import StageGamePlayLayerDependencyProvider from "./StageGamePlayLayerDependencyProvider";
-import BubbleShooterGamePlayModel from "./components/BubbleShooterGamePlayModel";
 import { ObserverHandler } from "./components/bubbleLayout/ObserverHandler";
+import { getDummyLayout } from "./components/bubbleLayout/StaticBubbleLayout";
+import { BubbleFactoryController } from "./components/bubbleLayout/model/BubbleFactoryController";
+import { BubbleType } from "./components/bubbleLayout/model/LayoutInterface";
+import TileGridModel from "./components/bubbleLayout/model/TileGridModel";
 import { getDiagonalLengthOfRectangle } from "./components/utils";
-import { BubbleSprite } from "./components/bubbleLayout/model/BubbleSprite";
 import { designResolution } from "./config";
+import Background from "./components/Background";
+import DeadLine from "./components/DeadLine";
 
 export class GamePlayContainer extends Container {
     private app: Application;
     private cannon: CannonContainer;
     private bubbleLayoutLayer: DynamicBubbleLayout;
+    private uiLayer: UIContainer;
+    private deadLine: DeadLine;
 
     // constructor(app: Application) {
     //     this.app = app;
@@ -32,12 +34,12 @@ export class GamePlayContainer extends Container {
         const layerSize = { width: this.app.screen.width, height: this.app.screen.height };
         this.velocityOfWeaponBubble = 2000 * (getDiagonalLengthOfRectangle(layerSize.width, layerSize.height) / designResolution.diagonal); //1000 is the velocity in design resolution.
 
+        this.initBG();
 
         this.model = new BubbleShooterGamePlayModel();
-        const bubbleUIFactory = new BubbleUIFactory();
-        const bubbleFactoryController = new BubbleFactoryController();
-
         const tileGridModel = new TileGridModel();
+
+        const bubbleFactoryController = new BubbleFactoryController();
 
         this.bubbleLayoutLayer = new DynamicBubbleLayout();
         this.cannon = new CannonContainer();
@@ -52,7 +54,6 @@ export class GamePlayContainer extends Container {
 
         this.cannon.initCannon();
 
-        this.initBG();
 
         this.addChild(this.cannon);
         this.addChild(this.bubbleLayoutLayer);
@@ -61,61 +62,38 @@ export class GamePlayContainer extends Container {
         this.cannon.zIndex = 100;
         this.bubbleLayoutLayer.zIndex = 200;
 
+        this.initTouchListeners();
+        this.initDeadLine();
+    }
+
+    private initTouchListeners() {
         this.app.canvas.addEventListener('touchstart', (event: TouchEvent) => {
-            console.log('Touch start event detected:', event.touches[0].clientX, event.touches[0].clientY);
             this.onTouchStartReceived(new Point(event.touches[0].clientX, event.touches[0].clientY));
         });
 
         this.app.canvas.addEventListener('touchmove', (event: TouchEvent) => {
-            console.log('Touch start event detected:', event.touches[0].clientX, event.touches[0].clientY);
             this.onTouchMoveReceived(new Point(event.touches[0].clientX, event.touches[0].clientY));
         });
 
-
         this.app.canvas.addEventListener('touchend', (event: TouchEvent) => {
-            console.log('Touch end event detected:', event.changedTouches[0]);
             this.onTouchEndReceived(new Point(event.changedTouches[0].clientX, event.changedTouches[0].clientY));
         });
-
-       this.initDeadLine();
     }
 
     private initDeadLine() {
-        const deadLineSprite = Sprite.from('dead_line');
-        this.deadLinePositionY = this.app.screen.height * 0.75;
-        deadLineSprite.position = new Point(0,  this.deadLinePositionY);
-        deadLineSprite.width = this.app.screen.width;
-        deadLineSprite.tint = new Color(0xff0000);
-        deadLineSprite.alpha = 0.3;
-        this.addChild(deadLineSprite);
+        this.deadLine = new DeadLine(this.app);
+        this.addChild(this.deadLine);
+    }
+
+    private initUILayer() {
+        this.uiLayer = new UIContainer();
+        this.uiLayer.init(this.app);
+        this.addChild(this.uiLayer);
+        this.uiLayer.zIndex = 300;
     }
 
     private initBG() {
-        const background = Sprite.from('background');
-        // Center background sprite anchor.
-        background.anchor.set(0.5);
-
-        /**
-         * If the preview is landscape, fill the width of the screen
-         * and apply horizontal scale to the vertical scale for a uniform fit.
-         */
-        if (this.app.screen.width > this.app.screen.height) {
-            background.width = this.app.screen.width * 1.2;
-            background.scale.y = background.scale.x;
-        }
-        else {
-            /**
-             * If the preview is square or portrait, then fill the height of the screen instead
-             * and apply the scaling to the horizontal scale accordingly.
-             */
-            background.height = this.app.screen.height * 1.2;
-            background.scale.x = background.scale.y;
-        }
-
-        // Position the background sprite in the center of the stage.
-        background.x = this.app.screen.width / 2;
-        background.y = this.app.screen.height / 2;
-
+        const background = new Background(this.app);
         this.addChild(background);
     }
 
@@ -176,8 +154,8 @@ export class GamePlayContainer extends Container {
 
         this.cannon.onWeaponBubbleActionComplete();
 
-        if(this.isGameOver()){
-            throw('Game Over');
+        if (this.isGameOver()) {
+            throw ('Game Over');
         }
 
         /**TESTING CODE START*/
@@ -196,16 +174,7 @@ export class GamePlayContainer extends Container {
     }
 
     private isGameOver() {
-        const fistVisibleRowPosY = this.bubbleLayoutLayer.getTileGridModel().getFirstFilledRowYPosition();
-        if(!fistVisibleRowPosY){
-            return true;
-        }else{
-            if(fistVisibleRowPosY >= this.deadLinePositionY){
-                return true;
-            }else{
-                return false;
-            }
-        }
+        return this.deadLine.isCrossed(this.bubbleLayoutLayer.getTileGridModel().getFirstFilledRowYPosition());
     }
 
     private velocityOfWeaponBubble = 1000;
@@ -214,6 +183,5 @@ export class GamePlayContainer extends Container {
     private _runtimeTempScoreUpdateObserver: ObserverHandler = new ObserverHandler();
     private dependencyProvider: StageGamePlayLayerDependencyProvider = new StageGamePlayLayerDependencyProvider();
 
-    private deadLinePositionY: number = 0;
 
 }

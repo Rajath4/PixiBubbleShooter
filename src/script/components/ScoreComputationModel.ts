@@ -18,10 +18,10 @@ export default class ScoreComputationModel {
     }
 
     private getWeaponBubbleImpactScore(weaponBubbleActedTiles: WeaponBubbleActedTiles) {
-        return weaponBubbleActedTiles.colorBubbles.length;
+        return weaponBubbleActedTiles.colorBubbles.length * 5;
     }
 
     private getFallingBubbleScore(fallingBubbles: TileGridContents) {
-        return fallingBubbles.bubbles.length;
+        return fallingBubbles.bubbles.length * 5;
     }
 }

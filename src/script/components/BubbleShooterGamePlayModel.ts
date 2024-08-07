@@ -10,6 +10,7 @@ import WeaponBubbleModel from "./WeaponBubbleModel";
 import ScoreComputationModel from "./ScoreComputationModel";
 import TrajectoryComputationModel from "./TrajectoryComputationModel";
 import { IGameModelDependency } from "./GamePlayEngineDependency";
+import { PlayerSessionDataModel } from "./PlayerSessionDataModel";
 
 export default class BubbleShooterGamePlayModel {
     constructor() {
@@ -19,6 +20,8 @@ export default class BubbleShooterGamePlayModel {
         this._postWeaponBubbleImpactSanityModel = new PostWeaponBubbleImpactSanityModel();
         this._tileGridModel = new TileGridModel();
         this.weaponBubbleModel = new WeaponBubbleModel();
+
+        this._playerSessionDataModel = new PlayerSessionDataModel();
     }
 
     init(dependency: IGameModelDependency) {
@@ -98,6 +101,10 @@ export default class BubbleShooterGamePlayModel {
         return this._tileGridModel;
     }
 
+    get playerSessionDataModel() {
+        return this._playerSessionDataModel;
+    }
+
     private _trajectoryComputationModel: TrajectoryComputationModel = null;
     private _scoreComputationModel: ScoreComputationModel;
     private _weaponBubbleModel: WeaponBubbleModel;
@@ -108,6 +115,8 @@ export default class BubbleShooterGamePlayModel {
     protected _tileGridModel: TileGridModel;
 
     private bubbleFactoryController: BubbleFactoryController;
+
+    private _playerSessionDataModel:PlayerSessionDataModel;
 }
 
 

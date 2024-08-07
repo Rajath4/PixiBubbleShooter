@@ -130,7 +130,6 @@ export class GamePlayContainer extends Container {
         await this.cannon.weaponBubble.moveWeaponBubble(this.velocityOfWeaponBubble, weaponBubbleImpactInfo);
         await this.onWeaponBubbleMovementComplete(weaponBubbleImpactInfo);
 
-        this.uiLayer.setScore(weaponBubbleImpactInfo.score.total);
 
         return weaponBubbleImpactInfo;
     }
@@ -152,6 +151,9 @@ export class GamePlayContainer extends Container {
     private async onWeaponBubbleMovementComplete(weaponBubbleImpactInfo: IWeaponBubbleImpactInfo) {
         // console.log("onWeaponBubbleMovementComplete" + new Date());
         await this.bubbleLayoutLayer.onWeaponBubbleMovementComplete(weaponBubbleImpactInfo);
+
+        this.model.playerSessionDataModel.onScoreGain(weaponBubbleImpactInfo.score.total);
+        this.uiLayer.setScore(this.model.playerSessionDataModel.getScore());
 
         this.cannon.onWeaponBubbleActionComplete();
 

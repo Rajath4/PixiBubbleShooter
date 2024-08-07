@@ -20,8 +20,8 @@ async function preload() {
         { alias: 'displacement', src: 'https://pixijs.com/assets/tutorials/fish-pond/displacement_map.png' },
         { alias: 'dead_line', src: 'assets/img/textures/dead_line.png' },
         { alias: 'bottom_base', src: 'assets/img/textures/Bottom Panel Base.png' },
-        { alias: 'top_header', src: 'assets/img/textures/Top Panel 50px.png' },
-        { alias: "score_panel", src: "assets/img/textures/ScorePanel.png" },
+        { alias: 'top_header', src: 'assets/img/textures/ui/Top Panel.png' },
+        { alias: "score_panel", src: "assets/img/textures/ui/score panel.png" },
     ];
 
     // Load the assets defined above.

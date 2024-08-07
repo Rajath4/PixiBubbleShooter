@@ -4,6 +4,8 @@ import ScorePanel from "./components/ui/ScorePanel";
 export class UIContainer extends Container {
     private app: Application;
     private scorePanel: ScorePanel;
+    private topHeader: Sprite;
+
     constructor(app: Application) {
         super();
         this.app = app;
@@ -14,12 +16,17 @@ export class UIContainer extends Container {
 
 
     initHeader() {
-        const topHeader = Sprite.from('top_header');
-        topHeader.anchor.set(0.5, 0.5);
-        topHeader.position.set(this.app.screen.width * 0.5, topHeader.height * 0.5);
-        topHeader.width = this.app.screen.width;
-        topHeader.alpha = 0.975;
-        this.addChild(topHeader);
+        this.topHeader = Sprite.from('top_header');
+        this.topHeader.anchor.set(0.5, 0.5);
+        //scale the header to fit the screen width
+        const scaleFactor = this.app.screen.width / this.topHeader.width;
+        this.topHeader.scale.set(scaleFactor);
+        this.topHeader.position.set(this.app.screen.width * 0.5, this.topHeader.height * 0.5);
+        this.addChild(this.topHeader);
+    }
+
+    getTopHeaderHeight() {
+        return this.topHeader.height;
     }
 
     initScorePanel() {
@@ -30,5 +37,5 @@ export class UIContainer extends Container {
     setScore(score: number) {
         this.scorePanel.setScore(score);
     }
-    
+
 }

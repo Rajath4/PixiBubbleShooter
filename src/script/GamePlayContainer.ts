@@ -47,8 +47,7 @@ export class GamePlayContainer extends Container {
         this.dependencyProvider.init(this, this.bubbleLayoutLayer, this.cannon, this.model, layerSize,
             this.convertBubbleLayerToGameLayer.bind(this), this.convertGameLayerToBubbleLayer.bind(this), bubbleFactoryController);
 
-        this.bubbleLayoutLayer.initLayout(this.app, getDummyLayout(), false, { width: this.app.screen.width, height: this.app.screen.height },
-            tileGridModel, bubbleFactoryController, this._runtimeTempScoreUpdateObserver);
+        this.bubbleLayoutLayer.initLayout(this.app, getDummyLayout(), false, layerSize, tileGridModel, bubbleFactoryController, this._runtimeTempScoreUpdateObserver);
         this.cannon.init(this.app, this.dependencyProvider.getCannonDependency());
         this.model.init(this.dependencyProvider.getGameModelDependency());
 
@@ -64,6 +63,7 @@ export class GamePlayContainer extends Container {
 
         this.initTouchListeners();
         this.initDeadLine();
+        this.initUILayer();
     }
 
     private initTouchListeners() {
@@ -86,8 +86,7 @@ export class GamePlayContainer extends Container {
     }
 
     private initUILayer() {
-        this.uiLayer = new UIContainer();
-        this.uiLayer.init(this.app);
+        this.uiLayer = new UIContainer(this.app);
         this.addChild(this.uiLayer);
         this.uiLayer.zIndex = 300;
     }
@@ -130,6 +129,8 @@ export class GamePlayContainer extends Container {
         console.error('weaponBubbleImpactInfo ', weaponBubbleImpactInfo)
         await this.cannon.weaponBubble.moveWeaponBubble(this.velocityOfWeaponBubble, weaponBubbleImpactInfo);
         await this.onWeaponBubbleMovementComplete(weaponBubbleImpactInfo);
+
+        this.uiLayer.setScore(weaponBubbleImpactInfo.score.total);
 
         return weaponBubbleImpactInfo;
     }

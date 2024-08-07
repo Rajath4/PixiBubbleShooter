@@ -1,9 +1,6 @@
 
 import { DynamicBubbleLayout } from "./bubbleLayout/DynamicBubbleLayout";
 import { BubbleFactoryController } from "./bubbleLayout/model/BubbleFactoryController";
-import { BubbleType } from "./bubbleLayout/model/LayoutInterface";
-import { TileData } from "./bubbleLayout/model/TileGrid";
-import { ObserverHandler } from "./bubbleLayout/ObserverHandler";
 import { bubbleColorsInLayout } from "./bubbleLayout/StaticBubbleLayout";
 import { getWeaponBubbleColor } from "./utils/WeaponBubbleColorFinder";
 import WeaponBubble from "./WeaponBubble";

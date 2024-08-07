@@ -1,7 +1,7 @@
 import { IWeaponBubbleImpactInfo, ScoreInfo } from "./bubbleLayout/GamePlayEngineModelInterfaces";
 import { WeaponBubbleActedTiles, TileGridContents } from "./bubbleLayout/model/TileGrid";
 
-export default class GamePlayScoreModel {
+export default class ScoreComputationModel {
 
     getScore(weaponBubbleImpactInfo: IWeaponBubbleImpactInfo): ScoreInfo {
         const forPlacing = 1;

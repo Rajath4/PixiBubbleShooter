@@ -7,22 +7,17 @@ import PostWeaponBubbleImpactSanityModel, { IPostWeaponBubbleImpactInfo } from "
 import WeaponBubbleImpactComputationModel from "./weapon_impact/WeaponBubbleImpactComputationModel";
 import WeaponBubble from "./WeaponBubble";
 import WeaponBubbleModel from "./WeaponBubbleModel";
-import GamePlayScoreModel from "./GamePlayScoreModel";
-import TrajectoryInfoModel from "./TrajectoryInfoModel";
+import ScoreComputationModel from "./ScoreComputationModel";
+import TrajectoryComputationModel from "./TrajectoryComputationModel";
 import { IGameModelDependency } from "./GamePlayEngineDependency";
 
 export default class BubbleShooterGamePlayModel {
     constructor() {
-        this._scoreModel = new GamePlayScoreModel();
-        this._trajectoryInfoModel = new TrajectoryInfoModel();
+        this._scoreComputationModel = new ScoreComputationModel();
+        this._trajectoryComputationModel = new TrajectoryComputationModel();
         this._weaponBubbleImpactComputationModel = new WeaponBubbleImpactComputationModel();
         this._postWeaponBubbleImpactSanityModel = new PostWeaponBubbleImpactSanityModel();
         this._tileGridModel = new TileGridModel();
-
-        this.setWeaponBubbleModel();
-    }
-
-    protected setWeaponBubbleModel() {
         this.weaponBubbleModel = new WeaponBubbleModel();
     }
 
@@ -34,7 +29,7 @@ export default class BubbleShooterGamePlayModel {
             getFirstVisibleRowIndex: dependency.getFirstVisibleRowIndex
         });
 
-        this._trajectoryInfoModel.init({
+        this._trajectoryComputationModel.init({
             bubbleLayerBoundaryRect: dependency.bubbleLayerBoundaryRect,
             convertBubbleLayerToGameLayer: dependency.convertBubbleLayerToGameLayer,
             convertGameLayerToBubbleLayer: dependency.convertGameLayerToBubbleLayer,
@@ -48,7 +43,7 @@ export default class BubbleShooterGamePlayModel {
     }
 
     onWeaponBubbleFired(touchPoint: Point, weaponBubble: WeaponBubble, tileGridModel: TileGridModel): IWeaponBubbleImpactInfo {
-        const trajectoryInfo = this.trajectoryInfoModel.getTrajectoryInfo(touchPoint, tileGridModel.tiles);
+        const trajectoryInfo = this.trajectoryComputationModel.getTrajectoryInfo(touchPoint, tileGridModel.tiles);
         const weaponBubbleTileIndex = tileGridModel.getTileIndexFromPosition(trajectoryInfo.weaponBubbleDestinationPosition);
 
         if (weaponBubble.type === BubbleType.ColorBubble) {
@@ -70,13 +65,13 @@ export default class BubbleShooterGamePlayModel {
             score: null
         };
 
-        data.score = this.scoreModel.getScore(data);
+        data.score = this.scoreComputationModel.getScore(data);
 
         return data;
     }
 
-    get scoreModel(): GamePlayScoreModel {
-        return this._scoreModel;
+    get scoreComputationModel(): ScoreComputationModel {
+        return this._scoreComputationModel;
     }
 
     get weaponBubbleModel(): WeaponBubbleModel {
@@ -87,8 +82,8 @@ export default class BubbleShooterGamePlayModel {
         this._weaponBubbleModel = value;
     }
 
-    get trajectoryInfoModel(): TrajectoryInfoModel {
-        return this._trajectoryInfoModel;
+    get trajectoryComputationModel(): TrajectoryComputationModel {
+        return this._trajectoryComputationModel;
     }
 
     get weaponBubbleImpactComputationModel(): WeaponBubbleImpactComputationModel {
@@ -103,8 +98,8 @@ export default class BubbleShooterGamePlayModel {
         return this._tileGridModel;
     }
 
-    private _trajectoryInfoModel: TrajectoryInfoModel = null;
-    private _scoreModel: GamePlayScoreModel;
+    private _trajectoryComputationModel: TrajectoryComputationModel = null;
+    private _scoreComputationModel: ScoreComputationModel;
     private _weaponBubbleModel: WeaponBubbleModel;
 
 

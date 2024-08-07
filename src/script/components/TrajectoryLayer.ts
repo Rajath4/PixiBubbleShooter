@@ -82,7 +82,7 @@ export class TrajectoryLayer extends Container {
     show(touchPoint: Point, initialPosition: Point, data: ColorBubbleData): void {
         let weaponBubbleTrajectoryPath: Point[] = [];
 
-        weaponBubbleTrajectoryPath = this.gameModel.trajectoryInfoModel.getTrajectoryInfo(touchPoint, this.tilesInGrid).predictedBubbleMovement;
+        weaponBubbleTrajectoryPath = this.gameModel.trajectoryComputationModel.getTrajectoryInfo(touchPoint, this.tilesInGrid).predictedBubbleMovement;
         const finalDestinationPoint = weaponBubbleTrajectoryPath[weaponBubbleTrajectoryPath.length - 1];
 
         this.showVisualRepOfWeaponBubble(this.convertGameLayerToBubbleLayer(finalDestinationPoint), { type: BubbleType.ColorBubble, color: data.color });

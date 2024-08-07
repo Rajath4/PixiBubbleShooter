@@ -5,9 +5,9 @@ import { ITrajectoryInfoDependency } from "./GamePlayEngineDependency";
 import TrajectoryGenerator from "./TrajectoryGenerator";
 
 
-export default class TrajectoryInfoModel {
+export default class TrajectoryComputationModel {
     constructor() {
-        this.trajectoryGenerator = new TrajectoryGenerator();
+        this.generator = new TrajectoryGenerator();
     }
 
     init(dependency: ITrajectoryInfoDependency) {
@@ -15,7 +15,7 @@ export default class TrajectoryInfoModel {
     }
 
     getTrajectoryInfo(touchPoint: Point, tileGrid: TileGrid): ITrajectoryInfo {
-        const predictedBubbleMovement = this.trajectoryGenerator.getTrajectory(
+        const predictedBubbleMovement = this.generator.getTrajectory(
             this.dependency.getActiveWeaponBubble().getPosition(),
             touchPoint,
             this.dependency.bubbleLayerBoundaryRect,
@@ -40,7 +40,7 @@ export default class TrajectoryInfoModel {
         }
     }
 
-    private trajectoryGenerator: TrajectoryGenerator;
+    private generator: TrajectoryGenerator;
     private dependency: ITrajectoryInfoDependency = null;
 }
 

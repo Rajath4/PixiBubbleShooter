@@ -1,4 +1,4 @@
-import { Application, Container, Point, Sprite } from "pixi.js";
+import { Application, Color, Container, Point, Sprite } from "pixi.js";
 import { CannonContainer } from "./components/Cannon";
 import { getDummyLayout, StaticBubbleLayout } from "./components/bubbleLayout/StaticBubbleLayout";
 import { BubbleFactoryController } from "./components/bubbleLayout/model/BubbleFactoryController";
@@ -58,7 +58,7 @@ export class GamePlayContainer extends Container {
         this.addChild(this.bubbleLayoutLayer);
         this.addChild(this.cannon.trajectory);
         this.cannon.trajectory.zIndex = 0;
-        this.cannon.zIndex = 1;
+        this.cannon.zIndex = 100;
         this.bubbleLayoutLayer.zIndex = 200;
 
         this.app.canvas.addEventListener('touchstart', (event: TouchEvent) => {
@@ -77,6 +77,17 @@ export class GamePlayContainer extends Container {
             this.onTouchEndReceived(new Point(event.changedTouches[0].clientX, event.changedTouches[0].clientY));
         });
 
+       this.initDeadLine();
+    }
+
+    private initDeadLine() {
+        const deadLineSprite = Sprite.from('dead_line');
+        this.deadLinePositionY = this.app.screen.height * 0.75;
+        deadLineSprite.position = new Point(0,  this.deadLinePositionY);
+        deadLineSprite.width = this.app.screen.width;
+        deadLineSprite.tint = new Color(0xff0000);
+        deadLineSprite.alpha = 0.3;
+        this.addChild(deadLineSprite);
     }
 
     private initBG() {
@@ -165,6 +176,10 @@ export class GamePlayContainer extends Container {
 
         this.cannon.onWeaponBubbleActionComplete();
 
+        if(this.isGameOver()){
+            throw('Game Over');
+        }
+
         /**TESTING CODE START*/
         // const fallingBubbles = new FallingBubblesFinder().getFallingBubbles(this.bubbleLayoutLayer.tiles, this.bubbleLayoutLayer.layoutVisibilityController.getLastVisibleRowIndex());
 
@@ -180,10 +195,25 @@ export class GamePlayContainer extends Container {
         // this.currentStageState = EachRoundGamePlayStageStates.weaponBubbleIsReadyToFire;
     }
 
+    private isGameOver() {
+        const fistVisibleRowPosY = this.bubbleLayoutLayer.getTileGridModel().getFirstFilledRowYPosition();
+        if(!fistVisibleRowPosY){
+            return true;
+        }else{
+            if(fistVisibleRowPosY >= this.deadLinePositionY){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+
     private velocityOfWeaponBubble = 1000;
     private model: BubbleShooterGamePlayModel = null;
 
     private _runtimeTempScoreUpdateObserver: ObserverHandler = new ObserverHandler();
     private dependencyProvider: StageGamePlayLayerDependencyProvider = new StageGamePlayLayerDependencyProvider();
+
+    private deadLinePositionY: number = 0;
 
 }

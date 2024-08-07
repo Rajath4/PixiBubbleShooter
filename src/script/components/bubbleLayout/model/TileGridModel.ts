@@ -154,6 +154,18 @@ export default class TileGridModel {
         return Math.max(...allRenderedRows);
     }
 
+    getFirstFilledRow() {
+        const allFilledRows = Array.from(this.tiles.keys()).filter(row => this.tiles.get(row).some(tile => tile.tileStatus === TileStatus.OCCUPIED));
+        return Math.max(...allFilledRows);
+    }
+
+    getFirstFilledRowYPosition() {
+        const firstFilledRow = this.getFirstFilledRow();
+        if(firstFilledRow === -Infinity) {
+            return null;
+        }
+        return this.getTileCoordinate({ row: this.getFirstFilledRow(), column: 0 }).y;
+    }
 
     get tiles(): TileGrid {
         return this._tiles;

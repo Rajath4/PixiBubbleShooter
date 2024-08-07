@@ -59,7 +59,7 @@ export class GamePlayContainer extends Container {
         this.addChild(this.cannon.trajectory);
         this.cannon.trajectory.zIndex = 0;
         this.cannon.zIndex = 100;
-        this.bubbleLayoutLayer.zIndex = 200;
+        this.bubbleLayoutLayer.zIndex = 10;
 
         this.initTouchListeners();
         this.initDeadLine();

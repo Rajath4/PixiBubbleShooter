@@ -1,38 +1,25 @@
-import { Application, Container, Sprite, Point, Size } from 'pixi.js';
-import { getAngleBetweenTwoPoints, radToDeg } from './utils';
+import { Application, Container, Point, Size, Sprite } from 'pixi.js';
 import { getScaleFactor } from '../utils';
-import WeaponBubbleModel from './WeaponBubbleModel';
-import { TileGrid, TileData } from './bubbleLayout/model/TileGrid';
 import BubbleShooterGamePlayModel from './BubbleShooterGamePlayModel';
 import { TrajectoryLayer } from './TrajectoryLayer';
+import WeaponBubbleModel from './WeaponBubbleModel';
 import { BubbleSprite } from './bubbleLayout/model/BubbleSprite';
 import { ColorBubbleModel } from './bubbleLayout/model/ColorBubbleModel';
-import { TrajectoryBubbleSprite } from './bubbleLayout/model/TrajectoryBubbleSprite';
+import { TileData, TileGrid } from './bubbleLayout/model/TileGrid';
+import { getAngleBetweenTwoPoints, radToDeg } from './utils';
 
 export class CannonContainer extends Container {
     private app: Application;
-    private cannon: Sprite;
-
-    private cannon_bg: Node = null;
-
-    private cannonBubbleHolder: Node = null;
-
-    private cannonBubbleHolder1: Node = null;
-
-    private cannonBubbleHolder2: Node = null;
-
+    private bottomBase: Sprite = null;
     trajectory: TrajectoryLayer;
 
 
     init(app: Application, dependency: ICannonUIIDependencies) {
         this.app = app;
-
         this.dependency = dependency;
-
         this.weaponBubbleModel = dependency.gameModel.weaponBubbleModel;
 
         this.trajectory = new TrajectoryLayer();
-
         this.trajectory.init(
             dependency.isFullTrajectory,
             dependency.radiusOfBubble,
@@ -46,11 +33,11 @@ export class CannonContainer extends Container {
     }
 
     initCannon() {
-        this.cannon = Sprite.from('cannon');
-        this.cannon.anchor.set(0.5, 0.5);
-        this.cannon.scale.set(1 * getScaleFactor());
-        this.cannon.position = new Point(this.app.screen.width * 0.5, this.app.screen.height - this.cannon.height * 0.5);
-        // this.addChild(this.cannon);
+        this.bottomBase = Sprite.from('bottom_base');
+        this.bottomBase.anchor.set(0.5, 0.5);
+        this.bottomBase.scale.set(1 * getScaleFactor());
+        this.bottomBase.position = new Point(this.app.screen.width * 0.5, this.app.screen.height - this.bottomBase.height * 0.5);
+        this.addChild(this.bottomBase);
 
         this.renderCanonWeapon();
     }
@@ -58,50 +45,31 @@ export class CannonContainer extends Container {
 
     private renderCanonWeapon() {
         const bubble = this.weaponBubble.sprite as BubbleSprite;
-        bubble.position = new Point(this.app.screen.width * 0.5, this.app.screen.height - this.cannon.height * 0.5);
+        bubble.position = new Point(this.app.screen.width * 0.5, this.app.screen.height - this.bottomBase.height);
         bubble.setScale(1 * getScaleFactor());
         bubble.setAnchor(new Point(0.5, 0.5));
         this.addChild(bubble);
     }
 
     onTouchStart(touchPoint: Point) {
-        this.stopCannonRotationAnim();
-
         if (this.isCanonHavingValidRotation(touchPoint)) {
             this.trajectory.show(touchPoint, this.weaponBubble.getPosition(), (this.weaponBubble.content.model as ColorBubbleModel).data);
-            this.rotateCannon(this.getCannonRotationAngle(touchPoint));
-
         } else {
             this.trajectory.remove();
         }
     }
 
     onTouchMove(touchPoint: Point) {
-        this.stopCannonRotationAnim();
-
-
         if (this.isCanonHavingValidRotation(touchPoint)) {
-
-            this.trajectory.show(touchPoint, this.weaponBubble.getPosition(),
-                (this.weaponBubble.content.model as ColorBubbleModel).data);
-            this.rotateCannon(this.getCannonRotationAngle(touchPoint));
-
+            this.trajectory.show(touchPoint, this.weaponBubble.getPosition(), (this.weaponBubble.content.model as ColorBubbleModel).data);
         } else {
             this.trajectory.remove();
-
         }
     }
 
     onTouchEnd(touchPoint: Point): boolean {
-        this.stopCannonRotationAnim();
-
         const isCanonHavingValidRotation = this.isCanonHavingValidRotation(touchPoint);
-        if (isCanonHavingValidRotation) {
-            this.trajectory.remove();
-            this.rotateCannon(this.getCannonRotationAngle(touchPoint));
-        } else {
-            this.trajectory.remove();
-        }
+        this.trajectory.remove();
 
         return isCanonHavingValidRotation;
     }
@@ -115,11 +83,6 @@ export class CannonContainer extends Container {
         this.dependency.layoutNode.addChild(bubble);
         bubble.setWorldPosition(weaponBubblePos);
         bubble.setAnchor(new Point(0.5, 0.5));
-
-        console.error("AAA pos", weaponBubblePos)
-        // this.scheduleOnce(() => {
-        //     this.cannonToOriginalPosition();
-        // }, 0.25); //TODO: remove this hard coded value
     }
 
 
@@ -136,8 +99,9 @@ export class CannonContainer extends Container {
         );
         console.error("Angle", angle);
 
-        return true;
-        if (angle >= -180 && angle <= 0) {
+        if (angle >= -160 && angle <= -30) {
+            return true;
+
             if (touchPoint.y > this.getWorldPosition().y) {
                 return true;
             }
@@ -145,21 +109,12 @@ export class CannonContainer extends Container {
         return false;
     }
 
-    private rotateCannon(angle: number) {
-        console.log('rotateCannon', angle);
-        this.cannon.angle = angle;
-    }
-
     getActiveWeaponBubble() {
         return this.weaponBubble;
     }
 
     private getWorldPosition() {
-        return this.cannon.toGlobal(this.weaponBubble.sprite.getWorldPosition());
-    }
-
-    private stopCannonRotationAnim() {
-
+        return this.toGlobal(this.weaponBubble.sprite.getWorldPosition());
     }
 
     onWeaponBubbleActionComplete() {
@@ -171,19 +126,8 @@ export class CannonContainer extends Container {
         return this.weaponBubbleModel.getWeaponBubble();
     }
 
-    private getCannonRotationAngle(touchPoint: Point) {
-        let cannonCenter = this.getWorldPosition();  // Assuming anchor is at 0.5, 0.5
-        console.log('cannonCenter', cannonCenter, touchPoint);
-        let angle = getAngleBetweenTwoPoints(cannonCenter, touchPoint);
-        angle = radToDeg(angle);
-        angle = -90 + angle;
-        return angle;
-    }
-
     private weaponBubbleModel: WeaponBubbleModel;
     private dependency: ICannonUIIDependencies = null;
-
-    private _deactivateBubbleSwap = false;
 }
 
 export interface ICannonUIIDependencies {

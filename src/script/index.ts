@@ -19,6 +19,7 @@ async function preload() {
         { alias: 'overlay', src: 'https://pixijs.com/assets/tutorials/fish-pond/wave_overlay.png' },
         { alias: 'displacement', src: 'https://pixijs.com/assets/tutorials/fish-pond/displacement_map.png' },
         { alias: 'dead_line', src: 'assets/img/textures/dead_line.png' },
+        { alias: 'bottom_base', src: 'assets/img/textures/Bottom Panel Base.png' },
     ];
 
     // Load the assets defined above.

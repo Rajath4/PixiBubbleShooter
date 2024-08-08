@@ -1,30 +1,20 @@
-import { Application, Color, Container, Point, Sprite, Texture } from "pixi.js";
-import StageGamePlayLayerDependencyProvider from "./StageGamePlayLayerDependencyProvider";
-import { UIContainer } from "./UIContainer";
-import BubbleShooterGamePlayModel from "./components/BubbleShooterGamePlayModel";
-import { CannonContainer } from "./components/Cannon";
-import { DynamicBubbleLayout } from "./components/bubbleLayout/DynamicBubbleLayout";
-import { IWeaponBubbleImpactInfo } from "./components/bubbleLayout/GamePlayEngineModelInterfaces";
-import { ObserverHandler } from "./components/bubbleLayout/ObserverHandler";
-import { getDummyLayout } from "./components/bubbleLayout/StaticBubbleLayout";
-import { BubbleFactoryController } from "./components/bubbleLayout/model/BubbleFactoryController";
-import { BubbleType } from "./components/bubbleLayout/model/LayoutInterface";
-import TileGridModel from "./components/bubbleLayout/model/TileGridModel";
-import { getDiagonalLengthOfRectangle } from "./components/utils";
-import { designResolution } from "./config";
+import { Application, Color, Container, Text, Texture } from "pixi.js";
 import Background from "./components/Background";
-import DeadLine from "./components/DeadLine";
 import { TextButton } from "./generic/components/TextButton";
 
 export class ResultView extends Container {
     private app: Application;
-   
 
-    init(app: Application) {
+
+    init(app: Application, isWon: boolean, sessionScore: number) {
         this.app = app;
 
         this.initBG();
         this.initPlayAgainButton();
+
+        isWon ? this.initWonText() : this.intiLostText();
+        this.initScoreInfo(sessionScore);
+        this.initPlayAgainDescription(isWon);
     }
 
     private initBG() {
@@ -34,12 +24,72 @@ export class ResultView extends Container {
     }
 
     private initPlayAgainButton() {
-        const playAgainButton = new TextButton(Texture.from('play_again_button'),'Play Again', 64, 0xffffff);
+        const playAgainButton = new TextButton(Texture.from('play_again_button'), 'Play Again', 64, 0xfff8e1);
         playAgainButton.onClick(() => {
             console.log('Play again button clicked');
         });
         playAgainButton.setPosition(this.app.screen.width * 0.5, this.app.screen.height * 0.75);
         this.addChild(playAgainButton);
+    }
+
+    initWonText() {
+        const wonText = new Text({
+            text: "You Won!!", style: {
+                fontFamily: 'Arial',
+                fontSize: 48,
+                fill: 0x6200ea,
+                align: 'center',
+                fontWeight: 'bold'
+            }
+        });
+        wonText.anchor.set(0.5);
+        wonText.position.set(this.app.screen.width * 0.5, this.app.screen.height * 0.25);
+        this.addChild(wonText);
+    }
+
+    intiLostText() {
+        const lostText = new Text({
+            text: "You Lost!!", style: {
+                fontFamily: 'Arial',
+                fontSize: 48,
+                fill: 0xd84315,
+                align: 'center',
+                fontWeight: 'bold'
+            }
+        });
+        lostText.anchor.set(0.5);
+        lostText.position.set(this.app.screen.width * 0.5, this.app.screen.height * 0.25);
+        this.addChild(lostText);
+    }
+
+    initScoreInfo(score: number) {
+        const scoreInfo = new Text({
+            text: `Your Score: ${score}`, style: {
+                fontFamily: 'Arial',
+                fontSize: 24,
+                fill: 0xeeeeee,
+                align: 'center',
+                fontWeight: 'bold'
+            }
+        });
+        scoreInfo.anchor.set(0.5);
+        scoreInfo.position.set(this.app.screen.width * 0.5, this.app.screen.height * 0.5);
+        this.addChild(scoreInfo);
+    }
+
+    initPlayAgainDescription(isWon: boolean) {
+        const playAgainDescription = new Text({
+            text: isWon ? 'You can play again to improve your score' : 'You can play again to win', style: {
+                fontFamily: 'Arial',
+                fontSize: 14,
+                fill: 0x9e9e9e,
+                align: 'center',
+                fontWeight: 'bold'
+            }
+        });
+        playAgainDescription.anchor.set(0.5);
+        playAgainDescription.position.set(this.app.screen.width * 0.5, this.app.screen.height * 0.65);
+        this.addChild(playAgainDescription);
     }
 
 }

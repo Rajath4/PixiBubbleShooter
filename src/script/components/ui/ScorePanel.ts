@@ -31,7 +31,7 @@ class ScorePanel extends Container {
             }
         })
         this.scoreText.anchor.set(0.5, 0.5);
-        this.scoreText.position.set(this.app.screen.width * 0.5,  this.scorePanel.height * 0.6);  // Adjust the Y position as needed
+        this.scoreText.position.set(this.app.screen.width * 0.5,  this.scorePanel.height * 0.6);
         this.addChild(this.scoreText);
     }
 

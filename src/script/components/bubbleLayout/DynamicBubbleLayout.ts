@@ -1,5 +1,5 @@
 
-import { Application, Size } from 'pixi.js';
+import { Size } from 'pixi.js';
 import { IWeaponBubbleImpactInfo } from './GamePlayEngineModelInterfaces';
 import { ObserverHandler } from './ObserverHandler';
 import { StaticBubbleLayout } from './StaticBubbleLayout';
@@ -21,13 +21,21 @@ export class DynamicBubbleLayout extends StaticBubbleLayout {
 
     topPadding = 100;
 
-    initLayout(app: Application, layoutPrefilledContentData: TileData[][], isStartWithShifted: boolean, layerSize: Size, tileGridModel: TileGridModel, bubbleFactoryController: BubbleFactoryController, runtimeTempScoreUpdateObserver: ObserverHandler) {
-        super.init(app, layoutPrefilledContentData, isStartWithShifted, layerSize, tileGridModel, bubbleFactoryController);
+    initLayout(layoutPrefilledContentData: TileData[][], isStartWithShifted: boolean, layerSize: Size, tileGridModel: TileGridModel, bubbleFactoryController: BubbleFactoryController, runtimeTempScoreUpdateObserver: ObserverHandler) {
+        super.init(layoutPrefilledContentData, isStartWithShifted, layerSize, tileGridModel, bubbleFactoryController);
+
+        this.weaponBubbleUIImpactController = new WeaponBubbleUIImpactController();
+        this._layoutVisibilityController = new DynamicBubbleLayoutMovementController();
+        this._weaponBubbleFinalPosVisualController = new WeaponBubbleFinalPosVisualController();
+        this._bubbleDropController = new BubbleDropController();
+        this.depController = new DynamicBubbleLayoutDependencyController();
+        this.runtimeTempScoreUpdateObserver = new ObserverHandler();
+
 
         this.runtimeTempScoreUpdateObserver = runtimeTempScoreUpdateObserver;
 
         this.depController.init(this.addBubbleToGrid.bind(this), this.removeBubbleFromTileIndex.bind(this),
-            this.getTiles.bind(this), this.getTiles.bind(this),  
+            this.getTiles.bind(this), this.getTiles.bind(this),
             this, this.renderBubbleLayoutContent.bind(this), this.getTileGridModel.bind(this),
             this.percentageOfBubbleVisibleInTopRow, this.radiusOfBubble, this.topPadding,
             this.layerSize, this.animationLayer, this.bubbleFactoryController, this.bubbleScaleFactor, this.runtimeTempScoreUpdateObserver);
@@ -106,7 +114,7 @@ export class DynamicBubbleLayout extends StaticBubbleLayout {
 
     private isInvalidBubblePlacement(weaponBubbleImpactInfo: IWeaponBubbleImpactInfo) {
         const finalDestinationPoint = weaponBubbleImpactInfo.trajectoryInfo.predictedBubbleMovement[weaponBubbleImpactInfo.trajectoryInfo.predictedBubbleMovement.length - 1];
-        if (this.tileGridModel.heightOfEachTile +this.layerSize.height <= finalDestinationPoint.y) {
+        if (this.tileGridModel.heightOfEachTile + this.layerSize.height <= finalDestinationPoint.y) {
             console.log("Bubble wasted");
             return true;
         } else {
@@ -138,12 +146,11 @@ export class DynamicBubbleLayout extends StaticBubbleLayout {
         await this.bubbleDropController.dropRemainingBubbles();
     }
 
-    private _neighborsBubbleShakingController: NeighborsBubbleShakingController;
-    private weaponBubbleUIImpactController: WeaponBubbleUIImpactController = new WeaponBubbleUIImpactController();
-    private _layoutVisibilityController: DynamicBubbleLayoutMovementController = new DynamicBubbleLayoutMovementController();
-    private _weaponBubbleFinalPosVisualController: WeaponBubbleFinalPosVisualController = new WeaponBubbleFinalPosVisualController();
-    private _bubbleDropController: BubbleDropController = new BubbleDropController();
-
-    private depController: DynamicBubbleLayoutDependencyController = new DynamicBubbleLayoutDependencyController();
-    private runtimeTempScoreUpdateObserver: ObserverHandler;
+    private _neighborsBubbleShakingController: NeighborsBubbleShakingController = null;
+    private weaponBubbleUIImpactController: WeaponBubbleUIImpactController = null;
+    private _layoutVisibilityController: DynamicBubbleLayoutMovementController = null;
+    private _weaponBubbleFinalPosVisualController: WeaponBubbleFinalPosVisualController = null;
+    private _bubbleDropController: BubbleDropController = null;
+    private depController: DynamicBubbleLayoutDependencyController = null;
+    private runtimeTempScoreUpdateObserver: ObserverHandler = null;
 }

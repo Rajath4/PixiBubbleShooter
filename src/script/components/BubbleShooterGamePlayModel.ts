@@ -9,7 +9,7 @@ import WeaponBubble from "./WeaponBubble";
 import WeaponBubbleModel from "./WeaponBubbleModel";
 import ScoreComputationModel from "./ScoreComputationModel";
 import TrajectoryComputationModel from "./TrajectoryComputationModel";
-import { IGameModelDependency } from "./GamePlayEngineDependency";
+import { IGameModelDependency } from "../types/GamePlayEngineDependency";
 import { PlayerSessionDataModel } from "./PlayerSessionDataModel";
 
 export default class BubbleShooterGamePlayModel {

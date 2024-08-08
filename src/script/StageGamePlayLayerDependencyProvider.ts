@@ -3,7 +3,7 @@ import { DynamicBubbleLayout } from "./components/bubbleLayout/DynamicBubbleLayo
 import { BubbleFactoryController } from "./components/bubbleLayout/model/BubbleFactoryController";
 import BubbleShooterGamePlayModel from "./components/BubbleShooterGamePlayModel";
 import { CannonContainer, ICannonUIIDependencies } from "./components/Cannon";
-import { IGameModelDependency } from "./components/GamePlayEngineDependency";
+import { IGameModelDependency } from "./types/GamePlayEngineDependency";
 
 export default class StageGamePlayLayerDependencyProvider {
     init(layoutNode: Container, bubbleLayoutLayer: DynamicBubbleLayout, cannon: CannonContainer, model: BubbleShooterGamePlayModel, layerSize: Size, convertBubbleLayerToGameLayer: (pos: Point) => Point, convertGameLayerToBubbleLayer: (pos: Point) => Point, bubbleFactoryController: BubbleFactoryController) {

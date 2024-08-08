@@ -1,5 +1,5 @@
-import { Application, Container, Point, Size, Sprite } from 'pixi.js';
-import { getScaleFactor } from '../utils';
+import { Container, Point, Size, Sprite } from 'pixi.js';
+import { getScaleFactor } from '../utils/utils';
 import BubbleShooterGamePlayModel from './BubbleShooterGamePlayModel';
 import { TrajectoryLayer } from './TrajectoryLayer';
 import WeaponBubbleModel from './WeaponBubbleModel';
@@ -9,13 +9,13 @@ import { TileData, TileGrid } from './bubbleLayout/model/TileGrid';
 import { getAngleBetweenTwoPoints, radToDeg } from './utils';
 
 export class CannonContainer extends Container {
-    private app: Application;
+    private layerSize: Size;
     private bottomBase: Sprite = null;
     trajectory: TrajectoryLayer;
 
 
-    init(app: Application, dependency: ICannonUIIDependencies) {
-        this.app = app;
+    init(layerSize: Size, dependency: ICannonUIIDependencies) {
+        this.layerSize = layerSize;
         this.dependency = dependency;
         this.weaponBubbleModel = dependency.gameModel.weaponBubbleModel;
 
@@ -36,7 +36,7 @@ export class CannonContainer extends Container {
         this.bottomBase = Sprite.from('bottom_base');
         this.bottomBase.anchor.set(0.5, 0.5);
         this.bottomBase.scale.set(1 * getScaleFactor());
-        this.bottomBase.position = new Point(this.app.screen.width * 0.5, this.app.screen.height - this.bottomBase.height * 0.5);
+        this.bottomBase.position = new Point(this.layerSize.width * 0.5, this.layerSize.height - this.bottomBase.height * 0.5);
         this.addChild(this.bottomBase);
 
         this.renderCanonWeapon();
@@ -45,7 +45,7 @@ export class CannonContainer extends Container {
 
     private renderCanonWeapon() {
         const bubble = this.weaponBubble.sprite as BubbleSprite;
-        bubble.position = new Point(this.app.screen.width * 0.5, this.app.screen.height - this.bottomBase.height);
+        bubble.position = new Point(this.layerSize.width * 0.5, this.layerSize.height - this.bottomBase.height);
         bubble.setScale(1 * getScaleFactor());
         bubble.setAnchor(new Point(0.5, 0.5));
         this.addChild(bubble);

@@ -1,11 +1,11 @@
-import { Sprite, Application, Texture } from 'pixi.js';
+import { Size, Sprite, Texture } from 'pixi.js';
 
 class Background extends Sprite {
-    private app: Application;
+    private layerSize: Size;
 
-    constructor(app: Application) {
+    constructor(layerSize: Size) {
         super();
-        this.app = app;
+        this.layerSize = layerSize;
         this.texture = Texture.from('background'); // Ensure the texture is set
         this.initBG();
     }
@@ -18,21 +18,21 @@ class Background extends Sprite {
          * If the preview is landscape, fill the width of the screen
          * and apply horizontal scale to the vertical scale for a uniform fit.
          */
-        if (this.app.screen.width > this.app.screen.height) {
-            this.width = this.app.screen.width * 1.2;
+        if ( this.layerSize.width >  this.layerSize.height) {
+            this.width =  this.layerSize.width * 1.2;
             this.scale.y = this.scale.x;
         } else {
             /**
              * If the preview is square or portrait, then fill the height of the screen instead
              * and apply the scaling to the horizontal scale accordingly.
              */
-            this.height = this.app.screen.height * 1.2;
+            this.height =  this.layerSize.height * 1.2;
             this.scale.x = this.scale.y;
         }
 
         // Position the background sprite in the center of the stage.
-        this.x = this.app.screen.width / 2;
-        this.y = this.app.screen.height / 2;
+        this.x =  this.layerSize.width / 2;
+        this.y =  this.layerSize.height / 2;
     }
 }
 

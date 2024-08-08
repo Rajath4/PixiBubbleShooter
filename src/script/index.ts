@@ -4,8 +4,8 @@ import { Application, Renderer, Assets, Container, Sprite } from 'pixi.js';
 import * as PIXI from "pixi.js";
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin";
+import { GameScene } from './GameScene';
 
-import { GamePlayContainer } from './GamePlayContainer';
 
 async function preload() {
     // Create an array of asset data to load.
@@ -14,14 +14,11 @@ async function preload() {
         { alias: 'cannon', src: 'assets/img/textures/Cannon.png' },
         { alias: 'bubble', src: 'assets/img/textures/bobble_base.png' },
         { alias: 'bubble_shine', src: 'assets/img/textures/bubble_shine.png' },
-        { alias: 'fish4', src: 'https://pixijs.com/assets/tutorials/fish-pond/fish4.png' },
-        { alias: 'fish5', src: 'https://pixijs.com/assets/tutorials/fish-pond/fish5.png' },
-        { alias: 'overlay', src: 'https://pixijs.com/assets/tutorials/fish-pond/wave_overlay.png' },
-        { alias: 'displacement', src: 'https://pixijs.com/assets/tutorials/fish-pond/displacement_map.png' },
         { alias: 'dead_line', src: 'assets/img/textures/dead_line.png' },
         { alias: 'bottom_base', src: 'assets/img/textures/Bottom Panel Base.png' },
         { alias: 'top_header', src: 'assets/img/textures/ui/Top Panel.png' },
         { alias: "score_panel", src: "assets/img/textures/ui/score panel.png" },
+        {alias: "play_again_button", src: "assets/img/textures/ui/play_again_btn.png"},
     ];
 
     // Load the assets defined above.
@@ -89,9 +86,9 @@ async function preload() {
 
     await preload();
 
-    const gamePlayContainer = new GamePlayContainer();
-    gamePlayContainer.init(app);
-    app.stage.addChild(gamePlayContainer);
+    const gameScene = new GameScene();
+    gameScene.init(app);
+    app.stage.addChild(gameScene);
 
     window.addEventListener('resize', resizeApp);
     resizeApp();  // Call immediately to set initial sizes

@@ -3,7 +3,7 @@ import { StageAnimationLayer } from "../../animation/StageAnimationLayer";
 import { BubbleSprite } from "../../model/BubbleSprite";
 import { TileGridContents, TileIndex, TileStatus, TileGrid, IBubbleSprite } from "../../model/TileGrid";
 import TileGridModel from "../../model/TileGridModel";
-import { delay } from "../../../../utils";
+import { delay } from "../../../../utils/utils";
 
 
 export default class BubbleDropController {

@@ -1,20 +1,20 @@
-import { Sprite, Application, Point, Texture } from 'pixi.js';
+import { Point, Size, Sprite, Texture } from 'pixi.js';
 
 class DeadLine extends Sprite {
-    private app: Application;
+    private layerSize:Size;
     private deadLinePositionY: number;
 
-    constructor(app: Application) {
+    constructor(layerSize:Size) {
         super();
-        this.app = app;
+        this.layerSize = layerSize;
         this.texture = Texture.from('dead_line');
         this.initDeadLine();
     }
 
     private initDeadLine() {
-        this.deadLinePositionY = this.app.screen.height * 0.75;
+        this.deadLinePositionY =  this.layerSize.height * 0.75;
         this.position = new Point(0, this.deadLinePositionY);
-        this.width = this.app.screen.width;
+        this.width =  this.layerSize.width;
         this.tint = 0xff0000;
         this.alpha = 0.3;
     }

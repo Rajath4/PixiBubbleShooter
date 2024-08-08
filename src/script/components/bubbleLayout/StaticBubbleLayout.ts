@@ -1,12 +1,12 @@
-import { Application, Color, Container, Point, Size, Sprite } from "pixi.js";
+import { Container, Point, Size } from "pixi.js";
+import { getScaleFactor } from "../../utils/utils";
 import { ColorBubbleData } from "./model/Bubble";
 import { BubbleFactoryController } from "./model/BubbleFactoryController";
+import { BubbleSprite } from "./model/BubbleSprite";
 import { BubbleType } from "./model/LayoutInterface";
-import { TileData, TileStatus, Tile } from "./model/TileGrid";
+import { Tile, TileData, TileStatus } from "./model/TileGrid";
 import TileGridDataModel from "./model/TileGridDataModel";
 import TileGridModel from "./model/TileGridModel";
-import { getScaleFactor } from "../../utils";
-import { BubbleSprite } from "./model/BubbleSprite";
 
 export const bubbleColorsInLayout = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'];
 
@@ -37,11 +37,9 @@ export function getDummyLayout(): any[][] {
 }
 
 export class StaticBubbleLayout extends Container{
-    private app: Application;
 
-    init(app: Application,layoutPrefilledContentData: TileData[][], isStartWithShifted: boolean, layerSize: Size, tileGridModel: TileGridModel, bubbleFactoryController: BubbleFactoryController) {
+    init(layoutPrefilledContentData: TileData[][], isStartWithShifted: boolean, layerSize: Size, tileGridModel: TileGridModel, bubbleFactoryController: BubbleFactoryController) {
         this._layerSize = layerSize;
-        this.app = app;
 
         this.removeChildren();
 

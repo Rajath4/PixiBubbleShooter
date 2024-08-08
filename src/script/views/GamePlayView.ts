@@ -1,43 +1,54 @@
-import { Application, Color, Container, Point, Sprite } from "pixi.js";
-import StageGamePlayLayerDependencyProvider from "./StageGamePlayLayerDependencyProvider";
-import { UIContainer } from "./UIContainer";
-import BubbleShooterGamePlayModel from "./components/BubbleShooterGamePlayModel";
-import { CannonContainer } from "./components/Cannon";
-import { DynamicBubbleLayout } from "./components/bubbleLayout/DynamicBubbleLayout";
-import { IWeaponBubbleImpactInfo } from "./components/bubbleLayout/GamePlayEngineModelInterfaces";
-import { ObserverHandler } from "./components/bubbleLayout/ObserverHandler";
-import { getDummyLayout } from "./components/bubbleLayout/StaticBubbleLayout";
-import { BubbleFactoryController } from "./components/bubbleLayout/model/BubbleFactoryController";
-import { BubbleType } from "./components/bubbleLayout/model/LayoutInterface";
-import TileGridModel from "./components/bubbleLayout/model/TileGridModel";
-import { getDiagonalLengthOfRectangle } from "./components/utils";
-import { designResolution } from "./config";
-import Background from "./components/Background";
-import DeadLine from "./components/DeadLine";
+import { Application, Container, Point, Size } from "pixi.js";
+import StageGamePlayLayerDependencyProvider from "../StageGamePlayLayerDependencyProvider";
+import Background from "../components/Background";
+import BubbleShooterGamePlayModel from "../components/BubbleShooterGamePlayModel";
+import { CannonContainer } from "../components/Cannon";
+import DeadLine from "../components/DeadLine";
+import { UIContainer } from "../components/UIContainer";
+import { DynamicBubbleLayout } from "../components/bubbleLayout/DynamicBubbleLayout";
+import { IWeaponBubbleImpactInfo } from "../components/bubbleLayout/GamePlayEngineModelInterfaces";
+import { ObserverHandler } from "../components/bubbleLayout/ObserverHandler";
+import { getDummyLayout } from "../components/bubbleLayout/StaticBubbleLayout";
+import { BubbleFactoryController } from "../components/bubbleLayout/model/BubbleFactoryController";
+import { BubbleType } from "../components/bubbleLayout/model/LayoutInterface";
+import TileGridModel from "../components/bubbleLayout/model/TileGridModel";
+import { getDiagonalLengthOfRectangle } from "../components/utils";
+import { designResolution } from "../config";
 
-export class GamePlayContainer extends Container {
+export type GameResultCallBack = (isWon: boolean, sessionScore: number) => void;
+
+
+
+export class GamePlayView extends Container {
     private app: Application;
     private cannon: CannonContainer;
     private bubbleLayoutLayer: DynamicBubbleLayout;
     private uiLayer: UIContainer;
     private deadLine: DeadLine;
+    private layerSize: Size;
 
-    // constructor(app: Application) {
-    //     this.app = app;
-    //     this.container = new Container();
-    //     this.app.stage.addChild(this.container);
-    // }
+    private onGameResult: GameResultCallBack;
 
-    init(app: Application) {
+    init(app: Application, layerSize: Size, onGameResult: GameResultCallBack) {
         this.app = app;
+        this.layerSize = layerSize;
 
-        const layerSize = { width: this.app.screen.width, height: this.app.screen.height };
+        this.children.forEach(child => {
+            child.destroy({ children: true, texture: true });
+        });
+
+        this.removeAllListeners();
+        this.removeChildren();
+
+        this.onGameResult = onGameResult;
+
         this.velocityOfWeaponBubble = 2000 * (getDiagonalLengthOfRectangle(layerSize.width, layerSize.height) / designResolution.diagonal); //1000 is the velocity in design resolution.
 
         this.initBG();
 
         this.model = new BubbleShooterGamePlayModel();
-        const tileGridModel = new TileGridModel();
+
+        this.dependencyProvider = new StageGamePlayLayerDependencyProvider();
 
         const bubbleFactoryController = new BubbleFactoryController();
 
@@ -47,8 +58,8 @@ export class GamePlayContainer extends Container {
         this.dependencyProvider.init(this, this.bubbleLayoutLayer, this.cannon, this.model, layerSize,
             this.convertBubbleLayerToGameLayer.bind(this), this.convertGameLayerToBubbleLayer.bind(this), bubbleFactoryController);
 
-        this.bubbleLayoutLayer.initLayout(this.app, getDummyLayout(), false, layerSize, tileGridModel, bubbleFactoryController, this._runtimeTempScoreUpdateObserver);
-        this.cannon.init(this.app, this.dependencyProvider.getCannonDependency());
+        this.bubbleLayoutLayer.initLayout(getDummyLayout(), false, layerSize, this.model.tileGridModel, bubbleFactoryController, this._runtimeTempScoreUpdateObserver);
+        this.cannon.init(layerSize, this.dependencyProvider.getCannonDependency());
         this.model.init(this.dependencyProvider.getGameModelDependency());
 
         this.cannon.initCannon();
@@ -67,57 +78,62 @@ export class GamePlayContainer extends Container {
     }
 
     private initTouchListeners() {
-        this.app.canvas.addEventListener('touchstart', (event: TouchEvent) => {
-            this.onTouchStartReceived(new Point(event.touches[0].clientX, event.touches[0].clientY));
-        });
+        this.app.canvas.addEventListener('touchstart',this.onTouchStartReceived);
+        this.app.canvas.addEventListener('touchmove', this.onTouchMoveReceived);
+        this.app.canvas.addEventListener('touchend', this.onTouchEndReceived);
+    }
 
-        this.app.canvas.addEventListener('touchmove', (event: TouchEvent) => {
-            this.onTouchMoveReceived(new Point(event.touches[0].clientX, event.touches[0].clientY));
-        });
-
-        this.app.canvas.addEventListener('touchend', (event: TouchEvent) => {
-            this.onTouchEndReceived(new Point(event.changedTouches[0].clientX, event.changedTouches[0].clientY));
-        });
+    private removeTouchListeners() {
+        this.app.canvas.removeEventListener('touchstart', this.onTouchStartReceived);
+        this.app.canvas.removeEventListener('touchmove', this.onTouchMoveReceived);
+        this.app.canvas.removeEventListener('touchend', this.onTouchEndReceived);
     }
 
     private initDeadLine() {
-        this.deadLine = new DeadLine(this.app);
+        this.deadLine = new DeadLine(this.layerSize);
         this.addChild(this.deadLine);
     }
 
     private initUILayer() {
-        this.uiLayer = new UIContainer(this.app);
+        this.uiLayer = new UIContainer(this.layerSize);
         this.addChild(this.uiLayer);
         this.uiLayer.zIndex = 300;
     }
 
     private initBG() {
-        const background = new Background(this.app);
+        const background = new Background(this.layerSize);
         this.addChild(background);
     }
 
-    onTouchStartReceived(tp: Point) {
+    onTouchStartReceived = (event: TouchEvent) => {
+        const tp = new Point(event.touches[0].clientX, event.touches[0].clientY);
         if (this.isCannonActive()) {
             this.cannon.onTouchStart(tp);
         }
     }
 
-    onTouchMoveReceived(tp: Point) {
+    onTouchMoveReceived = (event: TouchEvent) => {
+        const tp = new Point(event.touches[0].clientX, event.touches[0].clientY);
         if (this.isCannonActive()) {
             this.cannon.onTouchMove(tp);
         }
     }
 
-    async onTouchEndReceived(tp: Point): Promise<IWeaponBubbleImpactInfo> {
+    onTouchEndReceived = (event: TouchEvent) => {
+        const tp = new Point(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
         if (!this.isCannonActive()) {
-            return null;
+            return;
         }
 
         const isCanonHavingValidRotation = this.cannon.onTouchEnd(tp);
         if (!isCanonHavingValidRotation) {
-            return null;
+            return;
         }
 
+        this.startWeaponBubbleAction(tp);
+    }
+
+    private async startWeaponBubbleAction(tp: Point) {
         const weaponBubbleContent = this.cannon.weaponBubble.content;
         this.cannon.onWeaponBubblePopFromCannon(this);
 
@@ -129,10 +145,9 @@ export class GamePlayContainer extends Container {
         console.error('weaponBubbleImpactInfo ', weaponBubbleImpactInfo)
         await this.cannon.weaponBubble.moveWeaponBubble(this.velocityOfWeaponBubble, weaponBubbleImpactInfo);
         await this.onWeaponBubbleMovementComplete(weaponBubbleImpactInfo);
-
-
-        return weaponBubbleImpactInfo;
     }
+
+
 
     private isCannonActive() {
         return true;
@@ -155,15 +170,17 @@ export class GamePlayContainer extends Container {
         this.model.playerSessionDataModel.onScoreGain(weaponBubbleImpactInfo.score.total);
         this.uiLayer.setScore(this.model.playerSessionDataModel.getScore());
 
-        this.cannon.onWeaponBubbleActionComplete();
-
-
-        if(this.isWon()){
+        if (this.isWon()) {
             console.log("Game Won");
+            this.onGameResult(true, this.model.playerSessionDataModel.getScore());
 
-        }else if(this.isGameOver()){
+        } else if (this.isGameOver()) {
             console.log("Game Over");
-            await this.bubbleLayoutLayer.onGameOver();
+            this.emit('gameOver', true, 100)
+            // await this.bubbleLayoutLayer.onGameOver();
+            // this.onGameResult(false,this.model.playerSessionDataModel.getScore());
+        } else {
+            this.cannon.onWeaponBubbleActionComplete();
         }
 
         /**TESTING CODE START*/
@@ -188,13 +205,19 @@ export class GamePlayContainer extends Container {
     private isWon() {
         return this.bubbleLayoutLayer.getTileGridModel().isGridEmpty();
     }
-    
+
+    destroy(options?: any) {
+        this.removeTouchListeners();
+        // Clean up any event listeners or references
+        this.onGameResult = null; // Nullify the callback
+        super.destroy(options);
+    }
 
     private velocityOfWeaponBubble = 1000;
     private model: BubbleShooterGamePlayModel = null;
 
     private _runtimeTempScoreUpdateObserver: ObserverHandler = new ObserverHandler();
-    private dependencyProvider: StageGamePlayLayerDependencyProvider = new StageGamePlayLayerDependencyProvider();
+    private dependencyProvider: StageGamePlayLayerDependencyProvider;
 
 
 }

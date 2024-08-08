@@ -7,5 +7,6 @@ export function getScaleFactor() {
 }
 
 export async function delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(resolve => resolve);
+    // return new Promise(resolve => setTimeout(resolve, ms));
 }

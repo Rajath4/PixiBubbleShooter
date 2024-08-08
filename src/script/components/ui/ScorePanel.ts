@@ -1,13 +1,13 @@
-import { Application, Container, Sprite, Text } from 'pixi.js';
+import { Container, Size, Sprite, Text } from 'pixi.js';
 
 class ScorePanel extends Container {
-    private app: Application;
+    private layerSize: Size;
     private scoreText: Text;
     private scorePanel: Sprite;
 
-    constructor(app: Application) {
+    constructor(layerSize: Size) {
         super();
-        this.app = app;
+        this.layerSize = layerSize;
         this.initScorePanel();
         this.initScoreText();
     }
@@ -15,7 +15,7 @@ class ScorePanel extends Container {
     private initScorePanel() {
         this.scorePanel = Sprite.from('score_panel');
         this.scorePanel.anchor.set(0.5, 0.5);
-        this.scorePanel.position.set(this.app.screen.width * 0.5, this.scorePanel.height * 0.6);
+        this.scorePanel.position.set( this.layerSize.width * 0.5, this.scorePanel.height * 0.6);
         this.addChild(this.scorePanel);
     }
 
@@ -31,7 +31,7 @@ class ScorePanel extends Container {
             }
         })
         this.scoreText.anchor.set(0.5, 0.5);
-        this.scoreText.position.set(this.app.screen.width * 0.5,  this.scorePanel.height * 0.6);
+        this.scoreText.position.set( this.layerSize.width * 0.5,  this.scorePanel.height * 0.6);
         this.addChild(this.scoreText);
     }
 

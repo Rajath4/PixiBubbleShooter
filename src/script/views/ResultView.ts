@@ -1,13 +1,17 @@
-import { Application, Color, Container, Text, Texture } from "pixi.js";
-import Background from "./components/Background";
-import { TextButton } from "./generic/components/TextButton";
+import { Color, Container, Size, Text, Texture } from "pixi.js";
+import Background from "../components/Background";
+import { TextButton } from "../generic/components/TextButton";
+
+type PlayAgainCallBack = () => void;
 
 export class ResultView extends Container {
-    private app: Application;
+    private layerSize: Size;
+    private playAgainCallBack:PlayAgainCallBack;
 
 
-    init(app: Application, isWon: boolean, sessionScore: number) {
-        this.app = app;
+    init(layerSize: Size, isWon: boolean, sessionScore: number,playAgainCallBack:PlayAgainCallBack) {
+        this.layerSize = layerSize;
+        this.playAgainCallBack = playAgainCallBack;
 
         this.initBG();
         this.initPlayAgainButton();
@@ -18,7 +22,7 @@ export class ResultView extends Container {
     }
 
     private initBG() {
-        const background = new Background(this.app);
+        const background = new Background(this.layerSize);
         background.tint = new Color(0xB6B6B4);
         this.addChild(background);
     }
@@ -27,8 +31,9 @@ export class ResultView extends Container {
         const playAgainButton = new TextButton(Texture.from('play_again_button'), 'Play Again', 64, 0xfff8e1);
         playAgainButton.onClick(() => {
             console.log('Play again button clicked');
+            this.playAgainCallBack();
         });
-        playAgainButton.setPosition(this.app.screen.width * 0.5, this.app.screen.height * 0.75);
+        playAgainButton.setPosition( this.layerSize.width * 0.5,  this.layerSize.height * 0.75);
         this.addChild(playAgainButton);
     }
 
@@ -43,7 +48,7 @@ export class ResultView extends Container {
             }
         });
         wonText.anchor.set(0.5);
-        wonText.position.set(this.app.screen.width * 0.5, this.app.screen.height * 0.25);
+        wonText.position.set( this.layerSize.width * 0.5,  this.layerSize.height * 0.25);
         this.addChild(wonText);
     }
 
@@ -58,7 +63,7 @@ export class ResultView extends Container {
             }
         });
         lostText.anchor.set(0.5);
-        lostText.position.set(this.app.screen.width * 0.5, this.app.screen.height * 0.25);
+        lostText.position.set( this.layerSize.width * 0.5,  this.layerSize.height * 0.25);
         this.addChild(lostText);
     }
 
@@ -73,7 +78,7 @@ export class ResultView extends Container {
             }
         });
         scoreInfo.anchor.set(0.5);
-        scoreInfo.position.set(this.app.screen.width * 0.5, this.app.screen.height * 0.5);
+        scoreInfo.position.set( this.layerSize.width * 0.5,  this.layerSize.height * 0.5);
         this.addChild(scoreInfo);
     }
 
@@ -88,8 +93,13 @@ export class ResultView extends Container {
             }
         });
         playAgainDescription.anchor.set(0.5);
-        playAgainDescription.position.set(this.app.screen.width * 0.5, this.app.screen.height * 0.65);
+        playAgainDescription.position.set( this.layerSize.width * 0.5,  this.layerSize.height * 0.65);
         this.addChild(playAgainDescription);
     }
 
+    destroy(options?: any) {
+        // Clean up any event listeners or references
+        this.playAgainCallBack = null; // Nullify the callback
+        super.destroy(options);
+    }
 }

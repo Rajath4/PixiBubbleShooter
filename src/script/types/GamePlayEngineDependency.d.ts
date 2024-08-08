@@ -1,8 +1,8 @@
 import { Point } from "pixi.js";
-import { Rect } from "./bubbleLayout/controllers/layoutMovement/DynamicBubbleLayoutMovementController";
-import { DynamicBubbleLayout } from "./bubbleLayout/DynamicBubbleLayout";
-import { BubbleFactoryController } from "./bubbleLayout/model/BubbleFactoryController";
-import WeaponBubble from "./WeaponBubble";
+import { Rect } from "../components/bubbleLayout/controllers/layoutMovement/DynamicBubbleLayoutMovementController";
+import { DynamicBubbleLayout } from "../components/bubbleLayout/DynamicBubbleLayout";
+import { BubbleFactoryController } from "../components/bubbleLayout/model/BubbleFactoryController";
+import WeaponBubble from "../components/WeaponBubble";
 
 export interface IGameModelDependency {
     convertBubbleLayerToGameLayer: (pos: Point) => Point;
@@ -31,4 +31,9 @@ export interface ITurnStartInfo {
     isCurrentPlayer: boolean;
     currentRound: number;
     isStartOfRound: boolean;
+}
+
+export interface ILayerSize{
+    width:number;
+    height:number;
 }

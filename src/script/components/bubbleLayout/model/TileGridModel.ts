@@ -123,6 +123,7 @@ export default class TileGridModel {
     * @param {String} bubbleColor Bubble Color of the bubble
     */
     updateTileContent(tileIndex: TileIndex, content: TileContent) {
+        console.error("AAA TEST updateTileContent", new Date().getTime());
         const tile = this.getTile(tileIndex);
         if (tile.tileStatus === TileStatus.EMPTY) { //TODO: HANDLE ME
             tile.tileStatus = TileStatus.OCCUPIED;

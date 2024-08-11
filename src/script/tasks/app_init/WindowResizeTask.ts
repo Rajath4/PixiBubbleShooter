@@ -23,9 +23,12 @@ export class WindowResizeTask extends Task {
             this.app.renderer.canvas.style.width = `${newWidth}px`;
             // app.renderer.canvas.style.height = `${newHeight}px`;
 
-            // Center the canvas horizontally (add borders on the left and right)
-            this.app.renderer.canvas.style.marginLeft = `${(window.innerWidth - newWidth) / 2}px`;
+            // Center the canvas horizontally by setting equal margins on left and right
+            const horizontalMargin = (window.innerWidth - newWidth) / 2;
+            this.app.renderer.canvas.style.marginLeft = `${horizontalMargin}px`;
+            this.app.renderer.canvas.style.marginRight = `${horizontalMargin}px`;
             this.app.renderer.canvas.style.marginTop = '0px';
+
             this.app.renderer.resize(newWidth, newHeight);
         }
     }
@@ -33,7 +36,7 @@ export class WindowResizeTask extends Task {
     async execute(): Promise<void> {
         window.addEventListener('resize', this.resizeApp);
         this.resizeApp();  // Call immediately to set initial sizes
-    
+
         return Promise.resolve();
     }
 }

@@ -1,4 +1,4 @@
-import { Application, Container, FederatedPointerEvent, Point, Size } from "pixi.js";
+import { Container, FederatedPointerEvent, Point, Size } from "pixi.js";
 import StageGamePlayLayerDependencyProvider from "../StageGamePlayLayerDependencyProvider";
 import Background from "../components/Background";
 import BubbleShooterGamePlayModel from "../components/BubbleShooterGamePlayModel";
@@ -11,7 +11,6 @@ import { ObserverHandler } from "../components/bubbleLayout/ObserverHandler";
 import { getDummyLayout } from "../components/bubbleLayout/StaticBubbleLayout";
 import { BubbleFactoryController } from "../components/bubbleLayout/model/BubbleFactoryController";
 import { BubbleType } from "../components/bubbleLayout/model/LayoutInterface";
-import TileGridModel from "../components/bubbleLayout/model/TileGridModel";
 import { getDiagonalLengthOfRectangle } from "../components/utils";
 import { designResolution } from "../config";
 
@@ -133,7 +132,7 @@ export class GamePlayView extends Container {
         if (!isCanonHavingValidRotation) {
             return;
         }
-
+        this.interactive = false;
         this.startWeaponBubbleAction(tp);
     }
 
@@ -185,21 +184,8 @@ export class GamePlayView extends Container {
             // this.onGameResult(false,this.model.playerSessionDataModel.getScore());
         } else {
             this.cannon.onWeaponBubbleActionComplete();
+            this.interactive = true;
         }
-
-        /**TESTING CODE START*/
-        // const fallingBubbles = new FallingBubblesFinder().getFallingBubbles(this.bubbleLayoutLayer.tiles, this.bubbleLayoutLayer.layoutVisibilityController.getLastVisibleRowIndex());
-
-        // if (fallingBubbles.bubbles.length > 0) {
-        //     console.error(fallingBubbles);
-        //     throw new Error("Falling bubbles found");
-        // }
-        /**TESTING CODE END*/
-
-        // await this.bubbleLayoutLayer.layoutVisibilityController.switchRowIfNeeded();
-
-
-        // this.currentStageState = EachRoundGamePlayStageStates.weaponBubbleIsReadyToFire;
     }
 
     private isGameOver() {

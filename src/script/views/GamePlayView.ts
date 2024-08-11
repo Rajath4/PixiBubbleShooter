@@ -1,4 +1,4 @@
-import { Application, Container, Point, Size } from "pixi.js";
+import { Application, Container, FederatedPointerEvent, Point, Size } from "pixi.js";
 import StageGamePlayLayerDependencyProvider from "../StageGamePlayLayerDependencyProvider";
 import Background from "../components/Background";
 import BubbleShooterGamePlayModel from "../components/BubbleShooterGamePlayModel";
@@ -75,18 +75,19 @@ export class GamePlayView extends Container {
         this.initTouchListeners();
         this.initDeadLine();
         this.initUILayer();
+        this.interactive = true;
     }
 
     private initTouchListeners() {
-        this.app.canvas.addEventListener('touchstart',this.onTouchStartReceived);
-        this.app.canvas.addEventListener('touchmove', this.onTouchMoveReceived);
-        this.app.canvas.addEventListener('touchend', this.onTouchEndReceived);
+        this.on('pointerdown', this.onTouchStartReceived);
+        this.on('pointermove', this.onTouchMoveReceived);
+        this.on('pointerup', this.onTouchEndReceived);
     }
 
     private removeTouchListeners() {
-        this.app.canvas.removeEventListener('touchstart', this.onTouchStartReceived);
-        this.app.canvas.removeEventListener('touchmove', this.onTouchMoveReceived);
-        this.app.canvas.removeEventListener('touchend', this.onTouchEndReceived);
+        this.off('pointerdown', this.onTouchStartReceived);
+        this.off('pointermove', this.onTouchMoveReceived);
+        this.off('pointerup', this.onTouchEndReceived);
     }
 
     private initDeadLine() {
@@ -105,22 +106,27 @@ export class GamePlayView extends Container {
         this.addChild(background);
     }
 
-    onTouchStartReceived = (event: TouchEvent) => {
-        const tp = new Point(event.touches[0].clientX, event.touches[0].clientY);
+    private getTouchPoint(event: FederatedPointerEvent) {
+        const globalTp = new Point(event.global.x, event.global.y);
+        return this.toLocal(globalTp);
+    }
+
+    onTouchStartReceived = (event: FederatedPointerEvent) => {
+        const tp = this.getTouchPoint(event);
         if (this.isCannonActive()) {
             this.cannon.onTouchStart(tp);
         }
     }
 
-    onTouchMoveReceived = (event: TouchEvent) => {
-        const tp = new Point(event.touches[0].clientX, event.touches[0].clientY);
+    onTouchMoveReceived = (event: FederatedPointerEvent) => {
+        const tp = this.getTouchPoint(event);
         if (this.isCannonActive()) {
             this.cannon.onTouchMove(tp);
         }
     }
 
-    onTouchEndReceived = (event: TouchEvent) => {
-        const tp = new Point(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
+    onTouchEndReceived = (event: FederatedPointerEvent) => {
+        const tp = this.getTouchPoint(event);
         if (!this.isCannonActive()) {
             return;
         }

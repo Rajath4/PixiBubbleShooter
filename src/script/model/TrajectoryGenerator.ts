@@ -15,8 +15,6 @@ export default class TrajectoryGenerator {
         const bubbleTrajectory: Point[] = [];
         // var i = 0;//Debug TODO: Remove in production
 
-        console.error("Params", rayStartPoint, rayEndPoint, boundaryRect, tilesInGrid, lowRange, highRange, radiusOfBubble, nodeSpaceConverter);
-
         const bottomDiffuse = 2 * boundaryRect.y;
 
         while (true) {
@@ -25,7 +23,6 @@ export default class TrajectoryGenerator {
                 rayEndPoint,
                 boundaryRect
             );
-            console.error("nextDestinationPoint", nextDestinationPoint.point);
             const bubbleCollusionPoint = getCollusionPoint(rayStartPoint, nextDestinationPoint.point, tilesInGrid, radiusOfBubble, nodeSpaceConverter)
 
             if (bubbleCollusionPoint != undefined && bubbleCollusionPoint.x != -1 && bubbleCollusionPoint.y != -1) {

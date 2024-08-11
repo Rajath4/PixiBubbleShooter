@@ -29,7 +29,6 @@ export default class ClusterFinder {
   // Validates if a tile is not empty and is a color bubble
   private validateTile(tile: Tile): void {
     if (tile.tileStatus === TileStatus.EMPTY || tile.content.type !== BubbleType.ColorBubble) {
-      console.error('Tile is empty or not a color bubble', tile);
       throw new Error('Tile is empty or not a color bubble');
     }
   }

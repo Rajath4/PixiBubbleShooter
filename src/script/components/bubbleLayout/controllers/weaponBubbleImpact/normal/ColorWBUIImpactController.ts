@@ -25,8 +25,6 @@ export default class ColorWBUIImpactController extends WeaponBubbleUIImpactContr
     async removeCluster(bubbleCluster: TileIndex[]) {
         const actions: Promise<unknown>[] = [];
 
-        console.error("removeCluster");
-
         // GamePlaySFXController.instance.onBubbleGroupBurst();
 
         bubbleCluster.forEach((bubble, index) => {

@@ -62,7 +62,6 @@ export class StaticBubbleLayout extends Container{
     }
 
     protected renderBubbleLayoutContent(fromRow: number, toRow: number) {
-        console.error("TILE CONTENT RENDERED",this.tileGridModel.tiles);
         for (let i = fromRow; i <= toRow; i++) {
             for (let j = 0; j < this.tileGridModel.totalNumberOfColumnsInGrid; j++) {
                 const tile = this.tiles.get(i)[j];

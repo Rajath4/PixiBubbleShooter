@@ -20,7 +20,7 @@ import { WindowResizeTask } from './tasks/app_init/WindowResizeTask';
     appInitializer.add(new DebugStatInitTask(app));
     // appInitializer.add(new DrawCallInfoInitTask(app));
     appInitializer.add(new WindowResizeTask(app));
-    appInitializer.add(new AssetPreloadTask(app));
+    appInitializer.add(new AssetPreloadTask());
 
     await appInitializer.execute();
 

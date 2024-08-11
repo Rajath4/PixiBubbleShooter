@@ -5,7 +5,7 @@ import { BubbleFactoryController } from "./bubbleLayout/model/BubbleFactoryContr
 import { bubbleColorsInLayout } from "./bubbleLayout/StaticBubbleLayout";
 import WeaponBubble from "./WeaponBubble";
 
-export default class WeaponBubbleModel {
+export default class WeaponBubbleComputationModel {
     constructor() {
 
     }

@@ -3,13 +3,13 @@ import { IWeaponBubbleImpactInfo } from "../components/bubbleLayout/GamePlayEngi
 import { BubbleFactoryController } from "../components/bubbleLayout/model/BubbleFactoryController";
 import { BubbleType } from "../components/bubbleLayout/model/LayoutInterface";
 import TileGridModel from "../components/bubbleLayout/model/TileGridModel";
-import PostWeaponBubbleImpactSanityModel, { IPostWeaponBubbleImpactInfo } from "./PostWeaponBubbleImpactSanityModel";
 import WeaponBubble from "../components/WeaponBubble";
-import WeaponBubbleModel from "../components/WeaponBubbleModel";
-import ScoreComputationModel from "./ScoreComputationModel";
-import TrajectoryComputationModel from "./TrajectoryComputationModel";
+import WeaponBubbleComputationModel from "../components/WeaponBubbleComputationModel";
 import { IGameModelDependency } from "../types/GamePlayEngineDependency";
 import { PlayerSessionDataModel } from "./PlayerSessionDataModel";
+import PostWeaponBubbleImpactSanityModel, { IPostWeaponBubbleImpactInfo } from "./PostWeaponBubbleImpactSanityModel";
+import ScoreComputationModel from "./ScoreComputationModel";
+import TrajectoryComputationModel from "./TrajectoryComputationModel";
 import WeaponBubbleImpactComputationModel from "./weapon_impact/WeaponBubbleImpactComputationModel";
 
 export default class BubbleShooterGamePlayModel {
@@ -19,7 +19,7 @@ export default class BubbleShooterGamePlayModel {
         this._weaponBubbleImpactComputationModel = new WeaponBubbleImpactComputationModel();
         this._postWeaponBubbleImpactSanityModel = new PostWeaponBubbleImpactSanityModel();
         this._tileGridModel = new TileGridModel();
-        this.weaponBubbleModel = new WeaponBubbleModel();
+        this.weaponBubbleModel = new WeaponBubbleComputationModel();
 
         this._playerSessionDataModel = new PlayerSessionDataModel();
     }
@@ -77,11 +77,11 @@ export default class BubbleShooterGamePlayModel {
         return this._scoreComputationModel;
     }
 
-    get weaponBubbleModel(): WeaponBubbleModel {
+    get weaponBubbleModel(): WeaponBubbleComputationModel {
         return this._weaponBubbleModel;
     }
 
-    set weaponBubbleModel(value: WeaponBubbleModel) {
+    set weaponBubbleModel(value: WeaponBubbleComputationModel) {
         this._weaponBubbleModel = value;
     }
 
@@ -107,7 +107,7 @@ export default class BubbleShooterGamePlayModel {
 
     private _trajectoryComputationModel: TrajectoryComputationModel = null;
     private _scoreComputationModel: ScoreComputationModel;
-    private _weaponBubbleModel: WeaponBubbleModel;
+    private _weaponBubbleModel: WeaponBubbleComputationModel;
 
 
     private _weaponBubbleImpactComputationModel: WeaponBubbleImpactComputationModel;

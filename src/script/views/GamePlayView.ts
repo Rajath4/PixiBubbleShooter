@@ -1,5 +1,5 @@
 import { Container, FederatedPointerEvent, Point, Size } from "pixi.js";
-import StageGamePlayLayerDependencyProvider from "../StageGamePlayLayerDependencyProvider";
+import StageGamePlayLayerDependencyProvider from "../model/StageGamePlayLayerDependencyProvider";
 import Background from "../components/Background";
 import BubbleShooterGamePlayModel from "../model/BubbleShooterGamePlayModel";
 import { CannonContainer } from "../components/Cannon";

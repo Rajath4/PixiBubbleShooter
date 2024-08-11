@@ -1,9 +1,9 @@
 import { Container, Point, Size } from "pixi.js";
-import { DynamicBubbleLayout } from "./components/bubbleLayout/DynamicBubbleLayout";
-import { BubbleFactoryController } from "./components/bubbleLayout/model/BubbleFactoryController";
-import BubbleShooterGamePlayModel from "./model/BubbleShooterGamePlayModel";
-import { CannonContainer } from "./components/Cannon";
-import { ICannonUIIDependencies, IGameModelDependency } from "./types/GamePlayEngineDependency";
+import { DynamicBubbleLayout } from "../components/bubbleLayout/DynamicBubbleLayout";
+import { BubbleFactoryController } from "../components/bubbleLayout/model/BubbleFactoryController";
+import BubbleShooterGamePlayModel from "./BubbleShooterGamePlayModel";
+import { CannonContainer } from "../components/Cannon";
+import { ICannonUIIDependencies, IGameModelDependency } from "../types/GamePlayEngineDependency";
 
 export default class StageGamePlayLayerDependencyProvider {
     init(layoutNode: Container, bubbleLayoutLayer: DynamicBubbleLayout, cannon: CannonContainer, model: BubbleShooterGamePlayModel, layerSize: Size, convertBubbleLayerToGameLayer: (pos: Point) => Point, convertGameLayerToBubbleLayer: (pos: Point) => Point, bubbleFactoryController: BubbleFactoryController) {

@@ -1,5 +1,5 @@
 import { BubbleSprite } from "./BubbleSprite";
-import { Tile } from "./TileGrid";
+import { Tile } from "../../../types/BubbleGridInterfaces";
 
 
 function deepCloneMap(originalMap: Map<number, Tile[]>): Map<number, Tile[]> {

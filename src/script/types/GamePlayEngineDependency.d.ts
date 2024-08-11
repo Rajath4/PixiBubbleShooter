@@ -1,8 +1,9 @@
-import { Point } from "pixi.js";
-import { Rect } from "../components/bubbleLayout/controllers/layoutMovement/DynamicBubbleLayoutMovementController";
+import { Container, Point, Size } from "pixi.js";
 import { DynamicBubbleLayout } from "../components/bubbleLayout/DynamicBubbleLayout";
 import { BubbleFactoryController } from "../components/bubbleLayout/model/BubbleFactoryController";
 import WeaponBubble from "../components/WeaponBubble";
+import { TileGrid, TileData } from "./BubbleGridInterfaces";
+import BubbleShooterGamePlayModel from "../model/BubbleShooterGamePlayModel";
 
 export interface IGameModelDependency {
     convertBubbleLayerToGameLayer: (pos: Point) => Point;
@@ -36,4 +37,24 @@ export interface ITurnStartInfo {
 export interface ILayerSize{
     width:number;
     height:number;
+}
+
+export interface Rect{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+export interface ICannonUIIDependencies {
+    isFullTrajectory: boolean,
+    radiusOfBubble: number,
+    layerSize: Size,
+    tilesInGrid: TileGrid,
+    convertGameLayerToBubbleLayer: (pos: Point) => Point,
+    showVisualRepOfWeaponBubble: (pos: Point, data: TileData) => void,
+    disableVisualRepOfWeaponBubble: () => void,
+    layoutNode: Container,
+    gameModel: BubbleShooterGamePlayModel,
+    bubbleScaleFactor: number,
 }

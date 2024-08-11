@@ -1,6 +1,7 @@
-import { ColorBubbleData } from "../bubbleLayout/model/Bubble";
-import { BubbleType } from "../bubbleLayout/model/LayoutInterface";
-import { TileGrid, TileStatus, Tile } from "../bubbleLayout/model/TileGrid";
+
+import { ColorBubbleData } from "../../components/bubbleLayout/model/Bubble";
+import { BubbleType } from "../../components/bubbleLayout/model/LayoutInterface";
+import { TileGrid, TileStatus, Tile } from "../../types/BubbleGridInterfaces";
 import { getRandomItemFromListWithWeights } from "./RandomCalculator";
 
 /**

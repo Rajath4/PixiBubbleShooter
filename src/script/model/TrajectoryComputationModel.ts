@@ -1,6 +1,6 @@
 import { Point } from "pixi.js";
-import { ITrajectoryInfo } from "./bubbleLayout/GamePlayEngineModelInterfaces";
-import { TileGrid } from "./bubbleLayout/model/TileGrid";
+import { ITrajectoryInfo } from "../components/bubbleLayout/GamePlayEngineModelInterfaces";
+import { TileGrid } from "../types/BubbleGridInterfaces";
 import { ITrajectoryInfoDependency } from "../types/GamePlayEngineDependency";
 import TrajectoryGenerator from "./TrajectoryGenerator";
 

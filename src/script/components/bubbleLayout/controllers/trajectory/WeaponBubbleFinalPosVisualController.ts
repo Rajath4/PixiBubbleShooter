@@ -1,7 +1,7 @@
 import { Container, Point, Size } from "pixi.js";
 import { BubbleFactoryController } from "../../model/BubbleFactoryController";
 import { BubbleType } from "../../model/LayoutInterface";
-import { TileData } from "../../model/TileGrid";
+import { TileData } from "../../../../types/BubbleGridInterfaces";
 import TileGridDataModel from "../../model/TileGridDataModel";
 import TileGridModel from "../../model/TileGridModel";
 import { BubbleSprite } from "../../model/BubbleSprite";

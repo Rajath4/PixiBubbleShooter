@@ -1,5 +1,5 @@
 import { BubbleData } from "./Bubble";
-import { Tile } from "./TileGrid";
+import { Tile } from "../../../types/BubbleGridInterfaces";
 import TileGridModel from "./TileGridModel";
 
 export class BubbleModel {

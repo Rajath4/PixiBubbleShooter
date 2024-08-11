@@ -1,5 +1,5 @@
 import { Point } from "pixi.js";
-import { getDistanceBetweenTwoPoints } from "../utils";
+import { getDistanceBetweenTwoPoints } from "../../components/utils";
 
 /**
  * Get points between two specified points in a line.

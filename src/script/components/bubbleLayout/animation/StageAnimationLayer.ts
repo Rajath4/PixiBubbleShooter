@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 import { Container, Size } from "pixi.js";
-import { IBubbleSprite } from "../model/TileGrid";
+import { IBubbleSprite } from "../../../types/BubbleGridInterfaces";
 import { BubbleSprite } from '../model/BubbleSprite';
 
 const velocityOfFallingBubble = 5000;

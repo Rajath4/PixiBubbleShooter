@@ -1,6 +1,7 @@
 import { Point } from 'pixi.js';
-import { TileGrid, TileStatus } from '../bubbleLayout/model/TileGrid';
-import { getDistanceBetweenTwoPoints } from '../utils';
+import { getDistanceBetweenTwoPoints } from '../../components/utils';
+import { TileGrid, TileStatus } from '../../types/BubbleGridInterfaces';
+
 
 /**
  * Function returns collusin point if it happens anywhere in given line or else it will return {x:-1,y:-1}

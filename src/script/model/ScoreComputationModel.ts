@@ -1,5 +1,5 @@
-import { IWeaponBubbleImpactInfo, ScoreInfo } from "./bubbleLayout/GamePlayEngineModelInterfaces";
-import { WeaponBubbleActedTiles, TileGridContents } from "./bubbleLayout/model/TileGrid";
+import { IWeaponBubbleImpactInfo, ScoreInfo } from "../components/bubbleLayout/GamePlayEngineModelInterfaces";
+import { TileGridContents, WeaponBubbleActedTiles } from "../types/BubbleGridInterfaces";
 
 export default class ScoreComputationModel {
 

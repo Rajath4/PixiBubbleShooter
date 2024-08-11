@@ -1,6 +1,6 @@
 import { Point } from "pixi.js";
 import { BubbleType } from "./model/LayoutInterface";
-import { TileContent, TileIndex, WeaponBubbleActedTiles, TileGridContents } from "./model/TileGrid";
+import { TileContent, TileIndex, WeaponBubbleActedTiles, TileGridContents } from "../../types/BubbleGridInterfaces";
 
 export interface ScoreInfo {
     forPlacing: number;

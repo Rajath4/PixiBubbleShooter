@@ -1,7 +1,7 @@
 
 import { ColorBubbleData, RockBubbleData } from "./Bubble";
 import { BubbleSprite } from "./BubbleSprite";
-import { SpecialBubbleType } from "./TileGrid";
+import { SpecialBubbleType } from "../../../types/BubbleGridInterfaces";
 
 export class BubbleUIFactory  {
   

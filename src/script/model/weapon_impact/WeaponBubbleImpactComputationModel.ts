@@ -1,6 +1,7 @@
-import { BubbleType } from "../bubbleLayout/model/LayoutInterface";
-import { TileIndex, WeaponBubbleActedTiles } from "../bubbleLayout/model/TileGrid";
-import TileGridModel from "../bubbleLayout/model/TileGridModel";
+
+import { BubbleType } from "../../components/bubbleLayout/model/LayoutInterface";
+import TileGridModel from "../../components/bubbleLayout/model/TileGridModel";
+import { TileIndex, WeaponBubbleActedTiles } from "../../types/BubbleGridInterfaces";
 import ColorWBImpactComputationModel from "./ColorWBImpactComputationModel";
 import { IWeaponBubbleComputationModelDependency } from "./WeaponBubbleImpactComputationModelBase";
 

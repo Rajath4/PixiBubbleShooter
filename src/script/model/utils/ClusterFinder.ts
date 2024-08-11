@@ -1,7 +1,8 @@
-import { ColorBubbleData } from '../bubbleLayout/model/Bubble';
-import { BubbleType } from '../bubbleLayout/model/LayoutInterface';
-import { TileIndex, TileGrid, ColorBubbleActedTiles, Tile, TileStatus } from '../bubbleLayout/model/TileGrid';
-import { getNearByPosFromDirection } from './getNearByFromDirection';
+import { ColorBubbleData } from "../../components/bubbleLayout/model/Bubble";
+import { BubbleType } from "../../components/bubbleLayout/model/LayoutInterface";
+import { TileIndex, TileGrid, ColorBubbleActedTiles, Tile, TileStatus } from "../../types/BubbleGridInterfaces";
+import { getNearByPosFromDirection } from "./getNearByFromDirection";
+
 
 export default class ClusterFinder {
   // Finds and returns a complete cluster of tiles

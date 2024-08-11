@@ -1,8 +1,8 @@
 
+import { getWeaponBubbleColor } from "../model/utils/WeaponBubbleColorFinder";
 import { DynamicBubbleLayout } from "./bubbleLayout/DynamicBubbleLayout";
 import { BubbleFactoryController } from "./bubbleLayout/model/BubbleFactoryController";
 import { bubbleColorsInLayout } from "./bubbleLayout/StaticBubbleLayout";
-import { getWeaponBubbleColor } from "./utils/WeaponBubbleColorFinder";
 import WeaponBubble from "./WeaponBubble";
 
 export default class WeaponBubbleModel {

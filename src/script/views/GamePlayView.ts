@@ -1,7 +1,7 @@
 import { Container, FederatedPointerEvent, Point, Size } from "pixi.js";
 import StageGamePlayLayerDependencyProvider from "../StageGamePlayLayerDependencyProvider";
 import Background from "../components/Background";
-import BubbleShooterGamePlayModel from "../components/BubbleShooterGamePlayModel";
+import BubbleShooterGamePlayModel from "../model/BubbleShooterGamePlayModel";
 import { CannonContainer } from "../components/Cannon";
 import DeadLine from "../components/DeadLine";
 import { UIContainer } from "../components/UIContainer";
@@ -14,8 +14,6 @@ import { BubbleType } from "../components/bubbleLayout/model/LayoutInterface";
 import { getDiagonalLengthOfRectangle } from "../components/utils";
 import { designResolution } from "../config";
 
-export type GameResultCallBack = (isWon: boolean, sessionScore: number) => void;
-
 export class GamePlayView extends Container {
     private cannon: CannonContainer;
     private bubbleLayoutLayer: DynamicBubbleLayout;
@@ -27,35 +25,30 @@ export class GamePlayView extends Container {
     init(layerSize: Size) {
         this.layerSize = layerSize;
 
-        this.children.forEach(child => {
-            child.destroy({ children: true, texture: true });
-        });
+        // this.children.forEach(child => {
+        //     child.destroy({ children: true, texture: true });
+        // });
 
-        this.removeAllListeners();
-        this.removeChildren();
+        // this.removeAllListeners();
+        // this.removeChildren();
 
-        this.velocityOfWeaponBubble = 2000 * (getDiagonalLengthOfRectangle(layerSize.width, layerSize.height) / designResolution.diagonal); //1000 is the velocity in design resolution.
-
-        this.initBG();
+        this.velocityOfWeaponBubble = 2000 * (getDiagonalLengthOfRectangle(this.layerSize .width, this.layerSize .height) / designResolution.diagonal); //1000 is the velocity in design resolution.
 
         this.model = new BubbleShooterGamePlayModel();
-
         this.dependencyProvider = new StageGamePlayLayerDependencyProvider();
-
         const bubbleFactoryController = new BubbleFactoryController();
 
         this.bubbleLayoutLayer = new DynamicBubbleLayout();
         this.cannon = new CannonContainer();
 
-        this.dependencyProvider.init(this, this.bubbleLayoutLayer, this.cannon, this.model, layerSize,
+        this.dependencyProvider.init(this, this.bubbleLayoutLayer, this.cannon, this.model,this.layerSize ,
             this.convertBubbleLayerToGameLayer.bind(this), this.convertGameLayerToBubbleLayer.bind(this), bubbleFactoryController);
 
-        this.bubbleLayoutLayer.initLayout(getDummyLayout(), false, layerSize, this.model.tileGridModel, bubbleFactoryController, this._runtimeTempScoreUpdateObserver);
-        this.cannon.init(layerSize, this.dependencyProvider.getCannonDependency());
+        this.bubbleLayoutLayer.initLayout(getDummyLayout(), false, this.layerSize , this.model.tileGridModel, bubbleFactoryController, this._runtimeTempScoreUpdateObserver);
+        this.cannon.init(this.layerSize , this.dependencyProvider.getCannonDependency());
         this.model.init(this.dependencyProvider.getGameModelDependency());
 
         this.cannon.initCannon();
-
 
         this.addChild(this.cannon);
         this.addChild(this.bubbleLayoutLayer);
@@ -65,8 +58,11 @@ export class GamePlayView extends Container {
         this.bubbleLayoutLayer.zIndex = 10;
 
         this.initTouchListeners();
+
+        this.initBG();
         this.initDeadLine();
         this.initUILayer();
+      
         this.interactive = true;
     }
 
@@ -98,11 +94,6 @@ export class GamePlayView extends Container {
         this.addChild(background);
     }
 
-    private getTouchPoint(event: FederatedPointerEvent) {
-        const globalTp = new Point(event.global.x, event.global.y);
-        return this.toLocal(globalTp);
-    }
-
     private onTouchStartReceived = (event: FederatedPointerEvent) => {
         const tp = this.getTouchPoint(event);
         this.cannon.onTouchStart(tp);
@@ -126,31 +117,16 @@ export class GamePlayView extends Container {
 
     private async startWeaponBubbleAction(tp: Point) {
         const weaponBubbleContent = this.cannon.weaponBubble.content;
-        this.cannon.onWeaponBubblePopFromCannon(this);
+        this.cannon.onWeaponBubblePopFromCannon();
 
         const weaponBubbleImpactInfo: IWeaponBubbleImpactInfo = this.model.onWeaponBubbleFired(tp, this.cannon.weaponBubble, this.bubbleLayoutLayer.getTileGridModel().getClone());
         weaponBubbleImpactInfo.weaponBubbleContent = { type: BubbleType.ColorBubble, data: weaponBubbleContent };
 
-        // this.currentStageState = EachRoundGamePlayStageStates.weaponBubbleIsMoving;
-
-        console.error('weaponBubbleImpactInfo ', weaponBubbleImpactInfo)
         await this.cannon.weaponBubble.moveWeaponBubble(this.velocityOfWeaponBubble, weaponBubbleImpactInfo);
         await this.onWeaponBubbleMovementComplete(weaponBubbleImpactInfo);
     }
 
-
-    private convertBubbleLayerToGameLayer(position: Point) {
-        const worldPosition = this.bubbleLayoutLayer.toGlobal(position);
-        return this.toLocal(worldPosition);
-    }
-
-    private convertGameLayerToBubbleLayer(position: Point) {
-        const worldPosition = this.toGlobal(position);
-        return this.bubbleLayoutLayer.toLocal(worldPosition);
-    }
-
     private async onWeaponBubbleMovementComplete(weaponBubbleImpactInfo: IWeaponBubbleImpactInfo) {
-        // console.log("onWeaponBubbleMovementComplete" + new Date());
         await this.bubbleLayoutLayer.onWeaponBubbleMovementComplete(weaponBubbleImpactInfo);
 
         this.model.playerSessionDataModel.onScoreGain(weaponBubbleImpactInfo.score.total);
@@ -175,6 +151,21 @@ export class GamePlayView extends Container {
 
     private isWon() {
         return this.bubbleLayoutLayer.getTileGridModel().isGridEmpty();
+    }
+
+    private convertBubbleLayerToGameLayer(position: Point) {
+        const worldPosition = this.bubbleLayoutLayer.toGlobal(position);
+        return this.toLocal(worldPosition);
+    }
+
+    private convertGameLayerToBubbleLayer(position: Point) {
+        const worldPosition = this.toGlobal(position);
+        return this.bubbleLayoutLayer.toLocal(worldPosition);
+    }
+
+    private getTouchPoint(event: FederatedPointerEvent) {
+        const globalTp = new Point(event.global.x, event.global.y);
+        return this.toLocal(globalTp);
     }
 
     destroy(options?: any) {

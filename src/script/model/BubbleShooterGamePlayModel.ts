@@ -1,16 +1,16 @@
 import { Point } from "pixi.js";
-import { IWeaponBubbleImpactInfo } from "./bubbleLayout/GamePlayEngineModelInterfaces";
-import { BubbleFactoryController } from "./bubbleLayout/model/BubbleFactoryController";
-import { BubbleType } from "./bubbleLayout/model/LayoutInterface";
-import TileGridModel from "./bubbleLayout/model/TileGridModel";
+import { IWeaponBubbleImpactInfo } from "../components/bubbleLayout/GamePlayEngineModelInterfaces";
+import { BubbleFactoryController } from "../components/bubbleLayout/model/BubbleFactoryController";
+import { BubbleType } from "../components/bubbleLayout/model/LayoutInterface";
+import TileGridModel from "../components/bubbleLayout/model/TileGridModel";
 import PostWeaponBubbleImpactSanityModel, { IPostWeaponBubbleImpactInfo } from "./PostWeaponBubbleImpactSanityModel";
-import WeaponBubbleImpactComputationModel from "./weapon_impact/WeaponBubbleImpactComputationModel";
-import WeaponBubble from "./WeaponBubble";
-import WeaponBubbleModel from "./WeaponBubbleModel";
+import WeaponBubble from "../components/WeaponBubble";
+import WeaponBubbleModel from "../components/WeaponBubbleModel";
 import ScoreComputationModel from "./ScoreComputationModel";
 import TrajectoryComputationModel from "./TrajectoryComputationModel";
 import { IGameModelDependency } from "../types/GamePlayEngineDependency";
 import { PlayerSessionDataModel } from "./PlayerSessionDataModel";
+import WeaponBubbleImpactComputationModel from "./weapon_impact/WeaponBubbleImpactComputationModel";
 
 export default class BubbleShooterGamePlayModel {
     constructor() {

@@ -1,5 +1,5 @@
-import { WeaponBubbleActedTiles, TileGridContents } from "./bubbleLayout/model/TileGrid";
-import TileGridModel from "./bubbleLayout/model/TileGridModel";
+import { WeaponBubbleActedTiles, TileGridContents } from "../types/BubbleGridInterfaces";
+import TileGridModel from "../components/bubbleLayout/model/TileGridModel";
 import FallingBubblesFinder from "./utils/FallingBubblesFinder";
 
 export default class PostWeaponBubbleImpactSanityModel {

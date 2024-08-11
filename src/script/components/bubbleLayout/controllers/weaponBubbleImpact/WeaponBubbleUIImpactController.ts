@@ -1,7 +1,7 @@
 
 import { IWeaponBubbleImpactInfo } from "../../GamePlayEngineModelInterfaces";
 import { BubbleType } from "../../model/LayoutInterface";
-import { TileIndex } from "../../model/TileGrid";
+import { TileIndex } from "../../../../types/BubbleGridInterfaces";
 import { IWeaponBubbleUIImpactControllerDependency } from "./WeaponBubbleUIImpactControllerBase";
 import ColorWBUIImpactController from "./normal/ColorWBUIImpactController";
 

@@ -2,7 +2,7 @@ import { gsap } from "gsap";
 import { IWeaponBubbleImpactInfo } from "./bubbleLayout/GamePlayEngineModelInterfaces";
 import { ColorBubbleData } from "./bubbleLayout/model/Bubble";
 import { BubbleType } from "./bubbleLayout/model/LayoutInterface";
-import { BubbleContent, IBubbleSprite } from "./bubbleLayout/model/TileGrid";
+import { BubbleContent, IBubbleSprite } from "../types/BubbleGridInterfaces";
 import { getDistanceBetweenTwoPoints, getTimeRequiredToTravelSpecifiedDistance } from "./utils";
 
 
@@ -14,12 +14,10 @@ export default class WeaponBubble {
     moveWeaponBubble(velocityOfWeaponBubble: number, weaponBubbleImpactInfo: IWeaponBubbleImpactInfo): Promise<void> {
         return new Promise((resolve, reject) => {
             let bubbleCurrentPosition = this.getPosition();
-
-            // Create a GSAP timeline
             let timeline = gsap.timeline({
                 onComplete: () => {
                     resolve();
-                }  // This function will be called after all animations are complete
+                }  
             });
 
             // Loop through each point in the array
@@ -33,7 +31,7 @@ export default class WeaponBubble {
                 );
 
                 timeline.to(this.sprite, {
-                    duration: timeRequiredForMovement,  // Duration of each movement, adjust as necessary
+                    duration: timeRequiredForMovement, 
                     pixi: { x: point.x, y: point.y }
                 });
             });

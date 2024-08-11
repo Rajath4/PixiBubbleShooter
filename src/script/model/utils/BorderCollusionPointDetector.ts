@@ -1,6 +1,6 @@
 import { Point } from "pixi.js";
-import { Rect } from "../bubbleLayout/controllers/layoutMovement/DynamicBubbleLayoutMovementController";
-import { toFixedPrecisionOfAPoint, toFixedPrecision } from "../utils";
+import { toFixedPrecisionOfAPoint } from "../../components/utils";
+import { Rect } from "../../types/GamePlayEngineDependency";
 
 /*****Vector functions */
 /**

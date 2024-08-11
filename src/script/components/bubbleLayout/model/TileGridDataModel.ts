@@ -1,6 +1,6 @@
 import { bubbleColorsInLayout } from "../StaticBubbleLayout";
 import { BubbleType } from "./LayoutInterface";
-import { TileData, TileIndex } from "./TileGrid";
+import { TileData, TileIndex } from "../../../types/BubbleGridInterfaces";
 
 
 export default class TileGridDataModel {

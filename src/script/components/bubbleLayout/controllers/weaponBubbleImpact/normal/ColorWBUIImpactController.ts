@@ -2,7 +2,7 @@ import { IWeaponBubbleImpactInfo } from "../../../GamePlayEngineModelInterfaces"
 import { IRuntimeScoreUpdateInfo } from "../../../GamePlayGenericTypes";
 import { BubbleSprite } from "../../../model/BubbleSprite";
 import { BubbleType } from "../../../model/LayoutInterface";
-import { ColorBubbleActedTiles, TileIndex } from "../../../model/TileGrid";
+import { ColorBubbleActedTiles, TileIndex } from "../../../../../types/BubbleGridInterfaces";
 import WeaponBubbleUIImpactControllerBase from "../WeaponBubbleUIImpactControllerBase";
 
 export default class ColorWBUIImpactController extends WeaponBubbleUIImpactControllerBase {

@@ -1,7 +1,7 @@
 
 import { ColorBubbleData } from "./Bubble";
 import { BubbleModel } from "./BubbleModel";
-import { Tile } from "./TileGrid";
+import { Tile } from "../../../types/BubbleGridInterfaces";
 import TileGridModel from "./TileGridModel";
 
 export class ColorBubbleModel extends BubbleModel {

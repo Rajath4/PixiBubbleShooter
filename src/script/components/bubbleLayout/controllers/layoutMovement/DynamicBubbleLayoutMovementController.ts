@@ -1,13 +1,8 @@
 import { Container, Size } from "pixi.js";
-import { TileStatus, TileGrid } from "../../model/TileGrid";
+import { TileStatus, TileGrid } from "../../../../types/BubbleGridInterfaces";
 import TileGridModel from "../../model/TileGridModel";
+import { Rect } from "../../../../types/GamePlayEngineDependency";
 
-export interface Rect{
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-}
 
 export default class DynamicBubbleLayoutMovementController {
     init(dependency: IDynamicBubbleLayoutMovementControllerDependency) {

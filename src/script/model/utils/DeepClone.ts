@@ -1,6 +1,5 @@
-import { BubbleSprite } from "../bubbleLayout/model/BubbleSprite";
-import { Tile } from "../bubbleLayout/model/TileGrid";
-
+import { BubbleSprite } from "../../components/bubbleLayout/model/BubbleSprite";
+import { Tile } from "../../types/BubbleGridInterfaces";
 
 function deepCloneMap(originalMap: Map<number, Tile[]>): Map<number, Tile[]> {
     const clonedMap = new Map<number, Tile[]>();

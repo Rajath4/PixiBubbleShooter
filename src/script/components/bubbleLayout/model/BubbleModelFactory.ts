@@ -2,7 +2,7 @@
 import { ColorBubbleData, RockBubbleData } from "./Bubble";
 import { ColorBubbleModel } from "./ColorBubbleModel";
 import { RockBubbleModel } from "./RockBubbleModel";
-import { SpecialBubbleType } from "./TileGrid";
+import { SpecialBubbleType } from "../../../types/BubbleGridInterfaces";
 
 export class BubbleModelFactory {
     constructor() {

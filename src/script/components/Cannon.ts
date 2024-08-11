@@ -1,11 +1,10 @@
 import { Container, Point, Size, Sprite } from 'pixi.js';
+import { ICannonUIIDependencies } from '../types/GamePlayEngineDependency';
 import { getScaleFactor } from '../utils/utils';
-import BubbleShooterGamePlayModel from './BubbleShooterGamePlayModel';
 import { TrajectoryLayer } from './TrajectoryLayer';
 import WeaponBubbleModel from './WeaponBubbleModel';
 import { BubbleSprite } from './bubbleLayout/model/BubbleSprite';
 import { ColorBubbleModel } from './bubbleLayout/model/ColorBubbleModel';
-import { TileData, TileGrid } from './bubbleLayout/model/TileGrid';
 import { getAngleBetweenTwoPoints, radToDeg } from './utils';
 
 export class CannonContainer extends Container {
@@ -74,7 +73,7 @@ export class CannonContainer extends Container {
         return isCanonHavingValidRotation;
     }
 
-    onWeaponBubblePopFromCannon(stageLayerNode: Container) {
+    onWeaponBubblePopFromCannon() {
         const weaponBubblePos = this.weaponBubble.getPosition();
 
         const bubble = this.weaponBubble.sprite as BubbleSprite;
@@ -97,14 +96,9 @@ export class CannonContainer extends Container {
                 touchPoint,
                 this.getWorldPosition())
         );
-        console.error("Angle", angle);
 
         if (angle >= -160 && angle <= -30) {
             return true;
-
-            if (touchPoint.y > this.getWorldPosition().y) {
-                return true;
-            }
         }
         return false;
     }
@@ -130,15 +124,3 @@ export class CannonContainer extends Container {
     private dependency: ICannonUIIDependencies = null;
 }
 
-export interface ICannonUIIDependencies {
-    isFullTrajectory: boolean,
-    radiusOfBubble: number,
-    layerSize: Size,
-    tilesInGrid: TileGrid,
-    convertGameLayerToBubbleLayer: (pos: Point) => Point,
-    showVisualRepOfWeaponBubble: (pos: Point, data: TileData) => void,
-    disableVisualRepOfWeaponBubble: () => void,
-    layoutNode: Container,
-    gameModel: BubbleShooterGamePlayModel,
-    bubbleScaleFactor: number,
-}

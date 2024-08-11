@@ -1,7 +1,7 @@
 
 import { Container, Size } from "pixi.js";
 import { BubbleFactoryController } from "../model/BubbleFactoryController";
-import { TileIndex, TileContent, TileGrid } from "../model/TileGrid";
+import { TileIndex, TileContent, TileGrid } from "../../../types/BubbleGridInterfaces";
 import TileGridModel from "../model/TileGridModel";
 import { IBubbleDropControllerDependency } from "./drop/BubbleDropController";
 import { IDynamicBubbleLayoutMovementControllerDependency } from "./layoutMovement/DynamicBubbleLayoutMovementController";

@@ -1,6 +1,6 @@
 import { Color } from "pixi.js";
 import { ColorBubbleData, RockBubbleData } from "./Bubble";
-import { BubbleContent, SpecialBubbleType, SpecialBubbleContent } from "./TileGrid";
+import { BubbleContent, SpecialBubbleType, SpecialBubbleContent } from "../../../types/BubbleGridInterfaces";
 import { BubbleModelFactory } from "./BubbleModelFactory";
 import { BubbleUIFactory } from "./BubbleUIFactory";
 

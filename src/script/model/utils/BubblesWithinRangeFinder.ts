@@ -1,4 +1,4 @@
-import { TileIndex, TileGrid, Tile, TileStatus } from "../bubbleLayout/model/TileGrid";
+import { TileIndex, TileGrid, Tile, TileStatus } from "../../types/BubbleGridInterfaces";
 import { getNearByPosFromDirection } from "./getNearByFromDirection";
 
 export class BubblesWithinRangeFinder {

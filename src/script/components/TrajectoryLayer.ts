@@ -1,12 +1,12 @@
 import { Container, ContainerChild, Point } from "pixi.js";
 import { ColorBubbleData } from "./bubbleLayout/model/Bubble";
 import { BubbleType } from "./bubbleLayout/model/LayoutInterface";
-import { TileData, TileGrid } from "./bubbleLayout/model/TileGrid";
-import BubbleShooterGamePlayModel from "./BubbleShooterGamePlayModel";
-import { getPointsBetweenTwoPoint } from "./utils/PointsBetweenTwoPoint";
+import { TileData, TileGrid } from "../types/BubbleGridInterfaces";
+import BubbleShooterGamePlayModel from "../model/BubbleShooterGamePlayModel";
 
-import { Rect } from "./bubbleLayout/controllers/layoutMovement/DynamicBubbleLayoutMovementController";
 import { TrajectoryBubbleSprite } from "./bubbleLayout/model/TrajectoryBubbleSprite";
+import { getPointsBetweenTwoPoint } from "../model/utils/PointsBetweenTwoPoint";
+import { Rect } from "../types/GamePlayEngineDependency";
 
 class TrajectoryBubbleSpritePool {
     private pool: TrajectoryBubbleSprite[] = [];

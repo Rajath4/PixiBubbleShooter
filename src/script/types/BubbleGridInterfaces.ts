@@ -1,6 +1,6 @@
-import { Color, Container, Point, Sprite } from "pixi.js";
-import { BubbleModel } from "./BubbleModel";
-import { BubbleType } from "./LayoutInterface";
+import { Color, Container, Point } from "pixi.js";
+import { BubbleModel } from "../components/bubbleLayout/model/BubbleModel";
+import { BubbleType } from "../components/bubbleLayout/model/LayoutInterface";
 
 export interface TileIndex {
     column: number;

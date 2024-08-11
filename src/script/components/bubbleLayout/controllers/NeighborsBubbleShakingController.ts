@@ -1,8 +1,8 @@
 import { Point } from "pixi.js";
 import { getDistanceBetweenTwoPoints } from "../../utils";
-import { BubblesWithinRangeFinder } from "../../utils/BubblesWithinRangeFinder";
-import { Tile, TileGrid, TileIndex } from "../model/TileGrid";
+import { Tile, TileGrid, TileIndex } from "../../../types/BubbleGridInterfaces";
 import { gsap } from 'gsap';
+import { BubblesWithinRangeFinder } from "../../../model/utils/BubblesWithinRangeFinder";
 
 export default class NeighborsBubbleShakingController {
     constructor(getTile: (tileIndex: TileIndex) => Tile, tiles: TileGrid, isStartWithShifted: boolean) {

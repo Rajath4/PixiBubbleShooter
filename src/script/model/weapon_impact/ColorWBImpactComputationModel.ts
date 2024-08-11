@@ -1,6 +1,7 @@
 
-import { TileIndex, ColorBubbleActedTiles } from "../bubbleLayout/model/TileGrid";
-import TileGridModel from "../bubbleLayout/model/TileGridModel";
+
+import TileGridModel from "../../components/bubbleLayout/model/TileGridModel";
+import { TileIndex, ColorBubbleActedTiles } from "../../types/BubbleGridInterfaces";
 import ClusterFinder from "../utils/ClusterFinder";
 import WeaponBubbleImpactComputationModelBase from "./WeaponBubbleImpactComputationModelBase";
 

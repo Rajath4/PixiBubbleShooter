@@ -1,6 +1,7 @@
-import { ColorBubbleData } from "../bubbleLayout/model/Bubble";
-import { BubbleType } from "../bubbleLayout/model/LayoutInterface";
-import { TileIndex, TileGrid } from "../bubbleLayout/model/TileGrid";
+
+import { ColorBubbleData } from "../../components/bubbleLayout/model/Bubble";
+import { BubbleType } from "../../components/bubbleLayout/model/LayoutInterface";
+import { TileIndex, TileGrid } from "../../types/BubbleGridInterfaces";
 import { BubblesWithinRangeFinder } from "./BubblesWithinRangeFinder";
 import ClusterFinder from "./ClusterFinder";
 import { getNearByPosFromDirection } from "./getNearByFromDirection";

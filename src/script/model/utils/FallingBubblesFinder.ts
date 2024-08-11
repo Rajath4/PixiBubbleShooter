@@ -1,4 +1,4 @@
-import { TileGrid, TileGridContents, TileIndex, TileStatus } from "../bubbleLayout/model/TileGrid";
+import { TileGrid, TileGridContents, TileIndex, TileStatus } from "../../types/BubbleGridInterfaces";
 
 export default class FallingBubblesFinder {
 

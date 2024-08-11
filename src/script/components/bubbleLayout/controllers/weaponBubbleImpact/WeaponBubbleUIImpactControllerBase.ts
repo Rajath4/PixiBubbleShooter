@@ -1,5 +1,5 @@
 import { Container } from "pixi.js";
-import { TileIndex, TileContent, TileGrid } from "../../model/TileGrid";
+import { TileIndex, TileContent, TileGrid } from "../../../../types/BubbleGridInterfaces";
 import { ObserverHandler } from "../../ObserverHandler";
 
 export default abstract class WeaponBubbleUIImpactControllerBase {

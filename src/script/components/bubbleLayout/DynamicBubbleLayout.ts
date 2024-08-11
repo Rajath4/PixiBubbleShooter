@@ -11,7 +11,7 @@ import DynamicBubbleLayoutMovementController from './controllers/layoutMovement/
 import WeaponBubbleFinalPosVisualController from './controllers/trajectory/WeaponBubbleFinalPosVisualController';
 import WeaponBubbleUIImpactController from './controllers/weaponBubbleImpact/WeaponBubbleUIImpactController';
 import { BubbleFactoryController } from './model/BubbleFactoryController';
-import { TileContent, TileData, TileGrid, TileGridContents, TileIndex } from './model/TileGrid';
+import { TileContent, TileData, TileGrid, TileGridContents, TileIndex } from '../../types/BubbleGridInterfaces';
 import TileGridModel from './model/TileGridModel';
 
 export class DynamicBubbleLayout extends StaticBubbleLayout {

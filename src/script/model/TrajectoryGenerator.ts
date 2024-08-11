@@ -1,8 +1,8 @@
 import { Point } from "pixi.js";
-import { Rect } from "./bubbleLayout/controllers/layoutMovement/DynamicBubbleLayoutMovementController";
-import { TileGrid } from "./bubbleLayout/model/TileGrid";
+import { TileGrid } from "../types/BubbleGridInterfaces";
 import { CollisionPoint, getCollisionPointWithBorder } from "./utils/BorderCollusionPointDetector";
 import { getCollusionPoint } from "./utils/LayoutCollusionDetection";
+import { Rect } from "../types/GamePlayEngineDependency";
 
 export default class TrajectoryGenerator {
     /**

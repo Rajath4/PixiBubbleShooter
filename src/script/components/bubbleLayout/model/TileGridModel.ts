@@ -1,6 +1,6 @@
 import { Point } from "pixi.js";
 import { deepClone, deepCloneMap } from "./DeepClone";
-import { Tile, TileData, TileIndex, TileStatus, TileContent, TileGrid } from "./TileGrid";
+import { Tile, TileData, TileIndex, TileStatus, TileContent, TileGrid } from "../../../types/BubbleGridInterfaces";
 
 export default class TileGridModel {
     constructor() {

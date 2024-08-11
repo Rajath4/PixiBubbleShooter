@@ -4,7 +4,7 @@ import { ColorBubbleData } from "./model/Bubble";
 import { BubbleFactoryController } from "./model/BubbleFactoryController";
 import { BubbleSprite } from "./model/BubbleSprite";
 import { BubbleType } from "./model/LayoutInterface";
-import { Tile, TileData, TileStatus } from "./model/TileGrid";
+import { Tile, TileData, TileStatus } from "../../types/BubbleGridInterfaces";
 import TileGridDataModel from "./model/TileGridDataModel";
 import TileGridModel from "./model/TileGridModel";
 

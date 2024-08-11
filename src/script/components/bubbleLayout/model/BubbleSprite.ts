@@ -1,6 +1,6 @@
-import { Color, Container, Point, Sprite, spritesheetAsset, Texture } from "pixi.js";
-import { IBubbleSprite, IBubbleExecutionData } from "./TileGrid";
 import { gsap } from "gsap";
+import { Color, Container, Point, Sprite } from "pixi.js";
+import { IBubbleExecutionData, IBubbleSprite } from "../../../types/BubbleGridInterfaces";
 
 
 export class BubbleSprite extends Container implements IBubbleSprite {

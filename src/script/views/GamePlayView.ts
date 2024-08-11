@@ -16,8 +16,6 @@ import { designResolution } from "../config";
 
 export type GameResultCallBack = (isWon: boolean, sessionScore: number) => void;
 
-
-
 export class GamePlayView extends Container {
     private cannon: CannonContainer;
     private bubbleLayoutLayer: DynamicBubbleLayout;
@@ -25,9 +23,8 @@ export class GamePlayView extends Container {
     private deadLine: DeadLine;
     private layerSize: Size;
 
-    private onGameResult: GameResultCallBack;
 
-    init(layerSize: Size, onGameResult: GameResultCallBack) {
+    init(layerSize: Size) {
         this.layerSize = layerSize;
 
         this.children.forEach(child => {
@@ -36,8 +33,6 @@ export class GamePlayView extends Container {
 
         this.removeAllListeners();
         this.removeChildren();
-
-        this.onGameResult = onGameResult;
 
         this.velocityOfWeaponBubble = 2000 * (getDiagonalLengthOfRectangle(layerSize.width, layerSize.height) / designResolution.diagonal); //1000 is the velocity in design resolution.
 
@@ -108,25 +103,18 @@ export class GamePlayView extends Container {
         return this.toLocal(globalTp);
     }
 
-    onTouchStartReceived = (event: FederatedPointerEvent) => {
+    private onTouchStartReceived = (event: FederatedPointerEvent) => {
         const tp = this.getTouchPoint(event);
-        if (this.isCannonActive()) {
-            this.cannon.onTouchStart(tp);
-        }
+        this.cannon.onTouchStart(tp);
     }
 
-    onTouchMoveReceived = (event: FederatedPointerEvent) => {
+    private onTouchMoveReceived = (event: FederatedPointerEvent) => {
         const tp = this.getTouchPoint(event);
-        if (this.isCannonActive()) {
-            this.cannon.onTouchMove(tp);
-        }
+        this.cannon.onTouchMove(tp);
     }
 
-    onTouchEndReceived = (event: FederatedPointerEvent) => {
+    private onTouchEndReceived = (event: FederatedPointerEvent) => {
         const tp = this.getTouchPoint(event);
-        if (!this.isCannonActive()) {
-            return;
-        }
 
         const isCanonHavingValidRotation = this.cannon.onTouchEnd(tp);
         if (!isCanonHavingValidRotation) {
@@ -151,11 +139,6 @@ export class GamePlayView extends Container {
     }
 
 
-
-    private isCannonActive() {
-        return true;
-    }
-
     private convertBubbleLayerToGameLayer(position: Point) {
         const worldPosition = this.bubbleLayoutLayer.toGlobal(position);
         return this.toLocal(worldPosition);
@@ -175,13 +158,11 @@ export class GamePlayView extends Container {
 
         if (this.isWon()) {
             console.log("Game Won");
-            this.onGameResult(true, this.model.playerSessionDataModel.getScore());
+            this.emit('gameOver', true, this.model.playerSessionDataModel.getScore())
 
         } else if (this.isGameOver()) {
             console.log("Game Over");
-            this.emit('gameOver', true, 100)
-            // await this.bubbleLayoutLayer.onGameOver();
-            // this.onGameResult(false,this.model.playerSessionDataModel.getScore());
+            this.emit('gameOver', false, this.model.playerSessionDataModel.getScore())
         } else {
             this.cannon.onWeaponBubbleActionComplete();
             this.interactive = true;
@@ -199,7 +180,6 @@ export class GamePlayView extends Container {
     destroy(options?: any) {
         this.removeTouchListeners();
         // Clean up any event listeners or references
-        this.onGameResult = null; // Nullify the callback
         super.destroy(options);
     }
 
@@ -208,6 +188,4 @@ export class GamePlayView extends Container {
 
     private _runtimeTempScoreUpdateObserver: ObserverHandler = new ObserverHandler();
     private dependencyProvider: StageGamePlayLayerDependencyProvider;
-
-
 }

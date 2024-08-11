@@ -23,14 +23,9 @@ export class GameScene extends Container {
     initGamePlayView() {
         // this.resultView.visible = false;
         this.gamePlayView = new GamePlayView();
-        this.gamePlayView.init({ width: this.app.screen.width, height: this.app.screen.height }, null);
+        this.gamePlayView.init({ width: this.app.screen.width, height: this.app.screen.height });
         this.gamePlayView.on('gameOver', this.onGameOver);
         this.addChild(this.gamePlayView);
-
-        // setTimeout(() => {
-        //     this.gamePlayView.destroy();
-        //     this.initGamePlayView();
-        // }, 10000);
     }
 
     private initResultView(isWon: boolean, sessionScore: number) {

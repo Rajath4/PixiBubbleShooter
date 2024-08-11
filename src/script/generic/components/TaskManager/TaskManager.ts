@@ -9,7 +9,7 @@ export class TaskManager {
     }
 
     // Execute all tasks sequentially
-    async start(): Promise<void> {
+    async execute(): Promise<void> {
         for (const task of this.tasks) {
             await task.execute();
         }

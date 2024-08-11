@@ -53,9 +53,9 @@ export class GamePlayView extends Container {
         this.addChild(this.cannon);
         this.addChild(this.bubbleLayoutLayer);
         this.addChild(this.cannon.trajectory);
-        this.cannon.trajectory.zIndex = 0;
+        this.cannon.trajectory.zIndex = 10;
         this.cannon.zIndex = 100;
-        this.bubbleLayoutLayer.zIndex = 10;
+        this.bubbleLayoutLayer.zIndex = 20;
 
         this.initTouchListeners();
 

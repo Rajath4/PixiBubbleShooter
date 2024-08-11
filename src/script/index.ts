@@ -18,7 +18,7 @@ async function preload() {
         { alias: 'bottom_base', src: 'assets/img/textures/Bottom Panel Base.png' },
         { alias: 'top_header', src: 'assets/img/textures/ui/Top Panel.png' },
         { alias: "score_panel", src: "assets/img/textures/ui/score panel.png" },
-        {alias: "play_again_button", src: "assets/img/textures/ui/play_again_btn.png"},
+        { alias: "play_again_button", src: "assets/img/textures/ui/play_again_btn.png" },
     ];
 
     // Load the assets defined above.
@@ -29,18 +29,11 @@ async function preload() {
 
 // Asynchronous IIFE
 (async () => {
-
     // register the plugin
     gsap.registerPlugin(PixiPlugin);
-
-    // give the plugin a reference to the PIXI object
     PixiPlugin.registerPIXI(PIXI);
 
-    // Create a PixiJS application.
     const app = new Application();
-
-    // Intialize the application.
-    // await app.init({ background: '#1099bb', resizeTo: window });
 
     await app.init({
         width: 1080,
@@ -84,29 +77,35 @@ async function preload() {
     //   drawCount = 0; // clear count per frame
     // });
 
+
+    window.addEventListener('resize', resizeApp);
+    resizeApp();  // Call immediately to set initial sizes
+
     await preload();
 
     const gameScene = new GameScene();
     gameScene.init(app);
     app.stage.addChild(gameScene);
 
-    window.addEventListener('resize', resizeApp);
-    resizeApp();  // Call immediately to set initial sizes
 
     function resizeApp() {
-        const ratio = 1080 / 1920;
+        const gameRatio = 9 / 16;  // The desired aspect ratio (16:9)
         const currentRatio = window.innerWidth / window.innerHeight;
 
-        if (currentRatio > ratio) {
-            // If the window ratio is wider than the game ratio (landscape mode)
-            app.view.style.width = `${window.innerHeight * ratio}px`;
-            app.view.style.height = `${window.innerHeight}px`;
-        } else {
-            // Portrait or square
-            app.view.style.width = `${window.innerWidth}px`;
-            app.view.style.height = `${window.innerWidth / ratio}px`;
+        let newWidth: number, newHeight: number;
+
+        if (currentRatio > gameRatio) {
+            // If the window ratio is wider than 16:9 (landscape mode)
+            newHeight = window.innerHeight;
+            newWidth = newHeight * gameRatio;
+
+            app.renderer.canvas.style.width = `${newWidth}px`;
+            // app.renderer.canvas.style.height = `${newHeight}px`;
+
+            // Center the canvas horizontally (add borders on the left and right)
+            app.renderer.canvas.style.marginLeft = `${(window.innerWidth - newWidth) / 2}px`;
+            app.renderer.canvas.style.marginTop = '0px';
+            app.renderer.resize(newWidth, newHeight);
         }
     }
-
-
 })();

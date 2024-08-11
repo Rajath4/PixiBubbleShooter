@@ -23,8 +23,7 @@ export class GameScene extends Container {
     initGamePlayView() {
         // this.resultView.visible = false;
         this.gamePlayView = new GamePlayView();
-        console.error("AAA",this.gamePlayView.uid)
-        this.gamePlayView.init(this.app, { width: this.app.screen.width, height: this.app.screen.height }, null);
+        this.gamePlayView.init({ width: this.app.screen.width, height: this.app.screen.height }, null);
         this.gamePlayView.on('gameOver', this.onGameOver);
         this.addChild(this.gamePlayView);
 

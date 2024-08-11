@@ -20,7 +20,6 @@ export type GameResultCallBack = (isWon: boolean, sessionScore: number) => void;
 
 
 export class GamePlayView extends Container {
-    private app: Application;
     private cannon: CannonContainer;
     private bubbleLayoutLayer: DynamicBubbleLayout;
     private uiLayer: UIContainer;
@@ -29,8 +28,7 @@ export class GamePlayView extends Container {
 
     private onGameResult: GameResultCallBack;
 
-    init(app: Application, layerSize: Size, onGameResult: GameResultCallBack) {
-        this.app = app;
+    init(layerSize: Size, onGameResult: GameResultCallBack) {
         this.layerSize = layerSize;
 
         this.children.forEach(child => {

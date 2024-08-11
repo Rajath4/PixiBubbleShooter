@@ -1,11 +1,10 @@
 import { Container, Point, Size, Sprite } from 'pixi.js';
 import { ICannonUIIDependencies } from '../types/GamePlayEngineDependency';
-import { getScaleFactor } from '../utils/utils';
 import { TrajectoryLayer } from './TrajectoryLayer';
 import WeaponBubbleModel from './WeaponBubbleModel';
 import { BubbleSprite } from './bubbleLayout/model/BubbleSprite';
 import { ColorBubbleModel } from './bubbleLayout/model/ColorBubbleModel';
-import { getAngleBetweenTwoPoints, radToDeg } from './utils';
+import { getScaleFactor, radToDeg, getAngleBetweenTwoPoints } from '../utils/utils';
 
 export class CannonContainer extends Container {
     private layerSize: Size;

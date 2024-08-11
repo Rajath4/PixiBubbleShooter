@@ -4,14 +4,14 @@ import Background from "../components/Background";
 import BubbleShooterGamePlayModel from "../model/BubbleShooterGamePlayModel";
 import { CannonContainer } from "../components/Cannon";
 import DeadLine from "../components/DeadLine";
-import { UIContainer } from "../components/UIContainer";
+import { UIContainer } from "../components/ui/UIContainer";
 import { DynamicBubbleLayout } from "../components/bubbleLayout/DynamicBubbleLayout";
 import { IWeaponBubbleImpactInfo } from "../components/bubbleLayout/GamePlayEngineModelInterfaces";
 import { ObserverHandler } from "../components/bubbleLayout/ObserverHandler";
 import { getDummyLayout } from "../components/bubbleLayout/StaticBubbleLayout";
 import { BubbleFactoryController } from "../components/bubbleLayout/model/BubbleFactoryController";
 import { BubbleType } from "../components/bubbleLayout/model/LayoutInterface";
-import { getDiagonalLengthOfRectangle } from "../components/utils";
+import { getDiagonalLengthOfRectangle } from "../utils/utils";
 import { designResolution } from "../config";
 
 export class GamePlayView extends Container {

@@ -1,5 +1,5 @@
 import { Container, Size, Sprite } from "pixi.js";
-import ScorePanel from "./ui/ScorePanel";
+import ScorePanel from "./ScorePanel";
 
 export class UIContainer extends Container {
     private layerSize: Size;

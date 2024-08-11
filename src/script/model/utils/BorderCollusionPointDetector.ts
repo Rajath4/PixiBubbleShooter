@@ -1,5 +1,5 @@
 import { Point } from "pixi.js";
-import { toFixedPrecisionOfAPoint } from "../../components/utils";
+import { toFixedPrecisionOfAPoint } from "../../utils/utils";
 import { Rect } from "../../types/GamePlayEngineDependency";
 
 /*****Vector functions */

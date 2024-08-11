@@ -1,5 +1,5 @@
 import { Point } from "pixi.js";
-import { getDistanceBetweenTwoPoints } from "../../utils";
+import { getDistanceBetweenTwoPoints } from "../../../utils/utils";
 import { Tile, TileGrid, TileIndex } from "../../../types/BubbleGridInterfaces";
 import { gsap } from 'gsap';
 import { BubblesWithinRangeFinder } from "../../../model/utils/BubblesWithinRangeFinder";

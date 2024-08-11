@@ -3,7 +3,7 @@ import { IWeaponBubbleImpactInfo } from "./bubbleLayout/GamePlayEngineModelInter
 import { ColorBubbleData } from "./bubbleLayout/model/Bubble";
 import { BubbleType } from "./bubbleLayout/model/LayoutInterface";
 import { BubbleContent, IBubbleSprite } from "../types/BubbleGridInterfaces";
-import { getDistanceBetweenTwoPoints, getTimeRequiredToTravelSpecifiedDistance } from "./utils";
+import { getDistanceBetweenTwoPoints, getTimeRequiredToTravelSpecifiedDistance } from "../utils/utils";
 
 
 export default class WeaponBubble {

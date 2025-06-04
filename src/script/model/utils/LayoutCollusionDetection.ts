@@ -79,12 +79,9 @@ function getCollusionPoint(p1: Point, p2: Point, tiles: TileGrid, radius: number
  * @returns {boolean} true if point is in segment, false otherwise
  */
 function isInSegment(p: Point, P1: Point, P2: Point): boolean {
-    if (p.x <= Math.max(P1.x, P2.x) && p.x >= Math.min(P1.x, P2.x)) {
-        if (p.x <= Math.max(P1.x, P2.x) && p.x >= Math.min(P1.x, P2.x)) {
-            return true;
-        }
-    }
-    return false;
+    const inXRange = p.x <= Math.max(P1.x, P2.x) && p.x >= Math.min(P1.x, P2.x);
+    const inYRange = p.y <= Math.max(P1.y, P2.y) && p.y >= Math.min(P1.y, P2.y);
+    return inXRange && inYRange;
 }
 
 /**
